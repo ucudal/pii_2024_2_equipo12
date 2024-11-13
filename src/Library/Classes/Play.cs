@@ -3,7 +3,7 @@ namespace Poke.Clases;
 /// <summary>
 /// Clase que gestiona las posibles jugadas de un entrenador durante un turno.
 /// </summary>
-public class Plays
+public class Play
 {
     /// <summary>
     /// Permite al entrenador elegir entre atacar, cambiar de Pokémon o usar un ítem.
