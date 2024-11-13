@@ -24,7 +24,7 @@ using Poke.Clases;
         /// <summary>
         /// Lista de items que el entrenador tiene disponibles.
         /// </summary>
-        public List<Items> Items { get; }
+        public List<Item> Items { get; }
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="Trainer"/> con
@@ -39,7 +39,7 @@ using Poke.Clases;
             ActualPokemon = actualPokemon;
             
             Pokemons = new List<Pokemon> { actualPokemon };
-            Items = new List<Items>
+            Items = new List<Item>
             {
                 new SuperPotion(),
                 new SuperPotion(),
@@ -86,7 +86,7 @@ using Poke.Clases;
         /// </summary>
         /// <param name="item">El item a buscar.</param>
         /// <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
-        public bool HasItem(Items item)
+        public bool HasItem(Item item)
         {
             return Items.Contains(item);
         }
@@ -122,7 +122,7 @@ using Poke.Clases;
         /// Elimina un item específico de la lista de items del entrenador.
         /// </summary>
         /// <param name="item">El item a eliminar.</param>
-        public void RemoveItem(Items item)
+        public void RemoveItem(Item item)
         {
             Items.Remove(item);
         }
@@ -131,7 +131,7 @@ using Poke.Clases;
         /// Agrega un item a la lista de items del entrenador.
         /// </summary>
         /// <param name="item">El item a agregar.</param>
-        public void AddItem(Items item)
+        public void AddItem(Item item)
         {
             Items.Add(item);
         }
@@ -141,7 +141,7 @@ using Poke.Clases;
         /// </summary>
         /// <param name="item">El item a usar.</param>
         /// <param name="objective">El pokemon en el cual usar el item.</param>
-        public void UseItem(Items item, Pokemon objective)
+        public void UseItem(Item item, Pokemon objective)
         {
             if (HasItem(item))
             {

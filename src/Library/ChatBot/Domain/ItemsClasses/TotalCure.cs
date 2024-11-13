@@ -1,6 +1,6 @@
 namespace Poke.Clases;
 
-public class TotalCure : Items
+public class TotalCure : Item
 {
     public TotalCure()
     {
