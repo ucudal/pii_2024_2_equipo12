@@ -19,4 +19,20 @@ public class BattlesList
         this.battles.Add(battle);
         return battle;
     }
+    
+    /// <summary>
+    /// Muestra todas las batallas en curso.
+    /// </summary>
+    /// <returns>Un mensaje con el resultado.</returns>
+    public bool GetBattle(String playerDisplayName)
+    {
+        foreach (Battle battle in this.battles)
+        {
+            if (battle.Player1 == playerDisplayName || battle.Player2 == playerDisplayName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

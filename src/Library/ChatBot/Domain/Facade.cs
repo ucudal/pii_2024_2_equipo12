@@ -41,9 +41,9 @@ public class Facade
     {
         _instance = null;
     }
-    
+
     private WaitingList WaitingList { get; }
-    
+
     private BattlesList BattlesList { get; }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class Facade
         {
             return $"{displayName} agregado a la lista de espera";
         }
-        
+
         return $"{displayName} ya está en la lista de espera";
     }
 
@@ -94,7 +94,7 @@ public class Facade
         {
             result = result + trainer.DisplayName + "; ";
         }
-        
+
         return result;
     }
 
@@ -110,7 +110,7 @@ public class Facade
         {
             return $"{displayName} no está esperando";
         }
-        
+
         return $"{displayName} está esperando";
     }
 
@@ -122,7 +122,7 @@ public class Facade
         // están para luego removerlos.
         this.WaitingList.RemoveTrainer(playerDisplayName);
         this.WaitingList.RemoveTrainer(opponentDisplayName);
-        
+
         BattlesList.AddBattle(playerDisplayName, opponentDisplayName);
         return $"Comienza {playerDisplayName} vs {opponentDisplayName}";
     }
@@ -138,16 +138,16 @@ public class Facade
         // El símbolo ? luego de Trainer indica que la variable opponent puede
         // referenciar una instancia de Trainer o ser null.
         Trainer? opponent;
-        
+
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
             return "No hay nadie esperando";
         }
-        
+
         if (!OpponentProvided()) // && SomebodyIsWaiting
         {
             opponent = this.WaitingList.GetAnyoneWaiting();
-            
+
             // El símbolo ! luego de opponent indica que sabemos que esa
             // variable no es null. Estamos seguros porque SomebodyIsWaiting
             // retorna true si y solo si hay usuarios esperando y en tal caso
@@ -159,14 +159,14 @@ public class Facade
         // variable no es null. Estamos seguros porque OpponentProvided hubiera
         // retorna false antes y no habríamos llegado hasta aquí.
         opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName!);
-        
+
         if (!OpponentFound())
         {
             return $"{opponentDisplayName} no está esperando";
         }
-        
+
         return this.CreateBattle(playerDisplayName, opponent!.DisplayName);
-        
+
         // Funciones locales a continuación para mejorar la legibilidad
 
         bool OpponentProvided()
@@ -184,4 +184,25 @@ public class Facade
             return opponent != null;
         }
     }
+
+    /// <summary>
+    /// Usuario gasta su turno eligiendo una poción luego de seleccionarla de 
+    /// su lista de pociones impresas en la consola.
+    /// </summary>
+    /// <param name="playerDisplayName">El primer jugador.</param>
+    /// <param name="potionName">El nombre de la poción.</param>
+    /// <returns>Un mensaje con el resultado.</returns>
+    public string UsePotion(string playerDisplayName, string potionName)
+    {
+        if (this.BattlesList.GetBattle(playerDisplayName) == false)
+        {
+            return $"{playerDisplayName} no está en una batalla";
+        }
+        else
+        {
+        }
+        return "";
+    }
 }
+
+
