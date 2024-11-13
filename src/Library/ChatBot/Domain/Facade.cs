@@ -204,7 +204,6 @@ public class Facade
         }
         return "No hay pociones disponibles";
     }
-
     /// <summary>
     /// Usuario gasta su turno eligiendo una poción luego de seleccionarla de 
     /// su lista de pociones impresas en la consola.
