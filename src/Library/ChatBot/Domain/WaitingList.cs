@@ -8,7 +8,6 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class WaitingList
 {
     private readonly List<Trainer> trainers = new List<Trainer>();
-
     public int Count
     {
         get { return this.trainers.Count; }
