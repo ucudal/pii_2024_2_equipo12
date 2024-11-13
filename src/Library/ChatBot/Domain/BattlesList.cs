@@ -19,4 +19,14 @@ public class BattlesList
         this.battles.Add(battle);
         return battle;
     }
+
+    public bool FindPlayerInBattle(string playerDisplayName)
+    {
+        foreach (var battle in battles)
+        {
+            return (battle.Player1 == playerDisplayName || battle.Player2 == playerDisplayName);
+        }
+
+        return false;
+    }
 }

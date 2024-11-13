@@ -184,4 +184,9 @@ public class Facade
             return opponent != null;
         }
     }
+
+    public bool PlayerInGame(string playerDisplayName)
+    {
+        return BattlesList.FindPlayerInBattle(playerDisplayName);
+    }
 }
