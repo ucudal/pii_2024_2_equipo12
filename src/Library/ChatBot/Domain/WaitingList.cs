@@ -7,16 +7,22 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class WaitingList
 {
-    private readonly List<Trainer> trainers = new List<Trainer>();
+    private List<Trainer> trainersList = new List<Trainer>();
 
+    public WaitingList(Trainer? player1 = null, Trainer? player2 = null)
+    {
+        if (player1 != null)
+        {
+            trainersList.Add(player1);
+        }
+        if (player2 != null)
+        {
+            trainersList.Add(player2);
+        }
+    }
     public int Count
     {
-        get { return this.trainers.Count; }
-    }
-
-    public ReadOnlyCollection<Trainer> GetAllWaiting()
-    {
-        return this.trainers.AsReadOnly();
+        get { return this.trainersList.Count; }
     }
     
     /// <summary>
@@ -27,17 +33,17 @@ public class WaitingList
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AddTrainer(string displayName)
+    public bool AddTrainerToWaitlist(string displayName, Trainer trainer) // Se ingresa los 2, uno tipo string para buscar y otro tipo Trainer para agregar
     {
-        if (string.IsNullOrEmpty(displayName))
+        if (this.FindTrainerByDisplayName(displayName) != null)
         {
-            throw new ArgumentException(nameof(displayName));
+            return false;
         }
-        
-        if (this.FindTrainerByDisplayName(displayName) != null) return false;
-        trainers.Add(new Trainer(displayName));
-        return true;
-
+        else
+        {
+            trainersList.Add(trainer);
+            return true;
+        }
     }
 
     /// <summary>
@@ -52,9 +58,8 @@ public class WaitingList
     {
         Trainer? trainer = this.FindTrainerByDisplayName(displayName);
         if (trainer == null) return false;
-        trainers.Remove(trainer);
+        trainersList.Remove(trainer);
         return true;
-
     }
 
     /// <summary>
@@ -68,7 +73,7 @@ public class WaitingList
     /// </returns>
     public Trainer? FindTrainerByDisplayName(string displayName)
     {
-        foreach (Trainer trainer in this.trainers)
+        foreach (Trainer trainer in this.trainersList)
         {
             if (trainer.DisplayName == displayName)
             {
@@ -77,6 +82,29 @@ public class WaitingList
         }
 
         return null;
+    }
+    
+    
+    // hacer summary
+    public List<Trainer> CheckIn()
+    {
+        var playersToPlay = new List<Trainer>();
+        
+        if (trainersList.Count >= 2)
+        {
+            playersToPlay.Add(trainersList[0]);
+            playersToPlay.Add(trainersList[1]);
+
+            Console.WriteLine($"{playersToPlay[0].DisplayName} y {playersToPlay[1].DisplayName} están listos para jugar.");
+
+            trainersList.RemoveRange(0, 2); // Elimina los dos primeros elementos de la lista de espera
+        }
+        else
+        {
+            Console.WriteLine("No hay suficientes personas en la lista de espera para comenzar el juego.");
+        }
+
+        return playersToPlay;
     }
 
     /// <summary>
@@ -88,11 +116,15 @@ public class WaitingList
     /// <returns></returns>
     public Trainer? GetAnyoneWaiting()
     {
-        if (this.trainers.Count == 0)
+        if (this.trainersList.Count == 0)
         {
             return null;
         }
 
-        return this.trainers[0];
+        return this.trainersList[0];
+    }
+    public bool HasEnoughPlayers()
+    {
+        return trainersList.Count >= 2;
     }
 }

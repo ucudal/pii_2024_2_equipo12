@@ -8,7 +8,7 @@
         /// <summary>
         /// Instancia para gestionar las jugadas posibles en cada turno.
         /// </summary>
-        public Plays plays;
+        public Play Play;
 
         /// <summary>
         /// Representa el turno actual en la batalla, alternando entre los jugadores.
@@ -44,7 +44,7 @@
         {
             PlayerPokemon = playerPokemon;
             OpponentPokemon = opponentPokemon;
-            plays = new Plays();
+            Play = new Play();
             ActualTurn = 1;
             this.waitList = waitList;
         }
@@ -68,13 +68,13 @@
             if (Turn == 1)
             {
                 Console.WriteLine("Turno del jugador 1");
-                plays.PossiblePlays(player1, player2, player1.Items[0], player2.ActualPokemon, playsSecuence, attackIndex);
+                Play.PossiblePlays(player1, player2, player1.Items[0], player2.ActualPokemon, playsSecuence, attackIndex);
                 Turn = 2; // Cambia de turno para que vaya el otro jugador
             }
             else
             {
                 Console.WriteLine("Turno del jugador 2");
-                plays.PossiblePlays(player2, player1, player2.Items[0], player1.ActualPokemon, playsSecuence, attackIndex);
+                Play.PossiblePlays(player2, player1, player2.Items[0], player1.ActualPokemon, playsSecuence, attackIndex);
                 Turn = 1; // Cambia de turno para el jugador 1
             }
 
