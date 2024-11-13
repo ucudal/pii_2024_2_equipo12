@@ -7,8 +7,8 @@ namespace LibraryTests;
 [TestFixture]
 public class UseItemTest
 {
-    private Trainer jugador;
-    private Trainer oponente;
+    private OriginalTrainer jugador;
+    private OriginalTrainer oponente;
     private Battle batalla;
     private SuperPotion pocion;
 
@@ -17,8 +17,8 @@ public class UseItemTest
     {
         var pokemon1 = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
         var pokemonOponente = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
-        jugador = new Trainer("Jugador1", pokemon1);
-        oponente = new Trainer("Jugador2", pokemonOponente);
+        jugador = new OriginalTrainer("Jugador1", pokemon1);
+        oponente = new OriginalTrainer("Jugador2", pokemonOponente);
         pocion = new SuperPotion();
         jugador.AddItem(pocion);  // Suponiendo que el entrenador tiene una lista de ítems
         batalla = new Battle(pokemon1, pokemonOponente);

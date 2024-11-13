@@ -13,8 +13,8 @@ public class Plays
     /// <param name="item">El ítem que el jugador puede usar.</param>
     /// <param name="objective">El Pokémon objetivo del ítem.</param>
     public void PossiblePlays(
-        Trainer player1, 
-        Trainer player2, 
+        OriginalTrainer player1, 
+        OriginalTrainer player2, 
         Items item, 
         Pokemon objective, 
         string? playsSecuence = null, //Para usar en los test de esta entrega 

@@ -3,7 +3,7 @@ namespace Poke.Clases;
 /// <summary>
 /// Representa a un entrenador en el juego, quien tiene una lista de pokemones y una lista de items.
 /// </summary>
-public class Trainer
+public class OriginalTrainer
 {
     /// <summary>
     /// Lista de pokemones que posee el entrenador.
@@ -26,11 +26,11 @@ public class Trainer
     public string name { get; set; }
 
     /// <summary>
-    /// Inicializa una nueva instancia de la clase <see cref="Trainer"/>.
+    /// Inicializa una nueva instancia de la clase <see cref="OriginalTrainer"/>.
     /// </summary>
     /// <param name="name">Nombre del entrenador.</param>
     /// <param name="ActualPokemon">El pokemon actual del entrenador.</param>
-    public Trainer(string name, Pokemon ActualPokemon)
+    public OriginalTrainer(string name, Pokemon ActualPokemon)
     {
         List<Pokemon> Pokemons = new List<Pokemon>();
         Pokemons.Add(ActualPokemon); // Agrega el pokemon actual a la lista de pokemones y agregar los otros pokemones en el mismo metodo

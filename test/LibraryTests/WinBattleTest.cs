@@ -7,8 +7,8 @@ namespace LibraryTests;
 [TestFixture]
 public class WinBattleTest
 {
-    private Trainer jugador;
-    private Trainer oponente;
+    private OriginalTrainer jugador;
+    private OriginalTrainer oponente;
     private Pokemon pokemonJugador;
     private Pokemon pokemonOponente;
     private Battle batalla;
@@ -18,8 +18,8 @@ public class WinBattleTest
     {
         pokemonJugador = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
         pokemonOponente = new Pokemon("Charmander", 0, 10, "2", Poke.Clases.Type.PokemonType.Fire); // Vida en cero para simular el fin de la batalla
-        jugador = new Trainer("Jugador1", pokemonJugador);
-        oponente = new Trainer("Jugador2", pokemonOponente);
+        jugador = new OriginalTrainer("Jugador1", pokemonJugador);
+        oponente = new OriginalTrainer("Jugador2", pokemonOponente);
         batalla = new Battle(pokemonJugador, pokemonOponente);
     }
 
