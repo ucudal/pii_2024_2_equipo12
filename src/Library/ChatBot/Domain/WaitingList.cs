@@ -8,7 +8,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class WaitingList
 {
     private List<Trainer> trainersList = new List<Trainer>();
-
+    
     public WaitingList(Trainer? player1 = null, Trainer? player2 = null)
     {
         if (player1 != null)
@@ -33,7 +33,7 @@ public class WaitingList
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AddTrainerToWaitlist(string displayName, Trainer trainer) // Se ingresa los 2, uno tipo string para buscar y otro tipo Trainer para agregar
+    public bool AddTrainer(string displayName) // Se ingresa los 2, uno tipo string para buscar y otro tipo Trainer para agregar
     {
         if (this.FindTrainerByDisplayName(displayName) != null)
         {
@@ -41,7 +41,13 @@ public class WaitingList
         }
         else
         {
-            trainersList.Add(trainer);
+            foreach (Trainer trainer in this.trainersList)
+            {
+                if (trainer.DisplayName == displayName)
+                {
+                    trainersList.Add(trainer);
+                }
+            }
             return true;
         }
     }
@@ -80,7 +86,6 @@ public class WaitingList
                 return trainer;
             }
         }
-
         return null;
     }
     
@@ -126,5 +131,14 @@ public class WaitingList
     public bool HasEnoughPlayers()
     {
         return trainersList.Count >= 2;
+    }
+    
+    /// <summary>
+    /// Retorna una lista de todos los jugadores en la lista de espera.
+    /// </summary>
+    /// <returns>Una lista de jugadores esperando para jugar.</returns>
+    public List<Trainer> GetAllWaiting()
+    {
+        return this.trainersList;
     }
 }
