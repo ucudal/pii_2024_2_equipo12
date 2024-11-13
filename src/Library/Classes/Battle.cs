@@ -63,7 +63,7 @@
         /// </summary>
         /// <param name="player1">El primer entrenador.</param>
         /// <param name="player2">El segundo entrenador.</param>
-        public void PlayTurn(Trainer player1, Trainer player2, string? playsSecuence = null, string? attackIndex = null)
+        public void PlayTurn(OriginalTrainer player1, OriginalTrainer player2, string? playsSecuence = null, string? attackIndex = null)
         {
             if (Turn == 1)
             {
@@ -87,7 +87,7 @@
         /// <param name="player1">El primer entrenador.</param>
         /// <param name="player2">El segundo entrenador.</param>
         /// <returns>True si uno de los jugadores ha ganado; de lo contrario, False.</returns>
-        public bool BattleFinished(Trainer player1, Trainer player2)
+        public bool BattleFinished(OriginalTrainer player1, OriginalTrainer player2)
         {
             if (player1.PokemonLife() == 0)
             {
@@ -108,7 +108,7 @@
         /// </summary>
         /// <param name="player1">El primer entrenador.</param>
         /// <param name="player2">El segundo entrenador.</param>
-        private void InfoTurn(Trainer player1, Trainer player2)
+        private void InfoTurn(OriginalTrainer player1, OriginalTrainer player2)
         {
             Console.WriteLine("Turno: " + ActualTurn);
             Console.WriteLine($"Información de los pokemones totales del juego:");
@@ -121,7 +121,7 @@
         /// </summary>
         /// <param name="player1">El primer entrenador.</param>
         /// <param name="player2">El segundo entrenador.</param>
-        public void CompleteBattle(Trainer player1, Trainer player2, string? playsSecuence = null, string? attackIndex = null)
+        public void CompleteBattle(OriginalTrainer player1, OriginalTrainer player2, string? playsSecuence = null, string? attackIndex = null)
         {
             // Verifica si hay suficientes entrenadores en la lista de espera para iniciar una batalla
             if (waitList.HasPlayers())

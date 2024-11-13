@@ -8,8 +8,8 @@ namespace LibraryTests
     [TestFixture]
     public class IniciateBattleWithWaitListOpponentTest
     {
-        private Trainer jugador1;
-        private Trainer jugador2;
+        private OriginalTrainer jugador1;
+        private OriginalTrainer jugador2;
         private Battle battle;
 
         [SetUp]
@@ -18,8 +18,8 @@ namespace LibraryTests
             Attack ataque = new Attack("relámpago", 30, Type.PokemonType.Electric, false);
             List<Attack> attackList = new List<Attack>();
             attackList.Add(ataque);
-            jugador1 = new Trainer("Jugador 1", new Pokemon("Pikachu", 1, 10, "1", Type.PokemonType.Electric, attackList));
-            jugador2 = new Trainer("Jugador 2", new Pokemon("Charizard", 1, 10, "2", Type.PokemonType.Fire, attackList));
+            jugador1 = new OriginalTrainer("Jugador 1", new Pokemon("Pikachu", 1, 10, "1", Type.PokemonType.Electric, attackList));
+            jugador2 = new OriginalTrainer("Jugador 2", new Pokemon("Charizard", 1, 10, "2", Type.PokemonType.Fire, attackList));
             jugador1.Pokemons.Add(jugador1.ActualPokemon);
             jugador2.Pokemons.Add(jugador2.ActualPokemon);
             WaitList waitList = new WaitList(jugador1, jugador2);

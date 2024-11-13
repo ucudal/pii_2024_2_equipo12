@@ -183,7 +183,7 @@ public class Pokemon
     /// <param name="objective">El Pokémon objetivo.</param>
     /// <param name="item">El ítem usado.</param>
     /// <param name="player">El entrenador que posee el ítem.</param>
-    public void TotalCureWithItem(Pokemon objective, Items item, Trainer player)
+    public void TotalCureWithItem(Pokemon objective, Items item, OriginalTrainer player)
     {
         if (item is TotalCure && (player.GetItem(item) == true))
         {

@@ -5,7 +5,7 @@ namespace LibraryTests;
 [TestFixture]
 public class AvailableAttacksTest
 {
-    private Trainer jugador;
+    private OriginalTrainer jugador;
     private Pokemon pokemon;
     private Attack ataqueBasico;
     private Attack ataqueEspecial;
@@ -18,7 +18,7 @@ public class AvailableAttacksTest
         ataqueEspecial = new Attack("Ataque Especial", 20, Type.PokemonType.Electric, true);
         pokemon = new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric);
         pokemon.AttackList = new List<Attack> { ataqueBasico, ataqueEspecial };
-        jugador = new Trainer("Jugador1", pokemon);
+        jugador = new OriginalTrainer("Jugador1", pokemon);
 
         // Creación de la instancia de Battle
         battle = new Battle(pokemon, new Pokemon("Charmander", 100, 10, "2", Type.PokemonType.Fire));

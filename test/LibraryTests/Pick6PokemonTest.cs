@@ -9,7 +9,7 @@ namespace LibraryTests
     [TestFixture]
     public class Pick6PokemonTest
     {
-        private Trainer jugador;
+        private OriginalTrainer jugador;
         private List<Pokemon> catalogoPokemon;
 
         [SetUp]
@@ -26,7 +26,7 @@ namespace LibraryTests
                 new Pokemon("Jigglypuff", 100, 10, "7", Type.PokemonType.Flying)
             };
 
-            jugador = new Trainer("Jugador 1", catalogoPokemon[0]);
+            jugador = new OriginalTrainer("Jugador 1", catalogoPokemon[0]);
         }
 
         [Test]
