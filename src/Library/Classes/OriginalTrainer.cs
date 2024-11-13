@@ -18,7 +18,7 @@ public class OriginalTrainer
     /// <summary>
     /// Lista de items que el entrenador tiene disponibles.
     /// </summary>
-    public List<Items> Items;
+    public List<Item> Items;
 
     /// <summary>
     /// Nombre del entrenador.
@@ -39,7 +39,7 @@ public class OriginalTrainer
         this.ActualPokemon = ActualPokemon;
         this.name = name;
         
-        Items = new List<Items>();
+        Items = new List<Item>();
         // Agrega items iniciales al entrenador
         Items.Add(new SuperPotion());
         Items.Add(new SuperPotion());
@@ -97,11 +97,11 @@ public class OriginalTrainer
     /// <summary>
     /// Verifica si el entrenador tiene un item específico.
     /// </summary>
-    /// <param name="items">El item a buscar.</param>
+    /// <param name="item">El item a buscar.</param>
     /// <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
-    public bool GetItem(Items items)
+    public bool GetItem(Item item)
     {
-        return Items.Contains(items);
+        return Items.Contains(item);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class OriginalTrainer
     /// Elimina un item específico de la lista de items del entrenador.
     /// </summary>
     /// <param name="item">El item a eliminar.</param>
-    public void RemoveItem(Items item)
+    public void RemoveItem(Item item)
     {
         Items.Remove(item);
     }
@@ -138,7 +138,7 @@ public class OriginalTrainer
     /// Agrega un item a la lista de items del entrenador.
     /// </summary>
     /// <para name="item">El item a agregar.</para>
-    public void AddItem(Items item)
+    public void AddItem(Item item)
     {
         Items.Add(item);
     }
@@ -148,7 +148,7 @@ public class OriginalTrainer
     /// </summary>
     /// <param name="item">El item a usar.</param>
     /// <param name="objective">El pokemon en el cual usar el item.</param>
-    public void useItem(Items item, Pokemon objective)
+    public void useItem(Item item, Pokemon objective)
     {
         item.Use(objective);
     }

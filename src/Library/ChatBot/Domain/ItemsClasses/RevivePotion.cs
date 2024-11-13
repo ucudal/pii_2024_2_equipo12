@@ -1,6 +1,6 @@
 namespace Poke.Clases;
 
-public class RevivePotion : Items
+public class RevivePotion : Item
 {
     public RevivePotion()
     {
