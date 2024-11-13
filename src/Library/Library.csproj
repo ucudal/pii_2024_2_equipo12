@@ -22,8 +22,4 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2"/>
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ChatBot\WaitingListCommands\" />
-  </ItemGroup>
 </Project>
