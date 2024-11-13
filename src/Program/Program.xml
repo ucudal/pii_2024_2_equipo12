@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Program</name>
+    </assembly>
+    <members>
+        <member name="T:Program.Program">
+            <summary>
+            Un programa que implementa un bot de Discord.
+            </summary>
+        </member>
+        <member name="M:Program.Program.Main">
+            <summary>
+            Punto de entrada al programa.
+            </summary>
+        </member>
+    </members>
+</doc>
