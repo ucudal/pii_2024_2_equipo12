@@ -16,14 +16,48 @@ public class Battle
     public string Player2 { get; }
 
     /// <summary>
+    /// Obtiene o establece el estado de la batalla.
+    /// </summary>
+    public string State { get; private set; }
+
+    /// <summary>
     /// Inicializa una instancia de la clase <see cref="Battle"/> con los
     /// valores recibidos como argumento.
     /// </summary>
     /// <param name="player1">El primer jugador.</param>
     /// <param name="player2">El oponente.</param>
+    ///
+
     public Battle(string player1, string player2)
     {
-        this.Player1 = player1;
-        this.Player2 = player2;
+        Player2 = player2;
+        Player1 = player1;
+        State = "NotStarted";
+    }
+
+    /// <summary>
+    /// Inicia la batalla.
+    /// </summary>
+    ///
+    public void StartBattle()
+    {
+        this.State = "Started";
+    }
+    
+    /// <summary>
+    /// Determina el ganador de la batalla.
+    /// </summary>
+    /// <returns>El nombre del jugador ganador.</returns>
+    public string DetermineWinner()
+    {
+        // Lógica para determinar el ganador
+        // Por simplicidad, se elige un ganador aleatorio
+        Random random = new Random();
+        return random.Next(2) == 0 ? Player1 : Player2;
+    }
+
+    public void EndBattle()
+    {
+        this.State = "Finished";
     }
 }

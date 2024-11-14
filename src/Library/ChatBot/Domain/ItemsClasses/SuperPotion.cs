@@ -1,6 +1,6 @@
 namespace Poke.Clases;
 
-public class SuperPotion : Items
+public class SuperPotion : Item
 {
     public SuperPotion()
     {

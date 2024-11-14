@@ -15,7 +15,7 @@ public class Play
     public void PossiblePlays(
         OriginalTrainer player1, 
         OriginalTrainer player2, 
-        Items item, 
+        Item item, 
         Pokemon objective, 
         string? playsSecuence = null, //Para usar en los test de esta entrega 
         string? attackIndex = null)   //Para usar en los test de esta entrega
