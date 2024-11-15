@@ -3,19 +3,19 @@ using Ucu.Poo.DiscordBot.Domain;
 namespace Ucu.Poo.DiscordBot.Commands;
 
 /// <summary>
-/// Esta clase implementa el comando 'useItem' del bot. Este comando le permite al usuario
+/// Esta clase implementa el comando 'usePotion' del bot. Este comando le permite al usuario
 /// usar un item en un pokemon luego de pasar los chequeos necesarios.
 /// </summary>
 // ReSharper disable once UnusedType.Global
 
-public class UseItemCommand : ModuleBase<SocketCommandContext>
+public class UsePotionCommand : ModuleBase<SocketCommandContext>
 {
     /// <summary>
-    /// Implementa el comando 'useItem'. Este comando le permite al usuario
+    /// Implementa el comando 'usePotion'. Este comando le permite al usuario
     /// usar un item en un pokemon luego de pasar los chequeos necesarios.
     /// </summary>
-    [Command("useItem")]
-    [Summary("Usa un item en un pokemon")]
+    [Command("usePotion")]
+    [Summary("Usa una pocion (ítem) en un pokemon")]
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync(string potionName)
     {
