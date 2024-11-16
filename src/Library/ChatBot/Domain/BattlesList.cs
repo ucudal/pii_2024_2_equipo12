@@ -24,14 +24,11 @@ public class BattlesList
     /// Muestra todas las batallas en curso.
     /// </summary>
     /// <returns>Un mensaje con el resultado.</returns>
-    public bool GetBattle(String playerDisplayName)
+    public bool FindPlayerInBattle(String playerDisplayName)
     {
-        foreach (Battle battle in this.battles)
+        foreach (var battle in battles)
         {
-            if (battle.Player1 == playerDisplayName || battle.Player2 == playerDisplayName)
-            {
-                return true;
-            }
+            return (battle.Player1 == playerDisplayName || battle.Player2 == playerDisplayName);
         }
         return false;
     }

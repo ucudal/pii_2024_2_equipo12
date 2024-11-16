@@ -221,14 +221,14 @@ public class Facade
         else
         {
             // Segundo check: si el jugador está en una batalla
-            if (this.BattlesList.GetBattle(playerDisplayName) == false)
+            if (IsPlayerInGame(playerDisplayName) == false)
             {
                 return $"{playerDisplayName} no está en una batalla"; // Sale si no está en una batalla
             }
             else
             {
                 // Segundo check: si es el turno del jugador
-                if ( /* turno actual NO corresponde al jugador */ )
+                if ( true /* turno actual NO corresponde al jugador */ )
                 {
                     return $"{playerDisplayName} no es su turno, por lo tanto no puede usar la pocion"; // Sale si no es su turno
                 }
@@ -253,5 +253,10 @@ public class Facade
                 }
             }   
         }
+    }
+
+    public bool IsPlayerInGame(string playerDisplayName)
+    {
+        return BattlesList.FindPlayerInBattle(playerDisplayName);
     }
 }

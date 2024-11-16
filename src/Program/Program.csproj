@@ -18,4 +18,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\catalogo1.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
