@@ -4,6 +4,449 @@
         <name>Library</name>
     </assembly>
     <members>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.BattleCommand">
+            <summary>
+            Esta clase implementa el comando 'battle' del bot. Este comando une al
+            jugador que envía el mensaje con el oponente que se recibe como parámetro,
+            si lo hubiera, en una batalla; si no se recibe un oponente, lo une con
+            cualquiera que esté esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.BattleCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'battle'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.CatalogueCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'selectPokemon'. Este comando permite al usuario
+            visualizar el catalogo pokemon en pantalla.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.UsePotionCommand">
+            <summary>
+            Esta clase implementa el comando 'usePotion' del bot. Este comando le permite al usuario
+            usar un item en un pokemon luego de pasar los chequeos necesarios.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.UsePotionCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'usePotion'. Este comando le permite al usuario
+            usar un item en un pokemon luego de pasar los chequeos necesarios.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand">
+            <summary>
+            Esta clase implementa el comando 'availableItems' del bot. Este comando le permite al usuario
+            ver los items disponibles para usar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'availableItems'. Este comando le permite al usuario
+            ver los items disponibles para usar.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
+            al jugador cambiar su Pokémon actual por otro del catálogo.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'changepokemon'. Este comando permite al jugador
+            cambiar su Pokémon actual por otro del catálogo.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
+            <summary>
+            Esta clase implementa el comando 'name' del bot. Este comando retorna el
+            nombre de un Pokémon dado su identificador.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand.#ctor(Microsoft.Extensions.Logging.ILogger{Ucu.Poo.DiscordBot.Commands.PokemonNameCommand})">
+            <summary>
+            Inicializa una nueva instancia de la clase
+            <see cref="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand"/> con los valores recibidos como
+            argumento.
+            </summary>
+            <param name="logger">El servicio de logging a utilizar.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand.ExecuteAsync(System.Int32)">
+            <summary>
+            Implementa el comando 'name'. Este comando retorna el nombre de un
+            Pokémon dado su identificador.
+            </summary>
+            <param name="id">El identificador del Pokémon a buscar.</param>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
+            al jugador seleccionar un Pokémon del catálogo.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'selectpokemon'. Este comando permite al jugador
+            seleccionar un Pokémon del catálogo.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.UserInfoCommand">
+            <summary>
+            Esta clase implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
+            Este comando retorna información sobre el usuario que envía el mensaje o sobre
+            otro usuario si se incluye como parámetro..
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.UserInfoCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord a buscar.</param>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.JoinCommand">
+            <summary>
+            Esta clase implementa el comando 'join' del bot. Este comando une al jugador
+            que envía el mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.JoinCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'join'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.LeaveCommand">
+            <summary>
+            Esta clase implementa el comando 'leave' del bot. Este comando remueve el
+            jugador que envía el mensaje de la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.LeaveCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'leave' del bot. Este comando remueve el jugador
+            que envía el mensaje de la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand">
+            <summary>
+            Esta clase implementa el comando 'stillWaiting' del bot. Este comando le muestra
+            al usuario si él esta esperando para jugar, es decir, si esta dentro de la Waitlist.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'stillWaiting'. Este comando le muestra al usuario si él
+            esta esperando para jugar, es decir, si esta dentro de la Waitlist.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.WaitingCommand">
+            <summary>
+            Esta clase implementa el comando 'waitinglist' del bot. Este comando muestra
+            la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.WaitingCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'waitinglist'. Este comando muestra la lista de
+            jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
+            <summary>
+            Esta clase representa una batalla entre dos jugadores.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player1">
+            <summary>
+            Obtiene un valor que representa el primer jugador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player2">
+            <summary>
+            Obtiene un valor que representa al oponente.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.State">
+            <summary>
+            Obtiene o establece el estado de la batalla.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(System.String,System.String)">
+             <summary>
+             Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
+             valores recibidos como argumento.
+             </summary>
+             <param name="player1">El primer jugador.</param>
+             <param name="player2">El oponente.</param>
+            
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.StartBattle">
+             <summary>
+             Inicia la batalla.
+             </summary>
+            
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.DetermineWinner">
+            <summary>
+            Determina el ganador de la batalla.
+            </summary>
+            <returns>El nombre del jugador ganador.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.BattlesList">
+            <summary>
+            Esta clase representa la lista de batallas en curso.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(System.String,System.String)">
+            <summary>
+            Crea una nueva batalla entre dos jugadores.
+            </summary>
+            <param name="player1">El primer jugador.</param>
+            <param name="player2">El oponente.</param>
+            <returns>La batalla creada.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.FindPlayerInBattle(System.String)">
+            <summary>
+            Muestra todas las batallas en curso.
+            </summary>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.Facade">
+            <summary>
+            Esta clase recibe las acciones y devuelve los resultados que permiten
+            implementar las historias de usuario. Otras clases que implementan el bot
+            usan esta <see cref="T:Ucu.Poo.DiscordBot.Domain.Facade"/> pero no conocen el resto de las clases del
+            dominio. Esta clase es un singleton.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Facade.Instance">
+            <summary>
+            Obtiene la única instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Facade"/>.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.Reset">
+            <summary>
+            Inicializa este singleton. Es necesario solo en los tests.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AddTrainerToWaitingList(System.String)">
+            <summary>
+            Agrega un jugador a la lista de espera.
+            </summary>
+            <param name="displayName">El nombre del jugador.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.RemoveTrainerFromWaitingList(System.String)">
+            <summary>
+            Remueve un jugador de la lista de espera.
+            </summary>
+            <param name="displayName">El jugador a remover.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetAllTrainersWaiting">
+            <summary>
+            Obtiene la lista de jugadores esperando.
+            </summary>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.TrainerIsWaiting(System.String)">
+            <summary>
+            Determina si un jugador está esperando para jugar.
+            </summary>
+            <param name="displayName">El jugador.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.StartBattle(System.String,System.String)">
+            <summary>
+            Crea una batalla entre dos jugadores.
+            </summary>
+            <param name="playerDisplayName">El primer jugador.</param>
+            <param name="opponentDisplayName">El oponente.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetAvailableItems(System.String)">
+            <summary>
+            Se imprime la lista de pociones disponibles para el jugador.
+            </summary>
+            <returns>Un mensaje con los items disponibles.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.UsePotion(System.String,System.String)">
+            <summary>
+            Usuario gasta su turno eligiendo una poción luego de seleccionarla de 
+            su lista de pociones impresas en la consola.
+            </summary>
+            <param name="playerDisplayName">El primer jugador.</param>
+            <param name="potionName">El nombre de la poción.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog">
+            <summary>
+            Enum que define el catálogo de Pokémon.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatePokemon(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
+            <summary>
+            Método para crear instancias de Pokémon según el catálogo.
+            </summary>
+        </member>
+        <member name="F:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.PokemonAttacks">
+            <summary>
+            Diccionario que asocia cada Pokémon con una lista de ataques.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.Trainer">
+            <summary>
+            Esta clase representa un jugador en el juego Pokémon.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.DisplayName">
+            <summary>
+            El nombre de usuario de Discord en el servidor del bot del jugador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Pokemons">
+            <summary>
+            Lista de pokemones del entrenador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.ActualPokemon">
+            <summary>
+            El pokemon actualmente activo del entrenador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Items">
+            <summary>
+            Lista de items que el entrenador tiene disponibles.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String,Poke.Clases.Pokemon)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> con
+            el nombre de usuario de Discord y el pokemon inicial del entrenador.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord.</param>
+            <param name="name">Nombre del entrenador.</param>
+            <param name="actualPokemon">El pokemon inicial del entrenador.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.AddPokemon(Poke.Clases.Pokemon)">
+            <summary>
+            Agrega un pokemon a la lista de pokemones del entrenador.
+            </summary>
+            <param name="pokemon">El pokemon a agregar.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.GetTotalPokemonLife">
+            <summary>
+            Calcula la vida total de todos los pokemones del entrenador.
+            </summary>
+            <returns>La suma de los puntos de vida de todos los pokemones.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.HasItem(Poke.Clases.Item)">
+            <summary>
+            Verifica si el entrenador tiene un item específico.
+            </summary>
+            <param name="item">El item a buscar.</param>
+            <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.ShowPokemonsInfo">
+            <summary>
+            Muestra la información de todos los pokemones que posee el entrenador.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.SetActualPokemon(Poke.Clases.Pokemon)">
+            <summary>
+            Establece el pokemon actualmente activo del entrenador.
+            </summary>
+            <param name="pokemon">El pokemon que será el activo.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.RemoveItem(Poke.Clases.Item)">
+            <summary>
+            Elimina un item específico de la lista de items del entrenador.
+            </summary>
+            <param name="item">El item a eliminar.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.AddItem(Poke.Clases.Item)">
+            <summary>
+            Agrega un item a la lista de items del entrenador.
+            </summary>
+            <param name="item">El item a agregar.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.UseItem(Poke.Clases.Item,Poke.Clases.Pokemon)">
+            <summary>
+            Usa un item específico en un pokemon objetivo.
+            </summary>
+            <param name="item">El item a usar.</param>
+            <param name="objective">El pokemon en el cual usar el item.</param>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
+            <summary>
+            Esta clase representa la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.AddTrainer(System.String)">
+            <summary>
+            Agrega un jugador a la lista de espera.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord en el servidor
+            del bot a agregar.
+            </param>
+            <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
+            contrario.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.RemoveTrainer(System.String)">
+            <summary>
+            Remueve un jugador de la lista de espera.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord en el servidor
+            del bot a remover.
+            </param>
+            <returns><c>true</c> si se remueve el usuario; <c>false</c> en caso
+            contrario.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.FindTrainerByDisplayName(System.String)">
+            <summary>
+            Busca un jugador por el nombre de usuario de Discord en el servidor del
+            bot.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord en el servidor
+            del bot a buscar.
+            </param>
+            <returns>El jugador encontrado o <c>null</c> en caso contrario.
+            </returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAnyoneWaiting">
+            <summary>
+            Retorna un jugador cualquiera esperando para jugar. En esta
+            implementación provista no es cualquiera, sino el primero. En la
+            implementación definitiva, debería ser uno aleatorio.
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAllWaiting">
+            <summary>
+            Retorna una lista de todos los jugadores en la lista de espera.
+            </summary>
+            <returns>Una lista de jugadores esperando para jugar.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Services.Bot">
+            <summary>
+            Esta clase implementa el bot de Discord.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Services.BotLoader">
+            <summary>
+            Esta clase ejecuta el bot de Discord hasta que en la terminal donde se
+            ejecuta el bot se oprime la tecla 'Q'.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Services.IBot">
+            <summary>
+            La interfaz del Bot de Discord para usar con inyección de dependencias.
+            </summary>
+        </member>
         <member name="T:Poke.Clases.Attack">
             <summary>
             Representa un ataque que un Pokémon puede utilizar en combate.
@@ -55,7 +498,7 @@
             Representa una batalla entre dos entrenadores Pokémon, gestionando turnos, jugadas, y verificando el final del juego.
             </summary>
         </member>
-        <member name="F:Poke.Clases.Battle.plays">
+        <member name="F:Poke.Clases.Battle.Play">
             <summary>
             Instancia para gestionar las jugadas posibles en cada turno.
             </summary>
@@ -97,14 +540,14 @@
             Determina de forma aleatoria cuál jugador comienza el primer turno.
             </summary>
         </member>
-        <member name="M:Poke.Clases.Battle.PlayTurn(Poke.Clases.Trainer,Poke.Clases.Trainer,System.String,System.String)">
+        <member name="M:Poke.Clases.Battle.PlayTurn(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer,System.String,System.String)">
             <summary>
             Ejecuta un turno de la batalla, permitiendo a un jugador realizar una jugada y luego alterna el turno al otro jugador.
             </summary>
             <param name="player1">El primer entrenador.</param>
             <param name="player2">El segundo entrenador.</param>
         </member>
-        <member name="M:Poke.Clases.Battle.BattleFinished(Poke.Clases.Trainer,Poke.Clases.Trainer)">
+        <member name="M:Poke.Clases.Battle.BattleFinished(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer)">
             <summary>
             Verifica si la batalla ha terminado, es decir, si uno de los jugadores ha ganado.
             </summary>
@@ -112,26 +555,107 @@
             <param name="player2">El segundo entrenador.</param>
             <returns>True si uno de los jugadores ha ganado; de lo contrario, False.</returns>
         </member>
-        <member name="M:Poke.Clases.Battle.InfoTurn(Poke.Clases.Trainer,Poke.Clases.Trainer)">
+        <member name="M:Poke.Clases.Battle.InfoTurn(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer)">
             <summary>
             Muestra el estado actual de los Pokémon de ambos jugadores, incluyendo el turno actual.
             </summary>
             <param name="player1">El primer entrenador.</param>
             <param name="player2">El segundo entrenador.</param>
         </member>
-        <member name="M:Poke.Clases.Battle.CompleteBattle(Poke.Clases.Trainer,Poke.Clases.Trainer,System.String,System.String)">
+        <member name="M:Poke.Clases.Battle.CompleteBattle(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer,System.String,System.String)">
             <summary>
             Ejecuta la batalla completa entre dos pokemon, alternando turnos hasta que uno de los jugadores gane.
             </summary>
             <param name="player1">El primer entrenador.</param>
             <param name="player2">El segundo entrenador.</param>
         </member>
-        <member name="T:Poke.Clases.Plays">
+        <member name="T:Poke.Clases.OriginalTrainer">
+            <summary>
+            Representa a un entrenador en el juego, quien tiene una lista de pokemones y una lista de items.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.OriginalTrainer.Pokemons">
+            <summary>
+            Lista de pokemones que posee el entrenador.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.OriginalTrainer.ActualPokemon">
+            <summary>
+            El pokemon actualmente activo del entrenador.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.OriginalTrainer.Items">
+            <summary>
+            Lista de items que el entrenador tiene disponibles.
+            </summary>
+        </member>
+        <member name="P:Poke.Clases.OriginalTrainer.name">
+            <summary>
+            Nombre del entrenador.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.#ctor(System.String,Poke.Clases.Pokemon)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.OriginalTrainer"/>.
+            </summary>
+            <param name="name">Nombre del entrenador.</param>
+            <param name="ActualPokemon">El pokemon actual del entrenador.</param>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.AddPokemon">
+            <summary>
+            Agrega los pokemones a la lista de pokemones del entrenador.
+            </summary>
+            <param name="pokemon">El pokemon a agregar.</param>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.PokemonLife">
+            <summary>
+            Calcula la vida total de todos los pokemones del entrenador.
+            </summary>
+            <returns>La suma de los puntos de vida de todos los pokemones.</returns>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.GetItem(Poke.Clases.Item)">
+            <summary>
+            Verifica si el entrenador tiene un item específico.
+            </summary>
+            <param name="item">El item a buscar.</param>
+            <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.GetPokemonsInfo">
+            <summary>
+            Muestra la información de todos los pokemones que posee el entrenador.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.getActualPokemon">
+            <summary>
+            Obtiene el pokemon actualmente activo del entrenador.
+            </summary>
+            <returns>El pokemon actual.</returns>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.RemoveItem(Poke.Clases.Item)">
+            <summary>
+            Elimina un item específico de la lista de items del entrenador.
+            </summary>
+            <param name="item">El item a eliminar.</param>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.AddItem(Poke.Clases.Item)">
+            <summary>
+            Agrega un item a la lista de items del entrenador.
+            </summary>
+            <para name="item">El item a agregar.</para>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.useItem(Poke.Clases.Item,Poke.Clases.Pokemon)">
+            <summary>
+            Usa un item específico en un pokemon objetivo.
+            </summary>
+            <param name="item">El item a usar.</param>
+            <param name="objective">El pokemon en el cual usar el item.</param>
+        </member>
+        <member name="T:Poke.Clases.Play">
             <summary>
             Clase que gestiona las posibles jugadas de un entrenador durante un turno.
             </summary>
         </member>
-        <member name="M:Poke.Clases.Plays.PossiblePlays(Poke.Clases.Trainer,Poke.Clases.Trainer,Poke.Clases.Items,Poke.Clases.Pokemon,System.String,System.String)">
+        <member name="M:Poke.Clases.Play.PossiblePlays(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer,Poke.Clases.Item,Poke.Clases.Pokemon,System.String,System.String)">
             <summary>
             Permite al entrenador elegir entre atacar, cambiar de Pokémon o usar un ítem.
             </summary>
@@ -242,7 +766,7 @@
             <param name="objective">El Pokémon al que se le aplica el estado.</param>
             <param name="state">El estado a aplicar.</param>
         </member>
-        <member name="M:Poke.Clases.Pokemon.TotalCureWithItem(Poke.Clases.Pokemon,Poke.Clases.Items,Poke.Clases.Trainer)">
+        <member name="M:Poke.Clases.Pokemon.TotalCureWithItem(Poke.Clases.Pokemon,Poke.Clases.Item,Poke.Clases.OriginalTrainer)">
             <summary>
             Cura totalmente al Pokémon quitándole su estado cuando se usa el ítem "CuraTotal".
             </summary>
@@ -254,87 +778,6 @@
             <summary>
             Actualiza los efectos de los estados del Pokémon en cada turno.
             </summary>
-        </member>
-        <member name="T:Poke.Clases.Trainer">
-            <summary>
-            Representa a un entrenador en el juego, quien tiene una lista de pokemones y una lista de items.
-            </summary>
-        </member>
-        <member name="F:Poke.Clases.Trainer.Pokemons">
-            <summary>
-            Lista de pokemones que posee el entrenador.
-            </summary>
-        </member>
-        <member name="F:Poke.Clases.Trainer.ActualPokemon">
-            <summary>
-            El pokemon actualmente activo del entrenador.
-            </summary>
-        </member>
-        <member name="F:Poke.Clases.Trainer.Items">
-            <summary>
-            Lista de items que el entrenador tiene disponibles.
-            </summary>
-        </member>
-        <member name="P:Poke.Clases.Trainer.name">
-            <summary>
-            Nombre del entrenador.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.Trainer.#ctor(System.String,Poke.Clases.Pokemon)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Trainer"/>.
-            </summary>
-            <param name="name">Nombre del entrenador.</param>
-            <param name="ActualPokemon">El pokemon actual del entrenador.</param>
-        </member>
-        <member name="M:Poke.Clases.Trainer.AddPokemon">
-            <summary>
-            Agrega los pokemones a la lista de pokemones del entrenador.
-            </summary>
-            <param name="pokemon">El pokemon a agregar.</param>
-        </member>
-        <member name="M:Poke.Clases.Trainer.PokemonLife">
-            <summary>
-            Calcula la vida total de todos los pokemones del entrenador.
-            </summary>
-            <returns>La suma de los puntos de vida de todos los pokemones.</returns>
-        </member>
-        <member name="M:Poke.Clases.Trainer.GetItem(Poke.Clases.Items)">
-            <summary>
-            Verifica si el entrenador tiene un item específico.
-            </summary>
-            <param name="items">El item a buscar.</param>
-            <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
-        </member>
-        <member name="M:Poke.Clases.Trainer.GetPokemonsInfo">
-            <summary>
-            Muestra la información de todos los pokemones que posee el entrenador.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.Trainer.getActualPokemon">
-            <summary>
-            Obtiene el pokemon actualmente activo del entrenador.
-            </summary>
-            <returns>El pokemon actual.</returns>
-        </member>
-        <member name="M:Poke.Clases.Trainer.RemoveItem(Poke.Clases.Items)">
-            <summary>
-            Elimina un item específico de la lista de items del entrenador.
-            </summary>
-            <param name="item">El item a eliminar.</param>
-        </member>
-        <member name="M:Poke.Clases.Trainer.AddItem(Poke.Clases.Items)">
-            <summary>
-            Agrega un item a la lista de items del entrenador.
-            </summary>
-            <para name="item">El item a agregar.</para>
-        </member>
-        <member name="M:Poke.Clases.Trainer.useItem(Poke.Clases.Items,Poke.Clases.Pokemon)">
-            <summary>
-            Usa un item específico en un pokemon objetivo.
-            </summary>
-            <param name="item">El item a usar.</param>
-            <param name="objective">El pokemon en el cual usar el item.</param>
         </member>
         <member name="T:Poke.Clases.Type">
             <summary>
@@ -378,257 +821,6 @@
             <param name="type1">Tipo del Pokémon atacante.</param>
             <param name="type2">Tipo del Pokémon defensor.</param>
             <returns>La ventaja de tipo entre los dos Pokémon (ventaja, neutral o desventaja).</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.BattleCommand">
-            <summary>
-            Esta clase implementa el comando 'battle' del bot. Este comando une al
-            jugador que envía el mensaje con el oponente que se recibe como parámetro,
-            si lo hubiera, en una batalla; si no se recibe un oponente, lo une con
-            cualquiera que esté esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.BattleCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'battle'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.JoinCommand">
-            <summary>
-            Esta clase implementa el comando 'join' del bot. Este comando une al jugador
-            que envía el mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.JoinCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'join'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.LeaveCommand">
-            <summary>
-            Esta clase implementa el comando 'leave' del bot. Este comando remueve el
-            jugador que envía el mensaje de la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.LeaveCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'leave' del bot. Este comando remueve el jugador
-            que envía el mensaje de la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
-            <summary>
-            Esta clase implementa el comando 'name' del bot. Este comando retorna el
-            nombre de un Pokémon dado su identificador.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand.#ctor(Microsoft.Extensions.Logging.ILogger{Ucu.Poo.DiscordBot.Commands.PokemonNameCommand})">
-            <summary>
-            Inicializa una nueva instancia de la clase
-            <see cref="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand"/> con los valores recibidos como
-            argumento.
-            </summary>
-            <param name="logger">El servicio de logging a utilizar.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand.ExecuteAsync(System.Int32)">
-            <summary>
-            Implementa el comando 'name'. Este comando retorna el nombre de un
-            Pokémon dado su identificador.
-            </summary>
-            <param name="id">El identificador del Pokémon a buscar.</param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.UserInfoCommand">
-            <summary>
-            Esta clase implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
-            Este comando retorna información sobre el usuario que envía el mensaje o sobre
-            otro usuario si se incluye como parámetro..
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.UserInfoCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord a buscar.</param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.WaitingCommand">
-            <summary>
-            Esta clase implementa el comando 'waitinglist' del bot. Este comando muestra
-            la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.WaitingCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'waitinglist'. Este comando muestra la lista de
-            jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
-            <summary>
-            Esta clase representa una batalla entre dos jugadores.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player1">
-            <summary>
-            Obtiene un valor que representa el primer jugador.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player2">
-            <summary>
-            Obtiene un valor que representa al oponente.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(System.String,System.String)">
-            <summary>
-            Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
-            valores recibidos como argumento.
-            </summary>
-            <param name="player1">El primer jugador.</param>
-            <param name="player2">El oponente.</param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.BattlesList">
-            <summary>
-            Esta clase representa la lista de batallas en curso.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(System.String,System.String)">
-            <summary>
-            Crea una nueva batalla entre dos jugadores.
-            </summary>
-            <param name="player1">El primer jugador.</param>
-            <param name="player2">El oponente.</param>
-            <returns>La batalla creada.</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Facade">
-            <summary>
-            Esta clase recibe las acciones y devuelve los resultados que permiten
-            implementar las historias de usuario. Otras clases que implementan el bot
-            usan esta <see cref="T:Ucu.Poo.DiscordBot.Domain.Facade"/> pero no conocen el resto de las clases del
-            dominio. Esta clase es un singleton.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Facade.Instance">
-            <summary>
-            Obtiene la única instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Facade"/>.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.Reset">
-            <summary>
-            Inicializa este singleton. Es necesario solo en los tests.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AddTrainerToWaitingList(System.String)">
-            <summary>
-            Agrega un jugador a la lista de espera.
-            </summary>
-            <param name="displayName">El nombre del jugador.</param>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.RemoveTrainerFromWaitingList(System.String)">
-            <summary>
-            Remueve un jugador de la lista de espera.
-            </summary>
-            <param name="displayName">El jugador a remover.</param>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetAllTrainersWaiting">
-            <summary>
-            Obtiene la lista de jugadores esperando.
-            </summary>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.TrainerIsWaiting(System.String)">
-            <summary>
-            Determina si un jugador está esperando para jugar.
-            </summary>
-            <param name="displayName">El jugador.</param>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.StartBattle(System.String,System.String)">
-            <summary>
-            Crea una batalla entre dos jugadores.
-            </summary>
-            <param name="playerDisplayName">El primer jugador.</param>
-            <param name="opponentDisplayName">El oponente.</param>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Trainer">
-            <summary>
-            Esta clase representa un jugador en el juego Pokémon.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.DisplayName">
-            <summary>
-            El nombre de usuario de Discord en el servidor del bot del jugador.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> con el
-            nombre de usuario de Discord que se recibe como argumento.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord.</param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
-            <summary>
-            Esta clase representa la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.AddTrainer(System.String)">
-            <summary>
-            Agrega un jugador a la lista de espera.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord en el servidor
-            del bot a agregar.
-            </param>
-            <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
-            contrario.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.RemoveTrainer(System.String)">
-            <summary>
-            Remueve un jugador de la lista de espera.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord en el servidor
-            del bot a remover.
-            </param>
-            <returns><c>true</c> si se remueve el usuario; <c>false</c> en caso
-            contrario.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.FindTrainerByDisplayName(System.String)">
-            <summary>
-            Busca un jugador por el nombre de usuario de Discord en el servidor del
-            bot.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord en el servidor
-            del bot a buscar.
-            </param>
-            <returns>El jugador encontrado o <c>null</c> en caso contrario.
-            </returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAnyoneWaiting">
-            <summary>
-            Retorna un jugador cualquiera esperando para jugar. En esta
-            implementación provista no es cualquiera, sino el primero. En la
-            implementación definitiva, debería ser uno aleatorio.
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Services.Bot">
-            <summary>
-            Esta clase implementa el bot de Discord.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Services.BotLoader">
-            <summary>
-            Esta clase ejecuta el bot de Discord hasta que en la terminal donde se
-            ejecuta el bot se oprime la tecla 'Q'.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Services.IBot">
-            <summary>
-            La interfaz del Bot de Discord para usar con inyección de dependencias.
-            </summary>
         </member>
     </members>
 </doc>
