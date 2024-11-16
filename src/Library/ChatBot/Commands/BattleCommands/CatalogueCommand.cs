@@ -23,9 +23,10 @@ public class CatalogueCommand : ModuleBase<SocketCommandContext>
 
         if (true)//Facade.Instance.IsPlayerInGame(displayName))
         {
-            string imagePath1 = Path.Combine(AppContext.BaseDirectory, "Assets", "catalogo1.png");
-            string imagePath2 = Path.Combine(AppContext.BaseDirectory, "Assets", "catalogo2.png");
-            await ReplyAsync(imagePath1);
+            string repoPath = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
+            string imagePath1 = Path.Combine(repoPath, "Assets", "catalogo1.png");
+            string imagePath2 = Path.Combine(repoPath, "Assets", "catalogo2.png");
+            
             // Verifica si el archivo existe antes de enviarlo
             if (File.Exists(imagePath1) && File.Exists(imagePath2))
             {
