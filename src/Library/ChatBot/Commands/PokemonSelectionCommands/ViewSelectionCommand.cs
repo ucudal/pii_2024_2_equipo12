@@ -1,6 +1,7 @@
 using Discord.Commands;
 using Ucu.Poo.DiscordBot.Services;
 using System.Text;
+using Ucu.Poo.DiscordBot.Domain;
 
 namespace Ucu.Poo.DiscordBot.Commands
 {
@@ -19,26 +20,8 @@ namespace Ucu.Poo.DiscordBot.Commands
         [Summary("Muestra los Pokémon que has seleccionado actualmente.")]
         public async Task ExecuteAsync()
         {
-            // Obtiene la lista de Pokémon seleccionados por el usuario
-            var selections = UserPokemonSelectionService.GetUserSelections(Context.User.Id);
-
-            // Verifica si el usuario no ha seleccionado ningún Pokémon
-            if (selections.Count == 0)
-            {
-                await ReplyAsync("📭 No has seleccionado ningún Pokémon aún.");
-                return;
-            }
-
-            // Construye un mensaje con la lista de Pokémon seleccionados
-            var sb = new StringBuilder();
-            sb.AppendLine("📋 **Tus Pokémon seleccionados:**");
-            for (int i = 0; i < selections.Count; i++)
-            {
-                sb.AppendLine($"{i + 1}. {selections[i].Name}");
-            }
-
-            // Envía el mensaje al usuario
-            await ReplyAsync(sb.ToString());
+            string displayName = CommandHelper.GetDisplayName(Context);
+            await ReplyAsync(Facade.Instance.ShowCurrentSelections(displayName));
         }
     }
 }

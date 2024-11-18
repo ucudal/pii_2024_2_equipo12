@@ -7,14 +7,14 @@ namespace Ucu.Poo.DiscordBot.Services
     public static class UserPokemonSelectionService
     {
         // Usa ConcurrentDictionary para manejar accesos concurrentes de múltiples usuarios
-        private static readonly ConcurrentDictionary<ulong, List<Pokemon>> UserSelections = new();
+        private static readonly ConcurrentDictionary<string, List<Pokemon>> UserSelections = new();
 
         /// <summary>
         /// Agrega un Pokémon a la selección del usuario.
         /// </summary>
-        public static bool AddPokemon(ulong userId, Pokemon pokemon)
+        public static bool AddPokemon(string playerDisplayName, Pokemon pokemon)
         {
-            var selections = UserSelections.GetOrAdd(userId, new List<Pokemon>());
+            var selections = UserSelections.GetOrAdd(playerDisplayName, new List<Pokemon>());
             if (selections.Count >= 6)
             {
                 return false; // Límite alcanzado
@@ -32,18 +32,18 @@ namespace Ucu.Poo.DiscordBot.Services
         /// <summary>
         /// Obtiene la lista de Pokémon seleccionados por el usuario.
         /// </summary>
-        public static List<Pokemon> GetUserSelections(ulong userId)
+        public static List<Pokemon> GetUserSelections(string playerDisplayName)
         {
-            UserSelections.TryGetValue(userId, out var selections);
+            UserSelections.TryGetValue(playerDisplayName, out var selections);
             return selections ?? new List<Pokemon>();
         }
 
         /// <summary>
         /// Elimina un Pokémon de la selección del usuario.
         /// </summary>
-        public static bool RemovePokemon(ulong userId, string pokemonName)
+        public static bool RemovePokemon(string playerDisplayName, string pokemonName)
         {
-            if (UserSelections.TryGetValue(userId, out var selections))
+            if (UserSelections.TryGetValue(playerDisplayName, out var selections))
             {
                 var pokemon = selections.FirstOrDefault(p => p.Name.Equals(pokemonName, StringComparison.OrdinalIgnoreCase));
                 if (pokemon != null)
@@ -58,9 +58,9 @@ namespace Ucu.Poo.DiscordBot.Services
         /// <summary>
         /// Limpia todas las selecciones del usuario.
         /// </summary>
-        public static void ClearSelections(ulong userId)
+        public static void ClearSelections(string playerDisplayName)
         {
-            UserSelections.TryRemove(userId, out _);
+            UserSelections.TryRemove(playerDisplayName, out _);
         }
     }
 }
