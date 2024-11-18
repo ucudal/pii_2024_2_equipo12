@@ -180,13 +180,13 @@
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PlayersWaitingCommand">
             <summary>
-            Esta clase implementa el comando 'waitinglist' del bot. Este comando muestra
+            Esta clase implementa el comando 'playersWaitingList' del bot. Este comando muestra
             la lista de jugadores esperando para jugar.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Commands.PlayersWaitingCommand.ExecuteAsync">
             <summary>
-            Implementa el comando 'waitinglist'. Este comando muestra la lista de
+            Implementa el comando 'playersWaitingList'. Este comando muestra la lista de
             jugadores esperando para jugar.
             </summary>
         </member>
