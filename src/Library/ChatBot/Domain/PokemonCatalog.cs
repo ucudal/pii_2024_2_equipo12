@@ -14,7 +14,7 @@ public static class PokemonCatalog
     /// </summary>
     public enum Catalog
     {
-        Bulbasaur,
+        Bulbasaur = 1,
         Charmander,
         Squirtle,
         Pikachu,
