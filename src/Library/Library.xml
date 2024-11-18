@@ -97,16 +97,17 @@
         <member name="T:Ucu.Poo.DiscordBot.Commands.RemovePokemonCommand">
             <summary>
             Clase que implementa el comando 'removepokemon'. Este comando permite
-            a los usuarios eliminar un Pokémon de su selección actual.
+            a los usuarios eliminar uno o varios Pokémon de su selección actual
+            utilizando índices.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Commands.RemovePokemonCommand.ExecuteAsync(System.String)">
             <summary>
-            Comando 'removepokemon'. Este comando elimina un Pokémon específico
-            de la selección del usuario.
+            Comando 'removepokemon'. Este comando elimina uno o varios Pokémon
+            específicos de la selección del usuario utilizando sus índices.
             </summary>
-            <param name="pokemonName">
-            El nombre del Pokémon que el usuario desea eliminar de su selección.
+            <param name="indices">
+            Los índices de los Pokémon que el usuario desea eliminar.
             </param>
             <returns>Una tarea que representa la operación asincrónica.</returns>
         </member>
@@ -126,13 +127,13 @@
         <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
             <summary>
             Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
-            al jugador seleccionar hasta 6 Pokémon del catálogo.
+            al jugador seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ExecuteAsync(System.String)">
             <summary>
             Implementa el comando 'selectpokemon'. Este comando permite al jugador
-            seleccionar un Pokémon del catálogo.
+            seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ShowCurrentSelections(System.UInt64)">

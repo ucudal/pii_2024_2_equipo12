@@ -7,20 +7,46 @@ namespace Ucu.Poo.DiscordBot.Commands
 {
     /// <summary>
     /// Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
-    /// al jugador seleccionar hasta 6 Pokémon del catálogo.
+    /// al jugador seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
     /// </summary>
     public class SelectPokemonCommand : ModuleBase<SocketCommandContext>
     {
         /// <summary>
         /// Implementa el comando 'selectpokemon'. Este comando permite al jugador
-        /// seleccionar un Pokémon del catálogo.
+        /// seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
         /// </summary>
         [Command("selectpokemon")]
-        [Summary("Permite al usuario seleccionar un Pokémon del catálogo. Uso: /selectpokemon <nombre_pokemon>")]
-        public async Task ExecuteAsync([Remainder][Summary("Nombre del Pokémon a seleccionar")] string pokemonName)
+        [Summary("Permite al usuario seleccionar hasta 6 Pokémon del catálogo por sus índices. Uso: !selectpokemon <1 2 ... 6>")]
+        public async Task ExecuteAsync([Remainder][Summary("Índices de los Pokémon a seleccionar separados por espacios")] string indices)
         {
-            if (Enum.TryParse<PokemonCatalog.Catalog>(pokemonName, true, out var catalogEntry))
+            var selectedIndices = indices.Split(' ').Select(i => int.TryParse(i, out int index) ? index : -1).ToList();
+
+            if (selectedIndices.Any(index => index < 0))
             {
+                await ReplyAsync("❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos.");
+                return;
+            }
+
+            var userSelections = UserPokemonSelectionService.GetUserSelections(Context.User.Id);
+            if (userSelections.Count + selectedIndices.Count > 6)
+            {
+                await ReplyAsync($"❌ Solo puedes seleccionar un máximo de 6 Pokémon. Ya tienes {userSelections.Count} seleccionados.");
+                return;
+            }
+
+            var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
+            var sb = new StringBuilder();
+            sb.AppendLine("📋 **Tu seleccion Pokemonha sido:**");
+
+            foreach (var index in selectedIndices)
+            {
+                if (index < 0 || index >= catalog.Count)
+                {
+                    sb.AppendLine($"❌ Índice {index} no es válido.");
+                    continue;
+                }
+
+                var catalogEntry = catalog[index];
                 try
                 {
                     var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
@@ -28,31 +54,21 @@ namespace Ucu.Poo.DiscordBot.Commands
 
                     if (added)
                     {
-                        await ReplyAsync($"✅ Has seleccionado a **{pokemon.Name}**.");
-                        await ShowCurrentSelections(Context.User.Id);
+                        sb.AppendLine($"✅ **{pokemon.Name}** ha sido seleccionado.");
                     }
                     else
                     {
-                        var currentSelections = UserPokemonSelectionService.GetUserSelections(Context.User.Id);
-                        if (currentSelections.Count >= 6)
-                        {
-                            await ReplyAsync("❌ Ya has seleccionado 6 Pokémon. No puedes seleccionar más.");
-                        }
-                        else
-                        {
-                            await ReplyAsync("❌ Este Pokémon ya lo has seleccionado.");
-                        }
+                        sb.AppendLine($"❌ **{pokemon.Name}** ya está en tu lista de seleccionados.");
                     }
                 }
                 catch (ArgumentException)
                 {
-                    await ReplyAsync("❌ El nombre del Pokémon no es válido. Por favor, intenta nuevamente.");
+                    sb.AppendLine($"❌ No se pudo agregar el Pokémon del índice {index}.");
                 }
             }
-            else
-            {
-                await ReplyAsync("❌ El nombre del Pokémon no es válido. Por favor, intenta nuevamente.");
-            }
+
+            await ReplyAsync(sb.ToString());
+            await ShowCurrentSelections(Context.User.Id);
         }
 
         /// <summary>
