@@ -174,7 +174,7 @@
             Obtiene o establece el estado de la batalla.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
              <summary>
              Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
              valores recibidos como argumento.
@@ -189,7 +189,7 @@
              </summary>
             
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.DetermineWinner">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.EndBattle">
             <summary>
             Determina el ganador de la batalla.
             </summary>
@@ -200,7 +200,7 @@
             Esta clase representa la lista de batallas en curso.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
             <summary>
             Crea una nueva batalla entre dos jugadores.
             </summary>
@@ -208,11 +208,12 @@
             <param name="player2">El oponente.</param>
             <returns>La batalla creada.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.FindPlayerInBattle(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.GetPlayerInBattle(System.String)">
             <summary>
-            Muestra todas las batallas en curso.
+            Funcion para conseguir el entrenador asociado al playerDisplayName
+            Lo busca en las batallas y de no encontrarlo devuelve null
             </summary>
-            <returns>Un mensaje con el resultado.</returns>
+            <returns>Entrenador asociado al playerDisplayName.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Facade">
             <summary>
@@ -322,7 +323,17 @@
             Lista de items que el entrenador tiene disponibles.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String,Poke.Clases.Pokemon)">
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
+            <summary>
+            Etapa donde se encuentra el entrenador.
+            Stage 0 = Entrenador en la waitingList
+            Stage 1 = Entrenador en batalla, no eligio sus pokemon
+            Stage 2 = Entrenador listo para la batalla
+            Stage 3 = Entrenador en batalla en curso
+            Stage 4 = Entrenador con batalla finalizada
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> con
             el nombre de usuario de Discord y el pokemon inicial del entrenador.

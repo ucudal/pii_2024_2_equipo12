@@ -33,23 +33,17 @@ public class WaitingList
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AddTrainer(string displayName) // Se ingresa los 2, uno tipo string para buscar y otro tipo Trainer para agregar
+    public bool AddTrainer(string displayName) 
     {
         if (this.FindTrainerByDisplayName(displayName) != null)
         {
             return false;
         }
-        else
-        {
-            foreach (Trainer trainer in this.trainersList)
-            {
-                if (trainer.DisplayName == displayName)
-                {
-                    trainersList.Add(trainer);
-                }
-            }
-            return true;
-        }
+        
+        Trainer newTrainer = new Trainer(displayName);
+        trainersList.Add(newTrainer);
+        
+        return true;
     }
 
     /// <summary>
