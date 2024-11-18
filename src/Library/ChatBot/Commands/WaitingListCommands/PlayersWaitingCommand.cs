@@ -8,7 +8,7 @@ namespace Ucu.Poo.DiscordBot.Commands;
 /// la lista de jugadores esperando para jugar.
 /// </summary>
 // ReSharper disable once UnusedType.Global
-public class WaitingCommand : ModuleBase<SocketCommandContext>
+public class PlayersWaitingCommand : ModuleBase<SocketCommandContext>
 {
     /// <summary>
     /// Implementa el comando 'waitinglist'. Este comando muestra la lista de
