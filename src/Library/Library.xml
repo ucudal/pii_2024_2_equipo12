@@ -177,18 +177,6 @@
             que envía el mensaje de la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand">
-            <summary>
-            Esta clase implementa el comando 'stillWaiting' del bot. Este comando le muestra
-            al usuario si él esta esperando para jugar, es decir, si esta dentro de la Waitlist.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'stillWaiting'. Este comando le muestra al usuario si él
-            esta esperando para jugar, es decir, si esta dentro de la Waitlist.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PlayersWaitingCommand">
             <summary>
             Esta clase implementa el comando 'waitinglist' del bot. Este comando muestra
@@ -199,6 +187,18 @@
             <summary>
             Implementa el comando 'waitinglist'. Este comando muestra la lista de
             jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand">
+            <summary>
+            Esta clase implementa el comando 'stillWaiting' del bot. Este comando le muestra
+            al usuario si él esta esperando para jugar, es decir, si esta dentro de la Waitlist.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'stillWaiting'. Este comando le muestra al usuario si él
+            esta esperando para jugar, es decir, si esta dentro de la Waitlist.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
