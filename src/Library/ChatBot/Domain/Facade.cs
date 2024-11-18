@@ -206,6 +206,7 @@ public class Facade
         }
         return "No hay pociones disponibles";
     }
+    
     /// <summary>
     /// Usuario gasta su turno eligiendo una poción luego de seleccionarla de 
     /// su lista de pociones impresas en la consola.
@@ -229,7 +230,7 @@ public class Facade
             }
             else
             {
-                // Segundo check: si es el turno del jugador
+                // Tercer check: si es el turno del jugador
                 if ( true /* turno actual NO corresponde al jugador */ )
                 {
                     return $"{playerDisplayName} no es su turno, por lo tanto no puede usar la pocion"; // Sale si no es su turno
@@ -276,6 +277,56 @@ public class Facade
         }
 
         return null;
+    }
+    
+    /// <summary>
+    /// Usuario gasta su turno atacando a un pokemon enemigo.
+    /// </summary>
+    /// <param name="playerDisplayName">El primer jugador.</param>
+    /// <param name="enemyName">El nombre del enemigo.</param>
+    /// <returns>Un mensaje con el resultado.</returns>
+    public string Attack(string playerDisplayName, string enemyName)
+    {
+        // Primer check: si el jugador está en la lista de espera
+        if (this.WaitingList.FindTrainerByDisplayName(playerDisplayName) != null)
+        {
+            return $"{playerDisplayName} está en la lista de espera y no puede atacar"; // Sale si está en la lista de espera
+        }
+        else
+        {
+            // Segundo check: si el jugador está en una batalla
+            if (IsPlayerInGame(playerDisplayName) == false)
+            {
+                return $"{playerDisplayName} no está en una batalla"; // Sale si no está en una batalla
+            }
+            else
+            {
+                // Tercer check: si es el turno del jugador
+                if ( true /* turno actual NO corresponde al jugador */ )
+                {
+                    return $"{playerDisplayName} no es su turno, por lo tanto no puede atacar"; // Sale si no es su turno
+                }
+                else
+                {
+                    // Si llega hasta acá, es porque el jugador está en una batalla y es su turno
+                    // es decir, puede atacar
+
+                    // Busca el enemigo en la batalla
+                    Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+                    Trainer? enemy = BattlesList.GetEnemyInBattle(playerDisplayName);
+                    if (enemy == null)
+                    {
+                        return $"{enemyName} no está en la batalla";
+                    }
+                    else
+                    {
+                        // Ataca al enemigo
+                        player.Attack(enemy, playerDisplayName, enemyName);
+                        return $"{playerDisplayName} atacó a {enemyName}";
+                    }
+                }
+            }   
+        }
     }
 }
 
