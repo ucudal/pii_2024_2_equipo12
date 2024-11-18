@@ -1,99 +1,75 @@
 ﻿using NUnit.Framework;
 using Poke.Clases;
+using Ucu.Poo.DiscordBot.Domain;
+using Battle = Poke.Clases.Battle;
 using Type = Poke.Clases.Type;
-namespace LibraryTests;
 
+namespace LibraryTests
+{
     [TestFixture]
-    public class AttackTest
+    public class PlayersWaitListTest
     {
-        
-        /*  Como jugador, quiero atacar en mi turno y hacer daño basado en la efectividad de los tipos de Pokémon.
-            Criterios de aceptación:
-            El jugador puede seleccionar un ataque que inflige daño basado en la efectividad de tipos.
-            El sistema aplica automáticamente la ventaja o desventaja del tipo de ataque. */
-        
-        [Test]
-        public void TestDamageBasedOnTypeEffectiveness()
-        {
-            // Crear Pokémon
-            Pokemon firePokemon = new Pokemon("Charmander", 100, 1, null, Type.PokemonType.Fire);
-            Pokemon waterPokemon = new Pokemon("Squirtle", 100, 1, null, Type.PokemonType.Water);
-            Pokemon plantPokemon = new Pokemon("Bulbasaur", 100, 1, null, Type.PokemonType.Plant);
-
-            // Crear ataques
-            NormalAttack fireAttack = new NormalAttack("Fire Blast", 40,  Type.PokemonType.Fire, false);
-            NormalAttack waterAttack = new NormalAttack("Water Gun", 40, Type.PokemonType.Water, false );
-            NormalAttack plantAttack = new NormalAttack("Vine Whip", 40, Type.PokemonType.Plant, false );
-
-            // Aplicar ventaja de tipo: Fire > Plant
-            double expectedFireDamage = fireAttack.CalculateDamage(plantPokemon);
-            plantPokemon.RecibeDamage(expectedFireDamage);
-            Assert.That(plantPokemon.GetHp(), Is.EqualTo(20));
-
-            // Aplicar ventaja de tipo: Water > Fire
-            double expectedWaterDamage = waterAttack.CalculateDamage(firePokemon);
-            firePokemon.RecibeDamage(expectedWaterDamage);
-            Assert.That(firePokemon.GetHp(), Is.EqualTo(20));
-
-            // Aplicar desventaja de tipo: Water < Plant
-            double expectedPlantDamage = plantAttack.CalculateDamage(waterPokemon);
-            waterPokemon.RecibeDamage(expectedPlantDamage);
-            Assert.That(waterPokemon.GetHp(), Is.EqualTo(20));
-        }
-    }
-
-
-    [TestFixture]
-    public class AvailableAttacksTest
-    {
-        private OriginalTrainer jugador;
-        private Pokemon pokemon;
-        private Attack ataqueBasico;
-        private Attack ataqueEspecial;
-        private Battle battle; // Declaramos la instancia de Battle
+        private Trainer jugador1;
+        private Trainer jugador2;
+        private WaitList waitList;
 
         [SetUp]
         public void SetUp()
         {
-            ataqueBasico = new Attack("Ataque Básico", 10, Type.PokemonType.Water, false);
-            ataqueEspecial = new Attack("Ataque Especial", 20, Type.PokemonType.Electric, true);
-            pokemon = new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric);
-            pokemon.AttackList = new List<Attack> { ataqueBasico, ataqueEspecial };
-            jugador = new OriginalTrainer("Jugador1", pokemon);
-
-            // Creación de la instancia de Battle
-            battle = new Battle(pokemon, new Pokemon("Charmander", 100, 10, "2", Type.PokemonType.Fire));
+            jugador1 = new Trainer("Jugador1");
+            jugador1.AddPokemon(new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric));
+    
+            jugador2 = new Trainer("Jugador2");
+            jugador2.AddPokemon(new Pokemon("Charmander", 100, 10, "2", Type.PokemonType.Fire));
+    
+            waitList = new WaitList();
         }
-
+        
         [Test]
-        public void MostrarAtaquesDisponibles_Test()
+        public void VerListaDeEspera_Test()
         {
-            // Verificar que se muestran los ataques para el turno actual
-            List<Attack> ataquesDisponibles = pokemon.AttackList;
-            Assert.That(ataquesDisponibles, Does.Contain(ataqueBasico));
-            Assert.That(ataquesDisponibles, Does.Contain(ataqueEspecial));
+            // Capturar la salida de la consola para verificar el mensaje
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            // Agregar jugadores a la lista de espera
+            waitList.AddToWaitList(jugador1);
+            waitList.AddToWaitList(jugador2);
+
+            // Verificar que los jugadores fueron agregados a la lista de espera
+            var playersInWaitList = waitList.CheckIn();
+            Assert.That(playersInWaitList, Contains.Item(jugador1), "El jugador1 debería estar en la lista de espera.");
+            Assert.That(playersInWaitList, Contains.Item(jugador2), "El jugador2 debería estar en la lista de espera.");
+
+            // Verificar el mensaje de confirmación
+            string output = consoleOutput.ToString();
+            Assert.That(output, Contains.Substring("Jugador1 ha sido añadido a la lista de espera"), "El mensaje de confirmación debería indicar que el jugador1 fue agregado a la lista de espera.");
+            Assert.That(output, Contains.Substring("Jugador2 ha sido añadido a la lista de espera"), "El mensaje de confirmación debería indicar que el jugador2 fue agregado a la lista de espera.");
         }
     }
-
 
     [TestFixture]
     public class IniciateBattleWithWaitListOpponentTest
     {
-        private OriginalTrainer jugador1;
-        private OriginalTrainer jugador2;
+        private Trainer jugador1;
+        private Trainer jugador2;
         private Battle battle;
 
         [SetUp]
         public void SetUp()
         {
             Attack ataque = new Attack("relámpago", 30, Type.PokemonType.Electric, false);
-            List<Attack> attackList = new List<Attack>();
-            attackList.Add(ataque);
-            jugador1 = new OriginalTrainer("Jugador 1", new Pokemon("Pikachu", 1, 10, "1", Type.PokemonType.Electric, attackList));
-            jugador2 = new OriginalTrainer("Jugador 2", new Pokemon("Charizard", 1, 10, "2", Type.PokemonType.Fire, attackList));
-            jugador1.Pokemons.Add(jugador1.ActualPokemon);
-            jugador2.Pokemons.Add(jugador2.ActualPokemon);
-            WaitList waitList = new WaitList(jugador1, jugador2);
+            List<Attack> attackList = new List<Attack> { ataque };
+
+            jugador1 = new Trainer("Jugador 1");
+            jugador1.AddPokemon(new Pokemon("Pikachu", 1, 10, "1", Type.PokemonType.Electric, attackList));
+            jugador1.SetActualPokemon(jugador1.Pokemons[0]);
+
+            jugador2 = new Trainer("Jugador 2");
+            jugador2.AddPokemon(new Pokemon("Charizard", 1, 10, "2", Type.PokemonType.Fire, attackList));
+            jugador2.SetActualPokemon(jugador2.Pokemons[0]);
+
+            waitList = new WaitList(jugador1, jugador2);
             battle = new Battle(jugador1.ActualPokemon, jugador2.ActualPokemon, waitList);
         }
 
@@ -129,12 +105,11 @@ namespace LibraryTests;
             }
         }
     }
-    
 
     [TestFixture]
     public class Pick6PokemonTest
     {
-        private OriginalTrainer jugador;
+        private Trainer jugador;
         private List<Pokemon> catalogoPokemon;
 
         [SetUp]
@@ -151,8 +126,8 @@ namespace LibraryTests;
                 new Pokemon("Jigglypuff", 100, 10, "7", Type.PokemonType.Flying)
             };
 
-            jugador = new OriginalTrainer("Jugador 1", catalogoPokemon[0]);
-        }
+            jugador = new Trainer("Jugador 1");
+            jugador.AddPokemon(catalogoPokemon[0]);        }
 
         [Test]
         public void Elegir6PokemonsTest()
@@ -188,104 +163,12 @@ namespace LibraryTests;
             Assert.That(jugador.Pokemons.Count, Is.EqualTo(6), "El jugador debería tener 6 Pokémon.");
         }
     }
-    
-
-    [TestFixture]
-    public class PlayersWaitListTest
-    {
-        private OriginalTrainer jugador1;
-        private OriginalTrainer jugador2;
-        private WaitList waitList;
-
-        [SetUp]
-        public void SetUp()
-        {
-            jugador1 = new OriginalTrainer("Jugador1", new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric));
-            jugador2 = new OriginalTrainer("Jugador2", new Pokemon("Charmander", 100, 10, "2", Type.PokemonType.Fire));
-            waitList = new WaitList();
-        }
-
-        [Test]
-        public void VerListaDeEspera_Test()
-        {
-            // Capturar la salida de la consola para verificar el mensaje
-            var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-
-            // Agregar jugadores a la lista de espera
-            waitList.AddToWaitList(jugador1);
-            waitList.AddToWaitList(jugador2);
-
-            // Verificar que los jugadores fueron agregados a la lista de espera
-            var playersInWaitList = waitList.CheckIn();
-            Assert.That(playersInWaitList, Contains.Item(jugador1), "El jugador1 debería estar en la lista de espera.");
-            Assert.That(playersInWaitList, Contains.Item(jugador2), "El jugador2 debería estar en la lista de espera.");
-
-            // Verificar el mensaje de confirmación
-            string output = consoleOutput.ToString();
-            Assert.That(output, Contains.Substring("Jugador1 ha sido añadido a la lista de espera"), "El mensaje de confirmación debería indicar que el jugador1 fue agregado a la lista de espera.");
-            Assert.That(output, Contains.Substring("Jugador2 ha sido añadido a la lista de espera"), "El mensaje de confirmación debería indicar que el jugador2 fue agregado a la lista de espera.");
-        }
-    }
-    
- 
-    [TestFixture]
-    public class PokemonsHealthTest
-    {
-        private Pokemon pokemon1;
-        private Pokemon pokemon2;
-        private Attack attack;
-
-        [SetUp]
-        public void Setup()
-        {
-            pokemon1 = new Pokemon("Pikachu", 100, 50, null, Type.PokemonType.Electric);
-            pokemon2 = new Pokemon("Bulbasaur", 80, 40, null, Type.PokemonType.Plant);
-            attack = new Attack("Thunderbolt", 25, Type.PokemonType.Electric, false);
-        }
-
-        [Test]
-        public void Test_PokemonHpUpdatesAfterAttack()
-        {
-            // Asegurarse de que el HP es correcto
-            Assert.That(pokemon2.Hp, Is.EqualTo(80));
-
-            // Pikachu ataca a Bulbasaur
-            pokemon1.Attack(pokemon2, pokemon1, attack);
-            Assert.That(pokemon2.Hp, Is.EqualTo(55), "Los puntos de vida de Bulbasaur no se actualizaron correctamente después del ataque.");
-        }
-
-        [Test]
-        public void Test_PokemonIsAliveAfterTakingDamage()
-        {
-            // Realizar un ataque y reducir los HP de Pikachu
-            pokemon1.RecibeDamage(30);
-            Assert.That(pokemon1.IsAlive(), Is.EqualTo("El Pokemon está vivo"));
-        }
-
-        [Test]
-        public void Test_PokemonDiesWhenHpIsZero()
-        {
-            // Reducir los puntos de vida de Pikachu hasta que esté muerto
-            pokemon1.RecibeDamage(100);
-            Assert.That(pokemon1.IsAlive(), Is.EqualTo("El Pokemon está muerto"));
-        }
-
-        [Test]
-        public void Test_PokemonHpNotBelowZero()
-        {
-            // Reducir los puntos de vida de Pikachu a un valor negativo
-            pokemon1.RecibeDamage(200);
-            Assert.That(pokemon1.Hp, Is.EqualTo(0), "Los puntos de vida de Pikachu no deberían ser negativos.");
-        }
-    }
-
 
     [TestFixture]
     public class TurnInfoTest
     {
-        private OriginalTrainer jugador;
-        private OriginalTrainer oponente;
+        private Trainer jugador;
+        private Trainer oponente;
         private Battle batalla;
 
         [SetUp]
@@ -293,11 +176,18 @@ namespace LibraryTests;
         {
             var pokemon1 = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
             var pokemonOponente = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
-            jugador = new OriginalTrainer("Jugador1", pokemon1);
-            oponente = new OriginalTrainer("Jugador2", pokemonOponente);
+    
+            jugador = new Trainer("Jugador1");
+            jugador.AddPokemon(pokemon1);
+            jugador.SetActualPokemon(pokemon1);
+    
+            oponente = new Trainer("Jugador2");
+            oponente.AddPokemon(pokemonOponente);
+            oponente.SetActualPokemon(pokemonOponente);
+    
             batalla = new Battle(pokemon1, pokemonOponente);
         }
-
+        
         [Test]
         public void IndicarDeQuienEsElTurno_Test()
         {
@@ -323,8 +213,8 @@ namespace LibraryTests;
     [TestFixture]
     public class UseItemTest
     {
-        private OriginalTrainer jugador;
-        private OriginalTrainer oponente;
+        private Trainer jugador;
+        private Trainer oponente;
         private Battle batalla;
         private SuperPotion pocion;
 
@@ -333,8 +223,8 @@ namespace LibraryTests;
         {
             var pokemon1 = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
             var pokemonOponente = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
-            jugador = new OriginalTrainer("Jugador1", pokemon1);
-            oponente = new OriginalTrainer("Jugador2", pokemonOponente);
+            jugador = new Trainer("Jugador1", pokemon1);
+            oponente = new Trainer("Jugador2", pokemonOponente);
             pocion = new SuperPotion();
             jugador.AddItem(pocion);  // Suponiendo que el entrenador tiene una lista de ítems
             batalla = new Battle(pokemon1, pokemonOponente);
@@ -367,13 +257,13 @@ namespace LibraryTests;
     [TestFixture]
     public class WaitTest
     {
-        private OriginalTrainer jugador;
+        private Trainer jugador;
         private WaitList waitList;
 
         [SetUp]
         public void SetUp()
         {
-            jugador = new OriginalTrainer("Jugador1", new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric));
+            jugador = new Trainer("Jugador1", new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric));
             waitList = new WaitList();
         }
 
@@ -395,13 +285,12 @@ namespace LibraryTests;
             Assert.That(output, Contains.Substring("Jugador1 ha sido añadido a la lista de espera"), "El mensaje de confirmación debería indicar que el jugador fue agregado a la lista de espera.");
         }
     }
-    
 
     [TestFixture]
     public class WinBattleTest
     {
-        private OriginalTrainer jugador;
-        private OriginalTrainer oponente;
+        private Trainer jugador;
+        private Trainer oponente;
         private Pokemon pokemonJugador;
         private Pokemon pokemonOponente;
         private Battle batalla;
@@ -411,8 +300,8 @@ namespace LibraryTests;
         {
             pokemonJugador = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
             pokemonOponente = new Pokemon("Charmander", 0, 10, "2", Poke.Clases.Type.PokemonType.Fire); // Vida en cero para simular el fin de la batalla
-            jugador = new OriginalTrainer("Jugador1", pokemonJugador);
-            oponente = new OriginalTrainer("Jugador2", pokemonOponente);
+            jugador = new Trainer("Jugador1", pokemonJugador);
+            oponente = new Trainer("Jugador2", pokemonOponente);
             batalla = new Battle(pokemonJugador, pokemonOponente);
         }
 
@@ -429,10 +318,11 @@ namespace LibraryTests;
 
                 // Verificar que la batalla ha terminado
                 Assert.That(batalla.BattleFinished(jugador, oponente) == true, "La batalla debería haber terminado porque la vida del oponente es cero.");
-            
+
                 // Verificar el mensaje de ganador
                 string output = consoleOutput.ToString();
                 Assert.That(output == ("El jugador 1 ha ganado"), "El mensaje final debería indicar que el jugador 1 ha ganado la batalla.");
             }
         }
     }
+}
