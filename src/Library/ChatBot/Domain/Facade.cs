@@ -117,16 +117,16 @@ public class Facade
     }
 
 
-    private string CreateBattle(string playerDisplayName, string opponentDisplayName)
+    private string CreateBattle(Trainer player, Trainer opponent)
     {
         // Aunque playerDisplayName y opponentDisplayName no estén en la lista
         // esperando para jugar los removemos igual para evitar preguntar si
         // están para luego removerlos.
-        this.WaitingList.RemoveTrainer(playerDisplayName);
-        this.WaitingList.RemoveTrainer(opponentDisplayName);
+        this.WaitingList.RemoveTrainer(player.DisplayName);
+        this.WaitingList.RemoveTrainer(opponent.DisplayName);
         
-        BattlesList.AddBattle(playerDisplayName, opponentDisplayName);
-        return $"Comienza {playerDisplayName} vs {opponentDisplayName}";
+        BattlesList.AddBattle(player, opponent);
+        return $"Comienza {player.DisplayName} vs {opponent.DisplayName}";
     }
 
     /// <summary>
@@ -140,6 +140,7 @@ public class Facade
         // El símbolo ? luego de Trainer indica que la variable opponent puede
         // referenciar una instancia de Trainer o ser null.
         Trainer? opponent;
+        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
@@ -154,12 +155,13 @@ public class Facade
             // variable no es null. Estamos seguros porque SomebodyIsWaiting
             // retorna true si y solo si hay usuarios esperando y en tal caso
             // GetAnyoneWaiting nunca retorna null.
-            return this.CreateBattle(playerDisplayName, opponent!.DisplayName);
+            return this.CreateBattle(player, opponent!);
         }
 
         // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
         // variable no es null. Estamos seguros porque OpponentProvided hubiera
         // retorna false antes y no habríamos llegado hasta aquí.
+        
         opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName!);
         
         if (!OpponentFound())
@@ -167,7 +169,7 @@ public class Facade
             return $"{opponentDisplayName} no está esperando";
         }
         
-        return this.CreateBattle(playerDisplayName, opponent!.DisplayName);
+        return this.CreateBattle(player, opponent);
         
         // Funciones locales a continuación para mejorar la legibilidad
 
@@ -257,6 +259,23 @@ public class Facade
 
     public bool IsPlayerInGame(string playerDisplayName)
     {
-        return BattlesList.FindPlayerInBattle(playerDisplayName);
+        if (BattlesList.GetPlayerInBattle(playerDisplayName) == null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool? PlayerWithPokemon(string playerDisplayName)
+    {
+        Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+        if (player != null)
+        {
+            return player.Pokemons.Count != 0;
+        }
+
+        return null;
     }
 }
+
