@@ -8,12 +8,12 @@ public class Battle
     /// <summary>
     /// Obtiene un valor que representa el primer jugador.
     /// </summary>
-    public string Player1 { get; }
+    public Trainer Player1 { get; }
     
     /// <summary>
     /// Obtiene un valor que representa al oponente.
     /// </summary>
-    public string Player2 { get; }
+    public Trainer Player2 { get; }
 
     /// <summary>
     /// Obtiene o establece el estado de la batalla.
@@ -28,11 +28,14 @@ public class Battle
     /// <param name="player2">El oponente.</param>
     ///
 
-    public Battle(string player1, string player2)
+    public Battle(Trainer player1, Trainer player2)
     {
         Player2 = player2;
         Player1 = player1;
         State = "NotStarted";
+
+        Player1.Stage = 1;
+        Player2.Stage = 1;
     }
 
     /// <summary>
@@ -48,13 +51,13 @@ public class Battle
     /// Determina el ganador de la batalla.
     /// </summary>
     /// <returns>El nombre del jugador ganador.</returns>
-    public string DetermineWinner()
+    /*public string DetermineWinner()
     {
         // Lógica para determinar el ganador
         // Por simplicidad, se elige un ganador aleatorio
         Random random = new Random();
         return random.Next(2) == 0 ? Player1 : Player2;
-    }
+    }*/
 
     public void EndBattle()
     {

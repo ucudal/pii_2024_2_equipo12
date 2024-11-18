@@ -33,12 +33,11 @@ using Poke.Clases;
         /// <param name="displayName">El nombre de usuario de Discord.</param>
         /// <param name="name">Nombre del entrenador.</param>
         /// <param name="actualPokemon">El pokemon inicial del entrenador.</param>
-        public Trainer(string displayName, Pokemon actualPokemon)
+        public Trainer(string displayName)
         {
             DisplayName = displayName;
-            ActualPokemon = actualPokemon;
-            
-            Pokemons = new List<Pokemon> { actualPokemon };
+            Stage = 0;
+            Pokemons = new List<Pokemon> { };
             Items = new List<Item>
             {
                 new SuperPotion(),
