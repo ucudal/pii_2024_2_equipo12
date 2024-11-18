@@ -81,18 +81,6 @@
             </summary>
             <param name="id">El identificador del Pokémon a buscar.</param>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
-            <summary>
-            Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
-            al jugador seleccionar un Pokémon del catálogo.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'selectpokemon'. Este comando permite al jugador
-            seleccionar un Pokémon del catálogo.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.UserInfoCommand">
             <summary>
             Esta clase implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
@@ -105,6 +93,65 @@
             Implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
             </summary>
             <param name="displayName">El nombre de usuario de Discord a buscar.</param>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.RemovePokemonCommand">
+            <summary>
+            Clase que implementa el comando 'removepokemon'. Este comando permite
+            a los usuarios eliminar un Pokémon de su selección actual.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.RemovePokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Comando 'removepokemon'. Este comando elimina un Pokémon específico
+            de la selección del usuario.
+            </summary>
+            <param name="pokemonName">
+            El nombre del Pokémon que el usuario desea eliminar de su selección.
+            </param>
+            <returns>Una tarea que representa la operación asincrónica.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.ResetSelectionCommand">
+            <summary>
+            Clase que implementa el comando 'resetselection'. Este comando permite
+            a un usuario reiniciar su selección de Pokémon.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.ResetSelectionCommand.ExecuteAsync">
+            <summary>
+            Comando 'resetselection'. Este comando elimina la selección de Pokémon
+            realizada por el usuario y muestra un mensaje de confirmación.
+            </summary>
+            <returns>Una tarea que representa la operación asincrónica.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
+            al jugador seleccionar hasta 6 Pokémon del catálogo.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'selectpokemon'. Este comando permite al jugador
+            seleccionar un Pokémon del catálogo.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ShowCurrentSelections(System.UInt64)">
+            <summary>
+            Muestra la lista actual de Pokémon seleccionados por el usuario.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.ViewSelectionCommand">
+            <summary>
+            Clase que implementa el comando 'viewselection'. Este comando permite
+            a los usuarios ver los Pokémon que han seleccionado actualmente.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.ViewSelectionCommand.ExecuteAsync">
+            <summary>
+            Comando 'viewselection'. Este comando muestra la lista de Pokémon 
+            seleccionados por el usuario.
+            </summary>
+            <returns>Una tarea que representa la operación asincrónica.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.JoinCommand">
             <summary>
@@ -282,19 +329,28 @@
             <param name="potionName">El nombre de la poción.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog">
+            <summary>
+            Clase que representa un catálogo de Pokémon y proporciona funcionalidad para
+            crear instancias de Pokémon y asociarlos con sus ataques.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog">
             <summary>
-            Enum que define el catálogo de Pokémon.
+            Enum que define el catálogo de Pokémon disponibles.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatePokemon(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
             <summary>
-            Método para crear instancias de Pokémon según el catálogo.
+            Crea una instancia de un Pokémon según la entrada del catálogo.
             </summary>
+            <param name="catalogEntry">La entrada del catálogo que representa el Pokémon deseado.</param>
+            <returns>Una instancia del Pokémon especificado.</returns>
+            <exception cref="T:System.ArgumentException">Se lanza si el Pokémon no está en el catálogo.</exception>
         </member>
         <member name="F:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.PokemonAttacks">
             <summary>
-            Diccionario que asocia cada Pokémon con una lista de ataques.
+            Diccionario que asocia cada entrada del catálogo con una lista de ataques específicos para ese Pokémon.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Trainer">
@@ -430,6 +486,26 @@
             Retorna una lista de todos los jugadores en la lista de espera.
             </summary>
             <returns>Una lista de jugadores esperando para jugar.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.AddPokemon(System.UInt64,Poke.Clases.Pokemon)">
+            <summary>
+            Agrega un Pokémon a la selección del usuario.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.GetUserSelections(System.UInt64)">
+            <summary>
+            Obtiene la lista de Pokémon seleccionados por el usuario.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.RemovePokemon(System.UInt64,System.String)">
+            <summary>
+            Elimina un Pokémon de la selección del usuario.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.ClearSelections(System.UInt64)">
+            <summary>
+            Limpia todas las selecciones del usuario.
+            </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Services.Bot">
             <summary>
@@ -821,6 +897,90 @@
             <param name="type1">Tipo del Pokémon atacante.</param>
             <param name="type2">Tipo del Pokémon defensor.</param>
             <returns>La ventaja de tipo entre los dos Pokémon (ventaja, neutral o desventaja).</returns>
+        </member>
+        <member name="T:Poke.Clases.Burned">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Quemado" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Burned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Burned"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Burned.Burn(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Quemado" al Pokémon objetivo. 
+            Este efecto reduce el HP del objetivo en un 10%.
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Quemado".</param>
+        </member>
+        <member name="T:Poke.Clases.IsAsleep">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Dormido" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.IsAsleep.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.IsAsleep"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.IsAsleep.Sleep(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Dormido" al Pokémon objetivo. 
+            Este efecto impide que el Pokémon objetivo pueda atacar durante un número aleatorio de turnos (1 a 4).
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Dormido".</param>
+        </member>
+        <member name="T:Poke.Clases.Paralized">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Paralizado" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Paralized.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Paralized"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Paralized.Paralize(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Paralizado" al Pokémon objetivo.
+            Este estado puede impedir que el Pokémon ataque, dependiendo de un cálculo aleatorio.
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Paralizado".</param>
+        </member>
+        <member name="T:Poke.Clases.Poisoned">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Envenenado" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Poisoned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Poisoned"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Poisoned.Envenenar(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Envenenado" al Pokémon objetivo.
+            Este estado reduce un porcentaje de la salud del Pokémon objetivo en cada turno.
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Envenenado".</param>
         </member>
     </members>
 </doc>

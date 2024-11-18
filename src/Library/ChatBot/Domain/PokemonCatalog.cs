@@ -3,10 +3,14 @@ using Type = System.Type;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
-public class PokemonCatalog
+/// <summary>
+/// Clase que representa un catálogo de Pokémon y proporciona funcionalidad para
+/// crear instancias de Pokémon y asociarlos con sus ataques.
+/// </summary>
+public static class PokemonCatalog
 {
     /// <summary>
-    /// Enum que define el catálogo de Pokémon.
+    /// Enum que define el catálogo de Pokémon disponibles.
     /// </summary>
     public enum Catalog
     {
@@ -25,8 +29,11 @@ public class PokemonCatalog
     }
     
     /// <summary>
-    /// Método para crear instancias de Pokémon según el catálogo.
+    /// Crea una instancia de un Pokémon según la entrada del catálogo.
     /// </summary>
+    /// <param name="catalogEntry">La entrada del catálogo que representa el Pokémon deseado.</param>
+    /// <returns>Una instancia del Pokémon especificado.</returns>
+    /// <exception cref="ArgumentException">Se lanza si el Pokémon no está en el catálogo.</exception>
     public static Pokemon CreatePokemon(Catalog catalogEntry)
     {
         List<Attack> attacks = PokemonAttacks[catalogEntry];
@@ -62,7 +69,7 @@ public class PokemonCatalog
     }
     
     /// <summary>
-    /// Diccionario que asocia cada Pokémon con una lista de ataques.
+    /// Diccionario que asocia cada entrada del catálogo con una lista de ataques específicos para ese Pokémon.
     /// </summary>
     public static readonly Dictionary<Catalog, List<Attack>> PokemonAttacks = new()
     {
@@ -143,19 +150,18 @@ public class PokemonCatalog
             }
         },
         {
-        Catalog.Oddish, new List<Attack>
-        {
-            new Attack("Absorb", 20, Poke.Clases.Type.PokemonType.Plant, true),
-            new Poisoned("Poison Powder", 0, Poke.Clases.Type.PokemonType.Poison, true)
-        }
+            Catalog.Oddish, new List<Attack>
+            {
+                new Attack("Absorb", 20, Poke.Clases.Type.PokemonType.Plant, true),
+                new Poisoned("Poison Powder", 0, Poke.Clases.Type.PokemonType.Poison, true)
+            }
         },
         {
-        Catalog.Growlithe, new List<Attack>
-        {
-            new Attack("Ember", 40, Poke.Clases.Type.PokemonType.Fire, true),
-            new Attack("Bite", 60, Poke.Clases.Type.PokemonType.Normal, false)
-        }
+            Catalog.Growlithe, new List<Attack>
+            {
+                new Attack("Ember", 40, Poke.Clases.Type.PokemonType.Fire, true),
+                new Attack("Bite", 60, Poke.Clases.Type.PokemonType.Normal, false)
+            }
         }
     };
 }
-
