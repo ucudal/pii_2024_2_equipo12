@@ -136,11 +136,6 @@
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ShowCurrentSelections(System.UInt64)">
-            <summary>
-            Muestra la lista actual de Pokémon seleccionados por el usuario.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.ViewSelectionCommand">
             <summary>
             Clase que implementa el comando 'viewselection'. Este comando permite
@@ -499,22 +494,22 @@
             </summary>
             <returns>Una lista de jugadores esperando para jugar.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.AddPokemon(System.UInt64,Poke.Clases.Pokemon)">
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.AddPokemon(System.String,Poke.Clases.Pokemon)">
             <summary>
             Agrega un Pokémon a la selección del usuario.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.GetUserSelections(System.UInt64)">
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.GetUserSelections(System.String)">
             <summary>
             Obtiene la lista de Pokémon seleccionados por el usuario.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.RemovePokemon(System.UInt64,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.RemovePokemon(System.String,System.String)">
             <summary>
             Elimina un Pokémon de la selección del usuario.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.ClearSelections(System.UInt64)">
+        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.ClearSelections(System.String)">
             <summary>
             Limpia todas las selecciones del usuario.
             </summary>

@@ -1,4 +1,5 @@
 using Discord.Commands;
+using Ucu.Poo.DiscordBot.Domain;
 using Ucu.Poo.DiscordBot.Services;
 
 namespace Ucu.Poo.DiscordBot.Commands
@@ -18,11 +19,8 @@ namespace Ucu.Poo.DiscordBot.Commands
         [Summary("Reinicia tu selección de Pokémon.")]
         public async Task ExecuteAsync()
         {
-            // Limpia la selección de Pokémon del usuario actual
-            UserPokemonSelectionService.ClearSelections(Context.User.Id);
-            
-            // Envía un mensaje de confirmación al usuario
-            await ReplyAsync("🗑️ Has reiniciado tu selección de Pokémon.");
+            string displayName = CommandHelper.GetDisplayName(Context);
+            await ReplyAsync(Facade.Instance.ResetPokemonSelection(displayName));
         }
     }
 }
