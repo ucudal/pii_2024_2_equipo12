@@ -24,6 +24,18 @@
             visualizar el catalogo pokemon en pantalla.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
+            al jugador cambiar su Pokémon actual por otro del catálogo.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'changepokemon'. Este comando permite al jugador
+            cambiar su Pokémon actual por otro del catálogo.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.UsePotionCommand">
             <summary>
             Esta clase implementa el comando 'usePotion' del bot. Este comando le permite al usuario
@@ -46,18 +58,6 @@
             <summary>
             Implementa el comando 'availableItems'. Este comando le permite al usuario
             ver los items disponibles para usar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
-            <summary>
-            Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
-            al jugador cambiar su Pokémon actual por otro del catálogo.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'changepokemon'. Este comando permite al jugador
-            cambiar su Pokémon actual por otro del catálogo.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
@@ -326,6 +326,13 @@
             <param name="potionName">El nombre de la poción.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckIfPlayerIsReady(System.String)">
+            <summary>
+            Verifica si un jugador está listo para combatir.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador.</param>
+            <returns>Un mensaje indicando si el jugador está listo o qué le falta para estarlo.</returns>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog">
             <summary>
             Clase que representa un catálogo de Pokémon y proporciona funcionalidad para
@@ -360,6 +367,11 @@
             El nombre de usuario de Discord en el servidor del bot del jugador.
             </summary>
         </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
+            <summary>
+            El estado del entrenador.
+            </summary>
+        </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Pokemons">
             <summary>
             Lista de pokemones del entrenador.
@@ -373,16 +385,6 @@
         <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Items">
             <summary>
             Lista de items que el entrenador tiene disponibles.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
-            <summary>
-            Etapa donde se encuentra el entrenador.
-            Stage 0 = Entrenador en la waitingList
-            Stage 1 = Entrenador en batalla, no eligio sus pokemon
-            Stage 2 = Entrenador listo para la batalla
-            Stage 3 = Entrenador en batalla en curso
-            Stage 4 = Entrenador con batalla finalizada
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String)">

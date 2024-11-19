@@ -14,7 +14,7 @@ public class ChangePokemonCommand : ModuleBase<SocketCommandContext>
     /// Implementa el comando 'changepokemon'. Este comando permite al jugador
     /// cambiar su Pokémon actual por otro del catálogo.
     /// </summary>
-    [Command("changepokemon")]
+    [Command("changePokemon")]
     [Summary("Permite al usuario cambiar su Pokémon actual por otro del catálogo")]
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync(string pokemonName)

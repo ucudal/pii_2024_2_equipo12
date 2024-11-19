@@ -18,7 +18,8 @@ using Poke.Clases;
         // 0: Cumple los requisitos para jugar
         // 1: Esperando en la lista de espera
         // 2: En una batalla, sin seleccionar los pokemones todavia
-        // 3: En una batalla jugando
+        // 3: En una batalla
+        // 4: En una batalla, en su turno
         
         /// <summary>
         /// Lista de pokemones del entrenador.
