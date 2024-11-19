@@ -234,6 +234,7 @@ public class Facade
             {
                 player.UseItem(potion, player.ActualPokemon);
                 player.Items.Remove(potion);
+                player.Stage = 3; // Ya gasto su turno
                 return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
             }
             else
@@ -243,6 +244,38 @@ public class Facade
         }
     }
 
+    /// <summary>
+    /// Usuario gasta su turno atacando al oponente con un ataque de su pokemon
+    /// </summary>
+    /// <param name="playerDisplayName">El primer jugador.</param>
+    /// <param name="attackName">El nombre del ataque.</param>
+    /// <param name="opponentDisplayName">El oponente.</param>
+    /// <returns> Un mensaje de confirmación del ataque </returns>
+    public string AttackPokemon(string playerDisplayName, string attackName, string opponentDisplayName)
+    {
+        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
+        Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
+        if (player.Stage != 4)
+        {
+            return "❌ No puedes atacar en este momento";
+        }
+        else
+        {
+            Pokemon playerPokemon = player.ActualPokemon;
+            Attack? attack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == attackName);
+            if (attack != null)
+            {
+                playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, attack);
+                player.Stage = 3; // Ya gasto su turno
+                return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con {attack.Name} 🔥✨";
+            }
+            else
+            {
+                return "❌ No tienes ese ataque";
+            }
+        }
+    }
+    
     public bool IsPlayerInGame(string playerDisplayName)
     {
         if (BattlesList.GetPlayerInBattle(playerDisplayName) == null)
