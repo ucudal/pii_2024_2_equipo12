@@ -1,4 +1,6 @@
+using System.Text;
 using Poke.Clases;
+using Ucu.Poo.DiscordBot.Services;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
@@ -57,6 +59,11 @@ public class Facade
     {
         if (this.WaitingList.AddTrainer(displayName))
         {
+            Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+            if (player != null)
+            {
+                player.Stage = 3;
+            }
             return $"{displayName} agregado a la lista de espera";
         }
         
@@ -413,6 +420,11 @@ public class Facade
         // Verificar si tiene exactamente 6 Pokémon seleccionados
         if (selectedPokemons.Count == 6)
         {
+            Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+            if (player != null)
+            {
+                player.Stage = 3;
+            }
             return $"✅ {playerDisplayName} está listo para combatir con los siguientes Pokémon:\n" +
                    string.Join("\n", selectedPokemons.Select((pokemon, index) => $"{index + 1}. {pokemon.Name}"));
         }
