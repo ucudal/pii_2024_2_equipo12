@@ -117,10 +117,10 @@ public class Facade
         Trainer? trainer = this.WaitingList.FindTrainerByDisplayName(displayName);
         if (trainer == null)
         {
-            return $"{displayName} no está esperando";
+            return $"No estás esperando!";
         }
         
-        return $"{displayName} está esperando";
+        return $"Estás esperando!";
     }
 
 
@@ -222,45 +222,24 @@ public class Facade
     /// <returns>Un mensaje con el resultado.</returns>
     public string UsePotion(string playerDisplayName, string potionName)
     {
-        // Primer check: si el jugador está en la lista de espera
-        if (this.WaitingList.FindTrainerByDisplayName(playerDisplayName) != null)
+        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
+        if (player.Stage != 4)
         {
-            return $"{playerDisplayName} está en la lista de espera y no puede usar una poción"; // Sale si está en la lista de espera
+            return "❌ No puedes usar pociones en este momento";
         }
         else
         {
-            // Segundo check: si el jugador está en una batalla
-            if (IsPlayerInGame(playerDisplayName) == false)
+            Item? potion = player.Items.Find(item => item.Name == potionName);
+            if (potion != null)
             {
-                return $"{playerDisplayName} no está en una batalla"; // Sale si no está en una batalla
+                player.UseItem(potion, player.ActualPokemon);
+                player.Items.Remove(potion);
+                return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
             }
             else
             {
-                // Tercer check: si es el turno del jugador
-                if ( true /* turno actual NO corresponde al jugador */ )
-                {
-                    return $"{playerDisplayName} no es su turno, por lo tanto no puede usar la pocion"; // Sale si no es su turno
-                }
-                else
-                {
-                    // Si llega hasta acá, es porque el jugador está en una batalla y es su turno
-                    // es decir, puede usar la poción
-
-                    // Busca el ítem en el inventario del entrenador
-                    Trainer? trainerToUse = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
-                    Item? itemToUse = trainerToUse.Items.FirstOrDefault(i => i.GetType().Name == potionName); // FistOrDefault devuelve el primer elemento que cumple la condición
-                    if (itemToUse == null)
-                    {
-                        return $"{playerDisplayName} no tiene un {potionName}.";
-                    }
-                    else
-                    {
-                        // Usa la poción
-                        itemToUse.Use(trainerToUse.ActualPokemon);
-                        return $"{playerDisplayName} usó {potionName}";
-                    }
-                }
-            }   
+                return "❌ No tienes esa poción";
+            }
         }
     }
 
