@@ -1,6 +1,4 @@
-using System.Text;
 using Poke.Clases;
-using Ucu.Poo.DiscordBot.Services;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
@@ -231,7 +229,7 @@ public class Facade
             }
             else
             {
-                // Segundo check: si es el turno del jugador
+                // Tercer check: si es el turno del jugador
                 if ( true /* turno actual NO corresponde al jugador */ )
                 {
                     return $"{playerDisplayName} no es su turno, por lo tanto no puede usar la pocion"; // Sale si no es su turno
