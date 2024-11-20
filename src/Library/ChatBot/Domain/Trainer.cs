@@ -46,7 +46,6 @@ using Poke.Clases;
         public Trainer(string displayName)
         {
             DisplayName = displayName;
-            Stage = 0;
             Pokemons = new List<Pokemon> { };
             Items = new List<Item>
             {

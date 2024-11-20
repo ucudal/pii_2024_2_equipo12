@@ -20,15 +20,12 @@ public class CatalogueCommand : ModuleBase<SocketCommandContext>
     public async Task ExecuteAsync()
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        bool? result = Facade.Instance.PlayerWithPokemon(displayName);
-        if (result == null)
+        string? result = Facade.Instance.PlayerWithPokemon(displayName);
+        if (result != null)
         {
-            await ReplyAsync("Comienza una batalla para elegir tus pokemon!");
-            
-        } else if (result.Value)
-        {
-            await ReplyAsync("Ya tienes seleccionados tus pokemon, comienza a pelear!");
-        } else
+            await ReplyAsync(result);
+        }
+        else
         {
             string repoPath = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
             string imagePath1 = Path.Combine(repoPath, "Assets", "catalogo1.png");

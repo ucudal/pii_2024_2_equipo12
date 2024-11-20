@@ -318,12 +318,17 @@ public class Facade
         return true;
     }
 
-    public bool? PlayerWithPokemon(string playerDisplayName)
+    public string? PlayerWithPokemon(string playerDisplayName)
     {
         Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
-        if (player != null)
+        
+        if (player == null)
         {
-            return player.Pokemons.Count != 0;
+            return "Comienza una batalla para elegir tus pokemon!";
+        } 
+        if (player.Pokemons.Count > 0)
+        {
+            return "Ya tienes seleccionados tus pokemon, comienza a pelear!";
         }
 
         return null;
