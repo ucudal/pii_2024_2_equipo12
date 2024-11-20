@@ -263,15 +263,47 @@ public class Facade
         {
             Pokemon playerPokemon = player.ActualPokemon;
             Attack? attack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == attackName);
-            if (attack != null)
+            if (attack != null && attack.IsSpecial == false ) // Descartar los ataques especiales
             {
                 playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, attack);
                 player.Stage = 3; // Ya gasto su turno
-                return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con {attack.Name} 🔥✨";
+                return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque {attack.Name} 🔥✨";
             }
             else
             {
                 return "❌ No tienes ese ataque";
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Usuario gasta su turno atacando al oponente con un ataque especial de su pokemon
+    /// </summary>
+    /// <param name="playerDisplayName"></param>
+    /// <param name="specialAttackName"></param>
+    /// <param name="opponentDisplayName"></param>
+    /// <returns> Un mensaje de confirmación del ataque especial </returns>
+    public string SpecialAttackPokemon(string playerDisplayName, string specialAttackName, string opponentDisplayName)
+    {
+        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
+        Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
+        if (player.Stage != 4)
+        {
+            return "❌ No puedes atacar en este momento";
+        }
+        else
+        {
+            Pokemon playerPokemon = player.ActualPokemon;
+            Attack? specialAttack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == specialAttackName);
+            if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
+            {
+                playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, specialAttack);
+                player.Stage = 3; // Ya gasto su turno
+                return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨";
+            }
+            else
+            {
+                return "❌ No tienes ese ataque especial";
             }
         }
     }
