@@ -21,14 +21,19 @@ public class Battle
     public string State { get; private set; }
     
     /// <summary>
-    /// Representa el turno actual en la batalla, alternando entre los jugadores.
+    /// Representa a quien le corresponde el turno actual, determinándose random al inicio de la batalla.
     /// </summary>
-    public double Turn;
+    public Trainer? Turn { get; set; }
     
     /// <summary>
     /// Contador del turno actual.
     /// </summary>
     public double ActualTurn { get; set; }
+    
+    /// <summary>
+    /// Booleano que se vuelve true cuando los dos entrenadores tienen los pokemones suficientes para la batalla.
+    /// </summary>
+    public bool ReadyToStart { get; set; }
 
     /// <summary>
     /// Inicializa una instancia de la clase <see cref="Battle"/> con los
@@ -36,7 +41,8 @@ public class Battle
     /// </summary>
     /// <param name="player1">El primer jugador.</param>
     /// <param name="player2">El oponente.</param>
-    ///
+    
+    public bool BattleStarted { get; set; }
 
     public Battle(Trainer player1, Trainer player2)
     {
@@ -44,13 +50,22 @@ public class Battle
         Player1 = player1;
         State = "NotStarted";
         ActualTurn = 1;
-        
+        ReadyToStart = false;
+
     }
     
     public void InitialTurn()
     {
         Random random = new Random();
-        Turn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
+        var initialTurn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
+        if (initialTurn == 1)
+        {
+            Turn = Player1;
+        }
+        else
+        {
+            Turn = Player2;
+        }
     }
     
     public string? BattleFinished()

@@ -42,6 +42,18 @@ public class BattlesList
         return null;
     }
     
+    public Battle GetBattle(Trainer player)
+    {
+        foreach (var battle in battles)
+        {
+            if (battle.Player1 == player || battle.Player2 == player)
+            {
+                return battle;
+            }
+        }
+        return null;
+    }
+    
     public bool PlayerWithPokemon(String playerDisplayName)
     {
         foreach (var battle in battles)
