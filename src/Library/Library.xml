@@ -217,6 +217,16 @@
             Obtiene o establece el estado de la batalla.
             </summary>
         </member>
+        <member name="F:Ucu.Poo.DiscordBot.Domain.Battle.Turn">
+            <summary>
+            Representa el turno actual en la batalla, alternando entre los jugadores.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.ActualTurn">
+            <summary>
+            Contador del turno actual.
+            </summary>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
              <summary>
              Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
@@ -226,7 +236,7 @@
              <param name="player2">El oponente.</param>
             
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.StartBattle">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.CreateNewBattle">
              <summary>
              Inicia la batalla.
              </summary>
@@ -303,7 +313,7 @@
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.StartBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CreateNewBattle(System.String,System.String)">
             <summary>
             Crea una batalla entre dos jugadores.
             </summary>
