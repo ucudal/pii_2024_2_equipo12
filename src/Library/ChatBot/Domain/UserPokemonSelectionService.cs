@@ -37,23 +37,7 @@ namespace Ucu.Poo.DiscordBot.Services
             UserSelections.TryGetValue(playerDisplayName, out var selections);
             return selections ?? new List<Pokemon>();
         }
-
-        /// <summary>
-        /// Elimina un Pokémon de la selección del usuario.
-        /// </summary>
-        public static bool RemovePokemon(string playerDisplayName, string pokemonName)
-        {
-            if (UserSelections.TryGetValue(playerDisplayName, out var selections))
-            {
-                var pokemon = selections.FirstOrDefault(p => p.Name.Equals(pokemonName, StringComparison.OrdinalIgnoreCase));
-                if (pokemon != null)
-                {
-                    selections.Remove(pokemon);
-                    return true;
-                }
-            }
-            return false;
-        }
+        
 
         /// <summary>
         /// Limpia todas las selecciones del usuario.

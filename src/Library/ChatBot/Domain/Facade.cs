@@ -262,59 +262,84 @@ public class Facade
         return BattlesList.FindPlayerInBattle(playerDisplayName);
     }
 
+    /// <summary>
+    /// Gestiona la selección de Pokémon por parte de un jugador, validando
+    /// los índices y asegurándose de que los Pokémon seleccionados sean válidos.
+    /// </summary>
+    /// <param name="playerDisplayName">El nombre del jugador que realiza la selección.</param>
+    /// <param name="indices">
+    /// Una cadena de texto que contiene los índices separados por espacios
+    /// correspondientes a los Pokémon seleccionados por el jugador.
+    /// </param>
+    /// <returns>
+    /// Una cadena que contiene mensajes de confirmación o error relacionados
+    /// con el proceso de selección.
+    /// </returns> 
     public string PokemonSelection(string playerDisplayName, string indices)
+{
+    // Limpia cualquier selección previa del jugador.
+    UserPokemonSelectionService.ClearSelections(playerDisplayName);
+    
+    // Divide los índices proporcionados y verifica si tienen exactamente 6.
+    var selectedIndices = indices.Split(' ')
+                                 .Select(i => int.TryParse(i, out int index) ? index - 1 : -1)
+                                 .ToList();
+
+    if (selectedIndices.Count != 6)
     {
-        var selectedIndices = indices.Split(' ').Select(i => int.TryParse(i, out int index) ? index : -1).ToList();
-
-        if (selectedIndices.Any(index => index < 0))
-        {
-            return $"❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos.";
-        }
-
-        var userSelections = UserPokemonSelectionService.GetUserSelections(playerDisplayName);
-        if (userSelections.Count + selectedIndices.Count > 6)
-        {
-            return $"❌ Solo puedes seleccionar un máximo de 6 Pokémon. Ya tienes {userSelections.Count} seleccionados.";
-        }
-
-        var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
-        var result = new StringBuilder();
-
-        foreach (var index in selectedIndices)
-        {
-            if (index < 0 || index >= catalog.Count)
-            {
-                result.AppendLine($"❌ Índice {index} no es válido.");
-                continue;
-            }
-
-            var catalogEntry = catalog[index];
-            try
-            {
-                var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
-                bool added = UserPokemonSelectionService.AddPokemon(playerDisplayName, pokemon);
-
-                if (added)
-                {
-                    result.AppendLine($"✅ **{pokemon.Name}** ha sido seleccionado.");
-                }
-                else
-                {
-                    result.AppendLine($"❌ **{pokemon.Name}** ya está en tu lista de seleccionados.");
-                }
-            }
-            catch (ArgumentException)
-            {
-                result.AppendLine($"❌ No se pudo agregar el Pokémon del índice {index}.");
-            }
-        }
-
-        // Muestra la lista actual de Pokémon seleccionados.
-        result.AppendLine(ShowCurrentSelections(playerDisplayName));
-        return result.ToString();
+        return $"❌ Debes seleccionar exactamente 6 Pokémon. Has proporcionado {selectedIndices.Count} índices.";
     }
 
-    public string ShowCurrentSelections(string playerDisplayName)
+    if (selectedIndices.Any(index => index < 0))
+    {
+        return $"❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos que esten dentro del catálogo.";
+    }
+
+    var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
+    var result = new StringBuilder();
+
+    foreach (var index in selectedIndices)
+    {
+        if (index < 0 || index >= catalog.Count)
+        {
+            result.AppendLine($"❌ Índice {index} no es válido, haz la seleccion de nuevo.");
+            continue;
+        }
+
+        var catalogEntry = catalog[index];
+        try
+        {
+            var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
+            bool added = UserPokemonSelectionService.AddPokemon(playerDisplayName, pokemon);
+
+            if (added)
+            {
+                result.AppendLine($"✅ **{pokemon.Name}** ha sido seleccionado.");
+            }
+            else
+            {
+                result.AppendLine($"❌ **{pokemon.Name}** ya está en tu lista de seleccionados, haz la seleccion denuevo.");
+            }
+        }
+        catch (ArgumentException)
+        {
+            result.AppendLine($"❌ No se pudo agregar el Pokémon del índice {index}.");
+        }
+    }
+    
+    return result.ToString();
+}
+
+
+    /// <summary>
+    /// Muestra los Pokémon actualmente seleccionados por un jugador.
+    /// </summary>
+    /// <param name="playerDisplayName">El nombre del jugador cuyas selecciones se mostrarán.</param>
+    /// <returns>
+    /// Una cadena que lista los Pokémon seleccionados por el jugador. Si no
+    /// hay selecciones, se indica que la lista está vacía.
+    /// </returns>
+    public static string ShowCurrentSelections(string playerDisplayName)
     {
         var selections = UserPokemonSelectionService.GetUserSelections(playerDisplayName);
         if (selections.Count == 0)
@@ -328,62 +353,11 @@ public class Facade
         {
             sb.AppendLine($"{i + 1}. {selections[i].Name}");
         }
-
+        
         return sb.ToString();
     }
-
-    
-    public string RemovePokemon (string playerDisplayName, string indices)
-    {
-        // Convierte los índices proporcionados en una lista de enteros
-        var selectedIndices = indices.Split(' ').Select(i => int.TryParse(i, out int index) ? index - 1 : -1).ToList();
-
-        if (selectedIndices.Any(index => index < 0))
-        {
-            return("❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos.");
-            
-        }
-
-        var userSelections = UserPokemonSelectionService.GetUserSelections(playerDisplayName);
-        if (!userSelections.Any())
-        {
-            return ("📭 No tienes Pokémon seleccionados para eliminar.");
-            
-        }
-
-        foreach (var index in selectedIndices)
-        {
-            if (index < 0 || index >= userSelections.Count)
-            {
-                return ($"❌ Índice {index + 1} no es válido.");
-                continue;
-            }
-
-            var pokemon = userSelections[index];
-            bool removed = UserPokemonSelectionService.RemovePokemon(playerDisplayName, pokemon.Name);
-
-            if (removed)
-            {
-                return ($"✅ **{pokemon.Name}** ha sido eliminado de tu selección.");
-            }
-            else
-            {
-                return ($"❌ No se pudo eliminar a **{pokemon.Name}**.");
-            }
-        }
-
-        return ShowCurrentSelections(playerDisplayName);
-    }
-
-    public string ResetPokemonSelection(string playerDisplayName)
-    {
-        // Limpia la selección de Pokémon del usuario actual
-        UserPokemonSelectionService.ClearSelections(playerDisplayName);
-        
-        return "🗑️ Has reiniciado tu selección de Pokémon.";
-    }
-
    
+    
     /// <summary>
     /// Verifica si un jugador está listo para combatir.
     /// </summary>
