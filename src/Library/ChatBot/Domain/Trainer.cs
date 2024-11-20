@@ -15,7 +15,6 @@ using Poke.Clases;
         /// El estado del entrenador.
         /// </summary>
         public int Stage { get; set; }
-        // 0: Cumple los requisitos para jugar
         // 1: Esperando en la lista de espera
         // 2: En una batalla, sin seleccionar los pokemones todavia
         // 3: En una batalla
