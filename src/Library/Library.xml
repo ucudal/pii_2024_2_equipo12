@@ -24,6 +24,17 @@
             visualizar el catalogo pokemon en pantalla.
             </summary>
         </member>
+
+        <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
+            al jugador seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'selectpokemon'. Este comando permite al jugador
+            seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
         <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
             <summary>
             Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
@@ -93,61 +104,6 @@
             Implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
             </summary>
             <param name="displayName">El nombre de usuario de Discord a buscar.</param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.RemovePokemonCommand">
-            <summary>
-            Clase que implementa el comando 'removepokemon'. Este comando permite
-            a los usuarios eliminar uno o varios Pokémon de su selección actual
-            utilizando índices.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.RemovePokemonCommand.ExecuteAsync(System.String)">
-            <summary>
-            Comando 'removepokemon'. Este comando elimina uno o varios Pokémon
-            específicos de la selección del usuario utilizando sus índices.
-            </summary>
-            <param name="indices">
-            Los índices de los Pokémon que el usuario desea eliminar.
-            </param>
-            <returns>Una tarea que representa la operación asincrónica.</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.ResetSelectionCommand">
-            <summary>
-            Clase que implementa el comando 'resetselection'. Este comando permite
-            a un usuario reiniciar su selección de Pokémon.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.ResetSelectionCommand.ExecuteAsync">
-            <summary>
-            Comando 'resetselection'. Este comando elimina la selección de Pokémon
-            realizada por el usuario y muestra un mensaje de confirmación.
-            </summary>
-            <returns>Una tarea que representa la operación asincrónica.</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
-            <summary>
-            Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
-            al jugador seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'selectpokemon'. Este comando permite al jugador
-            seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.ViewSelectionCommand">
-            <summary>
-            Clase que implementa el comando 'viewselection'. Este comando permite
-            a los usuarios ver los Pokémon que han seleccionado actualmente.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.ViewSelectionCommand.ExecuteAsync">
-            <summary>
-            Comando 'viewselection'. Este comando muestra la lista de Pokémon 
-            seleccionados por el usuario.
-            </summary>
-            <returns>Una tarea que representa la operación asincrónica.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.JoinCommand">
             <summary>
@@ -336,6 +292,33 @@
             <param name="potionName">El nombre de la poción.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
+
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PokemonSelection(System.String,System.String)">
+            <summary>
+            Gestiona la selección de Pokémon por parte de un jugador, validando
+            los índices y asegurándose de que los Pokémon seleccionados sean válidos.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador que realiza la selección.</param>
+            <param name="indices">
+            Una cadena de texto que contiene los índices separados por espacios
+            correspondientes a los Pokémon seleccionados por el jugador.
+            </param>
+            <returns>
+            Una cadena que contiene mensajes de confirmación o error relacionados
+            con el proceso de selección.
+            </returns> 
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.ShowCurrentSelections(System.String)">
+            <summary>
+            Muestra los Pokémon actualmente seleccionados por un jugador.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador cuyas selecciones se mostrarán.</param>
+            <returns>
+            Una cadena que lista los Pokémon seleccionados por el jugador. Si no
+            hay selecciones, se indica que la lista está vacía.
+            </returns>
+        </member>
+
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckIfPlayerIsReady(System.String)">
             <summary>
             Verifica si un jugador está listo para combatir.
@@ -514,11 +497,6 @@
         <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.GetUserSelections(System.String)">
             <summary>
             Obtiene la lista de Pokémon seleccionados por el usuario.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.RemovePokemon(System.String,System.String)">
-            <summary>
-            Elimina un Pokémon de la selección del usuario.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.ClearSelections(System.String)">
