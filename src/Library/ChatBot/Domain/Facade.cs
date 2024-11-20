@@ -224,7 +224,9 @@ public class Facade
     public string ChangePokemon(string displayName, string pokemonName)
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(displayName);
-        if (player.Stage != 4)
+        // encontrar battle
+        Battle battle = BattlesList.GetBattle(player);
+        if (player.Stage != 4 || battle.Turn != player) // por ahora 
         {
             return "❌ No puedes cambiar de pokemon en este momento";
         }
@@ -256,7 +258,8 @@ public class Facade
     public string UsePotion(string playerDisplayName, string potionName)
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
-        if (player.Stage != 4)
+        Battle battle = BattlesList.GetBattle(player);
+        if (player.Stage != 4 || battle.Turn != player)
         {
             return "❌ No puedes usar pociones en este momento";
         }
@@ -288,7 +291,8 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        if (player.Stage != 4)
+        Battle battle = BattlesList.GetBattle(player);
+        if (player.Stage != 4 || battle.Turn != player)
         {
             return "❌ No puedes atacar en este momento";
         }
@@ -320,7 +324,8 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        if (player.Stage != 4)
+        Battle battle = BattlesList.GetBattle(player);
+        if (player.Stage != 4 || battle.Turn != player)
         {
             return "❌ No puedes atacar en este momento";
         }

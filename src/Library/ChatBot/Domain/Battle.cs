@@ -21,9 +21,9 @@ public class Battle
     public string State { get; private set; }
     
     /// <summary>
-    /// Representa el turno actual en la batalla, alternando entre los jugadores.
+    /// Representa a quien le corresponde el turno actual, determinándose random al inicio de la batalla.
     /// </summary>
-    public double Turn;
+    public Trainer? Turn { get; set; }
     
     /// <summary>
     /// Contador del turno actual.
@@ -50,7 +50,15 @@ public class Battle
     public void InitialTurn()
     {
         Random random = new Random();
-        Turn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
+        var initialTurn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
+        if (initialTurn == 1)
+        {
+            Turn = Player1;
+        }
+        else
+        {
+            Turn = Player2;
+        }
     }
     
     public string? BattleFinished()
