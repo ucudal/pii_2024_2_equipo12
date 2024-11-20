@@ -29,7 +29,7 @@ using Poke.Clases;
         /// <summary>
         /// El pokemon actualmente activo del entrenador.
         /// </summary>
-        public Pokemon ActualPokemon { get; private set; }
+        public Pokemon ActualPokemon { get; set; }
 
         /// <summary>
         /// Lista de items que el entrenador tiene disponibles.

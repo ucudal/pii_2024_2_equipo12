@@ -213,6 +213,39 @@ public class Facade
         }
         return "No hay pociones disponibles";
     }
+    
+    /// <summary>
+    /// Cambia el pokemon actual del jugador por otro de su lista de pokemones.
+    /// </summary>
+    /// <param name="displayName"></param>
+    /// <param name="pokemonName"></param>
+    /// <returns>Un mensaje de comfirmacion del cambio del Pokemon.</returns>
+
+    public string ChangePokemon(string displayName, string pokemonName)
+    {
+        Trainer player = this.WaitingList.FindTrainerByDisplayName(displayName);
+        if (player.Stage != 4)
+        {
+            return "❌ No puedes cambiar de pokemon en este momento";
+        }
+        else
+        {
+            Pokemon? pokemon = player.Pokemons.Find(pokemon => pokemon.Name == pokemonName);
+            if (pokemon != null)
+            {
+                player.ActualPokemon = pokemon;
+                player.Stage = 3; // Ya gasto su turno
+                return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁";
+            }
+            else
+            {
+                return "❌ No tienes ese pokemon";
+            }
+        }
+    }
+    
+    
+    
     /// <summary>
     /// Usuario gasta su turno eligiendo una poción luego de seleccionarla de 
     /// su lista de pociones impresas en la consola.

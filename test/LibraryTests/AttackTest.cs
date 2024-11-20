@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
-using Poke.Clases;
 using Ucu.Poo.DiscordBot.Domain;
-using Battle = Poke.Clases.Battle;
-using Type = Poke.Clases.Type;
+using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
+using Type = System.Type;
 
 namespace LibraryTests
 {
@@ -11,7 +10,7 @@ namespace LibraryTests
     {
         private Trainer jugador1;
         private Trainer jugador2;
-        private WaitList waitList;
+        private WaitList waitingList;
 
         [SetUp]
         public void SetUp()
@@ -223,10 +222,12 @@ namespace LibraryTests
         {
             var pokemon1 = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
             var pokemonOponente = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
-            jugador = new Trainer("Jugador1", pokemon1);
-            oponente = new Trainer("Jugador2", pokemonOponente);
+            jugador = new Trainer("Jugador1");
+            jugador.AddPokemon(pokemon1);
+            oponente = new Trainer("Jugador2");
+            oponente.AddPokemon(pokemonOponente);
             pocion = new SuperPotion();
-            jugador.AddItem(pocion);  // Suponiendo que el entrenador tiene una lista de ítems
+            jugador.AddItem(pocion); 
             batalla = new Battle(pokemon1, pokemonOponente);
         }
 
@@ -263,7 +264,9 @@ namespace LibraryTests
         [SetUp]
         public void SetUp()
         {
-            jugador = new Trainer("Jugador1", new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric));
+            var pokemon = new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric);
+            jugador = new Trainer("Jugador1");
+            jugador.AddPokemon(pokemon);
             waitList = new WaitList();
         }
 
@@ -295,13 +298,15 @@ namespace LibraryTests
         private Pokemon pokemonOponente;
         private Battle batalla;
 
-        [SetUp]
+        [SetUp]    
         public void SetUp()
         {
-            pokemonJugador = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
-            pokemonOponente = new Pokemon("Charmander", 0, 10, "2", Poke.Clases.Type.PokemonType.Fire); // Vida en cero para simular el fin de la batalla
-            jugador = new Trainer("Jugador1", pokemonJugador);
-            oponente = new Trainer("Jugador2", pokemonOponente);
+            pokemonJugador = new Pokemon("Pikachu", 100, 10, "1", Type.PokemonType.Electric);
+            pokemonOponente = new Pokemon("Charmander", 100, 10, "2", Type.PokemonType.Fire);
+            jugador = new Trainer("Jugador1");
+            jugador.AddPokemon(pokemonJugador);
+            oponente = new Trainer("Jugador2");
+            oponente.AddPokemon(pokemonOponente);
             batalla = new Battle(pokemonJugador, pokemonOponente);
         }
 
