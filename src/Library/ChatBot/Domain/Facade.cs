@@ -62,7 +62,7 @@ public class Facade
             Trainer? player = BattlesList.GetPlayerInBattle(displayName);
             if (player != null)
             {
-                player.Stage = 3;
+                player.Stage = 1;
             }
             return $"{displayName} agregado a la lista de espera";
         }
@@ -226,7 +226,7 @@ public class Facade
         Trainer player = this.WaitingList.FindTrainerByDisplayName(displayName);
         // encontrar battle
         Battle battle = BattlesList.GetBattle(player);
-        if (player.Stage != 4 || battle.Turn != player) // por ahora 
+        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes cambiar de pokemon en este momento";
         }
@@ -236,7 +236,6 @@ public class Facade
             if (pokemon != null)
             {
                 player.ActualPokemon = pokemon;
-                player.Stage = 3; // Ya gasto su turno
                 return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁";
             }
             else
@@ -259,7 +258,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Battle battle = BattlesList.GetBattle(player);
-        if (player.Stage != 4 || battle.Turn != player)
+        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes usar pociones en este momento";
         }
@@ -270,7 +269,6 @@ public class Facade
             {
                 player.UseItem(potion, player.ActualPokemon);
                 player.Items.Remove(potion);
-                player.Stage = 3; // Ya gasto su turno
                 return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
             }
             else
@@ -292,7 +290,7 @@ public class Facade
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
         Battle battle = BattlesList.GetBattle(player);
-        if (player.Stage != 4 || battle.Turn != player)
+        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes atacar en este momento";
         }
@@ -303,7 +301,6 @@ public class Facade
             if (attack != null && attack.IsSpecial == false ) // Descartar los ataques especiales
             {
                 playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, attack);
-                player.Stage = 3; // Ya gasto su turno
                 return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque {attack.Name} 🔥✨";
             }
             else
@@ -325,7 +322,7 @@ public class Facade
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
         Battle battle = BattlesList.GetBattle(player);
-        if (player.Stage != 4 || battle.Turn != player)
+        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes atacar en este momento";
         }
@@ -336,7 +333,6 @@ public class Facade
             if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
             {
                 playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, specialAttack);
-                player.Stage = 3; // Ya gasto su turno
                 return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨";
             }
             else
@@ -387,6 +383,13 @@ public class Facade
     /// </returns> 
     public string PokemonSelection(string playerDisplayName, string indices)
 {
+    Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+    Battle? battle = BattlesList.GetBattle(player);
+    if (player.Stage != 2)
+    {
+        return $"❌ No puedes seleccionar pokemones en este momento.";
+    }
+    
     // Limpia cualquier selección previa del jugador.
     UserPokemonSelectionService.ClearSelections(playerDisplayName);
     
@@ -436,7 +439,8 @@ public class Facade
             result.AppendLine($"❌ No se pudo agregar el Pokémon del índice {index}.");
         }
     }
-    
+    battle.ReadyToStart = true;
+    player.Stage = 2;
     return result.ToString();
 }
 
@@ -484,7 +488,7 @@ public class Facade
             Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
             if (player != null)
             {
-                player.Stage = 3;
+                player.Stage = 2;
             }
             return $"✅ {playerDisplayName} está listo para combatir con los siguientes Pokémon:\n" +
                    string.Join("\n", selectedPokemons.Select((pokemon, index) => $"{index + 1}. {pokemon.Name}"));

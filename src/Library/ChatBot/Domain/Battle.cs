@@ -34,6 +34,8 @@ public class Battle
     /// Booleano que se vuelve true cuando los dos entrenadores tienen los pokemones suficientes para la batalla.
     /// </summary>
     public bool ReadyToStart { get; set; }
+    
+    public bool BattleStarted { get; set; }
 
     /// <summary>
     /// Inicializa una instancia de la clase <see cref="Battle"/> con los
@@ -41,9 +43,6 @@ public class Battle
     /// </summary>
     /// <param name="player1">El primer jugador.</param>
     /// <param name="player2">El oponente.</param>
-    
-    public bool BattleStarted { get; set; }
-
     public Battle(Trainer player1, Trainer player2)
     {
         Player2 = player2;
@@ -51,7 +50,6 @@ public class Battle
         State = "NotStarted";
         ActualTurn = 1;
         ReadyToStart = false;
-
     }
     
     public void InitialTurn()

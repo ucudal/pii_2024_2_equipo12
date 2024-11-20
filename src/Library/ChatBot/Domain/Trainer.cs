@@ -12,13 +12,10 @@ using Poke.Clases;
         public string DisplayName { get; }
 
         /// <summary>
-        /// El estado del entrenador.
+        /// El estado del entrenador. 1: Esperando en la lista de espera,
+        /// 2: En una batalla, con los pokemones seleccionados
         /// </summary>
         public int Stage { get; set; }
-        // 1: Esperando en la lista de espera
-        // 2: En una batalla, sin seleccionar los pokemones todavia
-        // 3: En una batalla
-        // 4: En una batalla, en su turno
         
         /// <summary>
         /// Lista de pokemones del entrenador.
