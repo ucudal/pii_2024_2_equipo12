@@ -24,6 +24,7 @@
             visualizar el catalogo pokemon en pantalla.
             </summary>
         </member>
+
         <member name="T:Ucu.Poo.DiscordBot.Commands.SelectPokemonCommand">
             <summary>
             Esta clase implementa el comando 'selectpokemon' del bot. Este comando permite
@@ -34,6 +35,16 @@
             <summary>
             Implementa el comando 'selectpokemon'. Este comando permite al jugador
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
+        <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
+            al jugador cambiar su Pokémon actual por otro del catálogo.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'changepokemon'. Este comando permite al jugador
+            cambiar su Pokémon actual por otro del catálogo.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.UsePotionCommand">
@@ -58,18 +69,6 @@
             <summary>
             Implementa el comando 'availableItems'. Este comando le permite al usuario
             ver los items disponibles para usar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
-            <summary>
-            Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
-            al jugador cambiar su Pokémon actual por otro del catálogo.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'changepokemon'. Este comando permite al jugador
-            cambiar su Pokémon actual por otro del catálogo.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
@@ -130,6 +129,18 @@
             que envía el mensaje de la lista de jugadores esperando para jugar.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.PlayersWaitingCommand">
+            <summary>
+            Esta clase implementa el comando 'playersWaitingList' del bot. Este comando muestra
+            la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.PlayersWaitingCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'playersWaitingList'. Este comando muestra la lista de
+            jugadores esperando para jugar.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.StillWaitingCommand">
             <summary>
             Esta clase implementa el comando 'stillWaiting' del bot. Este comando le muestra
@@ -140,18 +151,6 @@
             <summary>
             Implementa el comando 'stillWaiting'. Este comando le muestra al usuario si él
             esta esperando para jugar, es decir, si esta dentro de la Waitlist.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.WaitingCommand">
-            <summary>
-            Esta clase implementa el comando 'waitinglist' del bot. Este comando muestra
-            la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.WaitingCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'waitinglist'. Este comando muestra la lista de
-            jugadores esperando para jugar.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
@@ -174,7 +173,17 @@
             Obtiene o establece el estado de la batalla.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(System.String,System.String)">
+        <member name="F:Ucu.Poo.DiscordBot.Domain.Battle.Turn">
+            <summary>
+            Representa el turno actual en la batalla, alternando entre los jugadores.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.ActualTurn">
+            <summary>
+            Contador del turno actual.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
              <summary>
              Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
              valores recibidos como argumento.
@@ -183,13 +192,13 @@
              <param name="player2">El oponente.</param>
             
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.StartBattle">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.CreateNewBattle">
              <summary>
              Inicia la batalla.
              </summary>
             
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.DetermineWinner">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.EndBattle">
             <summary>
             Determina el ganador de la batalla.
             </summary>
@@ -200,7 +209,7 @@
             Esta clase representa la lista de batallas en curso.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
             <summary>
             Crea una nueva batalla entre dos jugadores.
             </summary>
@@ -208,11 +217,12 @@
             <param name="player2">El oponente.</param>
             <returns>La batalla creada.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.FindPlayerInBattle(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.GetPlayerInBattle(System.String)">
             <summary>
-            Muestra todas las batallas en curso.
+            Funcion para conseguir el entrenador asociado al playerDisplayName
+            Lo busca en las batallas y de no encontrarlo devuelve null
             </summary>
-            <returns>Un mensaje con el resultado.</returns>
+            <returns>Entrenador asociado al playerDisplayName.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Facade">
             <summary>
@@ -259,7 +269,7 @@
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.StartBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CreateNewBattle(System.String,System.String)">
             <summary>
             Crea una batalla entre dos jugadores.
             </summary>
@@ -282,6 +292,7 @@
             <param name="potionName">El nombre de la poción.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
+
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PokemonSelection(System.String,System.String)">
             <summary>
             Gestiona la selección de Pokémon por parte de un jugador, validando
@@ -307,6 +318,7 @@
             hay selecciones, se indica que la lista está vacía.
             </returns>
         </member>
+
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckIfPlayerIsReady(System.String)">
             <summary>
             Verifica si un jugador está listo para combatir.
@@ -348,6 +360,11 @@
             El nombre de usuario de Discord en el servidor del bot del jugador.
             </summary>
         </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
+            <summary>
+            El estado del entrenador.
+            </summary>
+        </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Pokemons">
             <summary>
             Lista de pokemones del entrenador.
@@ -363,7 +380,7 @@
             Lista de items que el entrenador tiene disponibles.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String,Poke.Clases.Pokemon)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> con
             el nombre de usuario de Discord y el pokemon inicial del entrenador.

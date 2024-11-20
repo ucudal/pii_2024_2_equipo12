@@ -12,6 +12,16 @@ using Poke.Clases;
         public string DisplayName { get; }
 
         /// <summary>
+        /// El estado del entrenador.
+        /// </summary>
+        public int Stage { get; set; }
+        // 0: Cumple los requisitos para jugar
+        // 1: Esperando en la lista de espera
+        // 2: En una batalla, sin seleccionar los pokemones todavia
+        // 3: En una batalla
+        // 4: En una batalla, en su turno
+        
+        /// <summary>
         /// Lista de pokemones del entrenador.
         /// </summary>
         public List<Pokemon> Pokemons { get; }
@@ -19,7 +29,7 @@ using Poke.Clases;
         /// <summary>
         /// El pokemon actualmente activo del entrenador.
         /// </summary>
-        public Pokemon ActualPokemon { get; private set; }
+        public Pokemon ActualPokemon { get; set; }
 
         /// <summary>
         /// Lista de items que el entrenador tiene disponibles.
@@ -33,12 +43,10 @@ using Poke.Clases;
         /// <param name="displayName">El nombre de usuario de Discord.</param>
         /// <param name="name">Nombre del entrenador.</param>
         /// <param name="actualPokemon">El pokemon inicial del entrenador.</param>
-        public Trainer(string displayName, Pokemon actualPokemon)
+        public Trainer(string displayName)
         {
             DisplayName = displayName;
-            ActualPokemon = actualPokemon;
-            
-            Pokemons = new List<Pokemon> { actualPokemon };
+            Pokemons = new List<Pokemon> { };
             Items = new List<Item>
             {
                 new SuperPotion(),

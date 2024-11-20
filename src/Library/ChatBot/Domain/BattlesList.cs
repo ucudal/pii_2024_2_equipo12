@@ -13,7 +13,7 @@ public class BattlesList
     /// <param name="player1">El primer jugador.</param>
     /// <param name="player2">El oponente.</param>
     /// <returns>La batalla creada.</returns>
-    public Battle AddBattle(string player1, string player2)
+    public Battle AddBattle(Trainer player1, Trainer player2)
     {
         var battle = new Battle(player1, player2);
         this.battles.Add(battle);
@@ -21,14 +21,32 @@ public class BattlesList
     }
     
     /// <summary>
-    /// Muestra todas las batallas en curso.
+    /// Funcion para conseguir el entrenador asociado al playerDisplayName
+    /// Lo busca en las batallas y de no encontrarlo devuelve null
     /// </summary>
-    /// <returns>Un mensaje con el resultado.</returns>
-    public bool FindPlayerInBattle(String playerDisplayName)
+    /// <returns>Entrenador asociado al playerDisplayName.</returns>
+    public Trainer? GetPlayerInBattle(String playerDisplayName)
     {
         foreach (var battle in battles)
         {
-            return (battle.Player1 == playerDisplayName || battle.Player2 == playerDisplayName);
+            if (battle.Player1.DisplayName == playerDisplayName)
+            {
+                return battle.Player1;
+                
+            }
+            if (battle.Player2.DisplayName == playerDisplayName)
+            {
+                return battle.Player2;
+            }
+        }
+        return null;
+    }
+    
+    public bool PlayerWithPokemon(String playerDisplayName)
+    {
+        foreach (var battle in battles)
+        {
+            return (battle.Player1.DisplayName == playerDisplayName || battle.Player2.DisplayName == playerDisplayName);
         }
         return false;
     }

@@ -8,17 +8,27 @@ public class Battle
     /// <summary>
     /// Obtiene un valor que representa el primer jugador.
     /// </summary>
-    public string Player1 { get; }
+    public Trainer Player1 { get; }
     
     /// <summary>
     /// Obtiene un valor que representa al oponente.
     /// </summary>
-    public string Player2 { get; }
+    public Trainer Player2 { get; }
 
     /// <summary>
     /// Obtiene o establece el estado de la batalla.
     /// </summary>
     public string State { get; private set; }
+    
+    /// <summary>
+    /// Representa el turno actual en la batalla, alternando entre los jugadores.
+    /// </summary>
+    public double Turn;
+    
+    /// <summary>
+    /// Contador del turno actual.
+    /// </summary>
+    public double ActualTurn { get; set; }
 
     /// <summary>
     /// Inicializa una instancia de la clase <see cref="Battle"/> con los
@@ -28,11 +38,33 @@ public class Battle
     /// <param name="player2">El oponente.</param>
     ///
 
-    public Battle(string player1, string player2)
+    public Battle(Trainer player1, Trainer player2)
     {
         Player2 = player2;
         Player1 = player1;
         State = "NotStarted";
+        ActualTurn = 1;
+        
+    }
+    
+    public void InitialTurn()
+    {
+        Random random = new Random();
+        Turn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
+    }
+    
+    public string? BattleFinished()
+    {
+        if (Player1.GetTotalPokemonLife() == 0)
+        {
+            Console.WriteLine("El jugador 2 ha ganado");
+            return $"{Player2.DisplayName} ha ganado";
+        }
+        if (Player2.GetTotalPokemonLife() == 0)
+        {
+            return $"{Player1.DisplayName} ha ganado";
+        }
+        return null;
     }
 
     /// <summary>
@@ -48,13 +80,13 @@ public class Battle
     /// Determina el ganador de la batalla.
     /// </summary>
     /// <returns>El nombre del jugador ganador.</returns>
-    public string DetermineWinner()
+    /*public string DetermineWinner()
     {
         // Lógica para determinar el ganador
         // Por simplicidad, se elige un ganador aleatorio
         Random random = new Random();
         return random.Next(2) == 0 ? Player1 : Player2;
-    }
+    }*/
 
     public void EndBattle()
     {
