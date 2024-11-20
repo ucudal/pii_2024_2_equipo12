@@ -19,6 +19,16 @@ public class Battle
     /// Obtiene o establece el estado de la batalla.
     /// </summary>
     public string State { get; private set; }
+    
+    /// <summary>
+    /// Representa el turno actual en la batalla, alternando entre los jugadores.
+    /// </summary>
+    public double Turn;
+    
+    /// <summary>
+    /// Contador del turno actual.
+    /// </summary>
+    public double ActualTurn { get; set; }
 
     /// <summary>
     /// Inicializa una instancia de la clase <see cref="Battle"/> con los
@@ -33,9 +43,28 @@ public class Battle
         Player2 = player2;
         Player1 = player1;
         State = "NotStarted";
-
-        Player1.Stage = 1;
-        Player2.Stage = 1;
+        ActualTurn = 1;
+        
+    }
+    
+    public void InitialTurn()
+    {
+        Random random = new Random();
+        Turn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
+    }
+    
+    public string? BattleFinished()
+    {
+        if (Player1.GetTotalPokemonLife() == 0)
+        {
+            Console.WriteLine("El jugador 2 ha ganado");
+            return $"{Player2.DisplayName} ha ganado";
+        }
+        if (Player2.GetTotalPokemonLife() == 0)
+        {
+            return $"{Player1.DisplayName} ha ganado";
+        }
+        return null;
     }
 
     /// <summary>

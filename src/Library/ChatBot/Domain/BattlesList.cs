@@ -46,7 +46,6 @@ public class BattlesList
     {
         foreach (var battle in battles)
         {
-            
             return (battle.Player1.DisplayName == playerDisplayName || battle.Player2.DisplayName == playerDisplayName);
         }
         return false;
