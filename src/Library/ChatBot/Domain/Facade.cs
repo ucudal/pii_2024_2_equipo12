@@ -236,6 +236,8 @@ public class Facade
             if (pokemon != null)
             {
                 player.ActualPokemon = pokemon;
+                battle.ActualTurn += 1;
+                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
                 return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁";
             }
             else
@@ -271,10 +273,7 @@ public class Facade
                 player.Items.Remove(potion);
                 return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
             }
-            else
-            {
-                return "❌ No tienes esa poción";
-            }
+            return "❌ No tienes esa poción";
         }
     }
 
@@ -301,6 +300,8 @@ public class Facade
             if (attack != null && attack.IsSpecial == false ) // Descartar los ataques especiales
             {
                 playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, attack);
+                battle.ActualTurn += 1;
+                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
                 return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque {attack.Name} 🔥✨";
             }
             else
@@ -322,7 +323,7 @@ public class Facade
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
         Battle battle = BattlesList.GetBattle(player);
-        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
+        if (player.Stage != 2 || battle.Turn != player || battle.ActualTurn % 2 != 0) // si Actualturn es impar, no puede atacar
         {
             return "❌ No puedes atacar en este momento";
         }
@@ -333,6 +334,8 @@ public class Facade
             if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
             {
                 playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, specialAttack);
+                battle.ActualTurn += 1;
+                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
                 return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨";
             }
             else
