@@ -13,6 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class Facade
 {
     private static Facade? _instance;
+    private List<Pokemon> allPokemons;
 
     // Este constructor privado impide que otras clases puedan crear instancias
     // de esta.
@@ -446,7 +447,25 @@ public class Facade
     player.Stage = 2;
     return result.ToString();
 }
+    public string InitializePokemons()
+    {
+        allPokemons = new List<Pokemon>();
+        
+        allPokemons.Add(new Pokemon("Bulbasaur", 200, 1, null, Poke.Clases.Type.PokemonType.Plant, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Bulbasaur]));
+        allPokemons.Add(new Pokemon("Charmander", 200, 1, null, Poke.Clases.Type.PokemonType.Fire, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Charmander]));
+        allPokemons.Add(new Pokemon("Squirtle", 200, 1, null, Poke.Clases.Type.PokemonType.Water, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Squirtle]));
+        allPokemons.Add(new Pokemon("Pikachu", 200, 1, null, Poke.Clases.Type.PokemonType.Electric, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Pikachu]));
+        allPokemons.Add(new Pokemon("Jigglypuff", 200, 1, null, Poke.Clases.Type.PokemonType.Psychic, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Jigglypuff]));
+        allPokemons.Add(new Pokemon("Eevee", 190, 1, null, Poke.Clases.Type.PokemonType.Normal, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Eevee]));
+        allPokemons.Add(new Pokemon("Psyduck", 210, 1, null, Poke.Clases.Type.PokemonType.Water, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Psyduck]));
+        allPokemons.Add(new Pokemon("Geodude", 220, 1, null, Poke.Clases.Type.PokemonType.Rock, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Geodude]));
+        allPokemons.Add(new Pokemon("Machop", 230, 1, null, Poke.Clases.Type.PokemonType.Fighter, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Machop]));
+        allPokemons.Add(new Pokemon("Gastly", 190, 1, null, Poke.Clases.Type.PokemonType.Ghost, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Gastly]));
+        allPokemons.Add(new Pokemon("Oddish", 180, 1, null, Poke.Clases.Type.PokemonType.Plant, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Oddish]));
+        allPokemons.Add(new Pokemon("Growlithe", 200, 1, null, Poke.Clases.Type.PokemonType.Fire, PokemonCatalog.PokemonAttacks[PokemonCatalog.Catalog.Growlithe]));
 
+    return "Pokomons iniciados."; 
+    }
 
     /// <summary>
     /// Muestra los Pokémon actualmente seleccionados por un jugador.
