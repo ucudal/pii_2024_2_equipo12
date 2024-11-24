@@ -143,7 +143,7 @@ public class Facade
     /// <param name="playerDisplayName">El primer jugador.</param>
     /// <param name="opponentDisplayName">El oponente.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string StartBattle(string playerDisplayName, string? opponentDisplayName)
+    public string CreateNewBattle(string playerDisplayName, string? opponentDisplayName)
     {
         // El símbolo ? luego de Trainer indica que la variable opponent puede
         // referenciar una instancia de Trainer o ser null.
@@ -247,8 +247,6 @@ public class Facade
             }
         }
     }
-    
-    
     
     /// <summary>
     /// Usuario gasta su turno eligiendo una poción luego de seleccionarla de 
@@ -364,7 +362,7 @@ public class Facade
         {
             return "Comienza una batalla para elegir tus pokemon!";
         } 
-        if (player.Pokemons.Count > 0)
+        if (player.Pokemons.Count == 6)
         {
             return "Ya tienes seleccionados tus pokemon, comienza a pelear!";
         }
@@ -520,5 +518,31 @@ public class Facade
         int pokemonsFaltantes = 6 - selectedPokemons.Count;
         return $"❌ {playerDisplayName} aún no está listo para combatir. Le faltan {pokemonsFaltantes} Pokémon.";
     }
+
+    public bool StartBattle(string displayName)
+    {
+        Battle battle = BattlesList.GetBattleByPlayer(displayName);
+        
+        if (battle != null && battle.ReadyToStart)
+        {
+            battle.BattleStarted = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    public Trainer? GetOpponent(string displayName)
+    {
+        Battle battle = BattlesList.GetBattleByPlayer(displayName);
+        
+        if (battle.Player1.DisplayName == displayName)
+        {
+            return battle.Player2;
+        }
+        
+        return battle.Player1;
+    }
+    
 }
 

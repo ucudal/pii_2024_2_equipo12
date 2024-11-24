@@ -84,6 +84,18 @@
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.StartBattleCommand">
+            <summary>
+            Esta clase implementa el comando 'Start' del bot. Este comando permite
+            al jugador empezar la batalla.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.StartBattleCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'start'. Este comando permite
+            al jugador empezar la batalla
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand">
             <summary>
             Esta clase implementa el comando 'availableItems' del bot. Este comando le permite al usuario
@@ -213,7 +225,7 @@
             Booleano que se vuelve true cuando los dos entrenadores tienen los pokemones suficientes para la batalla.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.BattleStarted">
             <summary>
             Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
             valores recibidos como argumento.
