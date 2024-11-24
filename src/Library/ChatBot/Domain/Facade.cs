@@ -226,7 +226,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(displayName);
         // encontrar battle
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(displayName);
         if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes cambiar de pokemon en este momento";
@@ -258,7 +258,7 @@ public class Facade
     public string UsePotion(string playerDisplayName, string potionName)
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes usar pociones en este momento";
@@ -287,7 +287,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
         {
             return "❌ No puedes atacar en este momento";
@@ -321,7 +321,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 2 || battle.Turn != player || battle.ActualTurn % 2 != 0) // si Actualturn es impar, no puede atacar
         {
             return "❌ No puedes atacar en este momento";
@@ -385,8 +385,8 @@ public class Facade
     /// </returns> 
     public string PokemonSelection(string playerDisplayName, string indices)
     {
-        Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
-        Battle? battle = BattlesList.GetBattle(player);
+    Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+    Battle? battle = BattlesList.GetBattleByPlayer(player.DisplayName);
         if (player.Stage != 2)
         {
             return $"❌ No puedes seleccionar pokemones en este momento.";
