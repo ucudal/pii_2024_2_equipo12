@@ -310,7 +310,7 @@
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CreateNewBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.StartBattle(System.String,System.String)">
             <summary>
             Crea una batalla entre dos jugadores.
             </summary>
@@ -427,7 +427,8 @@
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
             <summary>
-            El estado del entrenador.
+            El estado del entrenador. 1: Esperando en la lista de espera,
+            2: En una batalla, con los pokemones seleccionados
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Pokemons">
