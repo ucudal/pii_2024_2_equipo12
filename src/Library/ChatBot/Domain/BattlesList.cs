@@ -41,25 +41,33 @@ public class BattlesList
         }
         return null;
     }
-    
-    public Battle GetBattle(Trainer player)
+
+    public Battle? GetBattleByPlayer(string playerDisplayName)
     {
         foreach (var battle in battles)
         {
-            if (battle.Player1 == player || battle.Player2 == player)
+            if (battle.Player1.DisplayName == playerDisplayName || battle.Player2.DisplayName == playerDisplayName)
             {
                 return battle;
             }
         }
         return null;
     }
-    
-    public bool PlayerWithPokemon(String playerDisplayName)
+
+    public Trainer? GetOpponnentInBattle(string playerDisplayName)
     {
         foreach (var battle in battles)
         {
-            return (battle.Player1.DisplayName == playerDisplayName || battle.Player2.DisplayName == playerDisplayName);
+            if (battle.Player1.DisplayName == playerDisplayName)
+            {
+                return battle.Player2;
+                
+            }
+            if (battle.Player2.DisplayName == playerDisplayName)
+            {
+                return battle.Player1;
+            }
         }
-        return false;
+        return null;
     }
 }

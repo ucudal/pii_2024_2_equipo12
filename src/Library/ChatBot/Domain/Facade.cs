@@ -142,7 +142,7 @@ public class Facade
     /// <param name="playerDisplayName">El primer jugador.</param>
     /// <param name="opponentDisplayName">El oponente.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string StartBattle(string playerDisplayName, string? opponentDisplayName)
+    public string CreateNewBattle(string playerDisplayName, string? opponentDisplayName)
     {
         // El símbolo ? luego de Trainer indica que la variable opponent puede
         // referenciar una instancia de Trainer o ser null.
@@ -225,7 +225,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(displayName);
         // encontrar battle
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(displayName);
         if (player.Stage != 4 || battle.Turn != player) // por ahora 
         {
             return "❌ No puedes cambiar de pokemon en este momento";
@@ -258,7 +258,7 @@ public class Facade
     public string UsePotion(string playerDisplayName, string potionName)
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 4 || battle.Turn != player)
         {
             return "❌ No puedes usar pociones en este momento";
@@ -291,7 +291,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 4 || battle.Turn != player)
         {
             return "❌ No puedes atacar en este momento";
@@ -324,7 +324,7 @@ public class Facade
     {
         Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
         Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        Battle battle = BattlesList.GetBattle(player);
+        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 4 || battle.Turn != player)
         {
             return "❌ No puedes atacar en este momento";
@@ -364,7 +364,7 @@ public class Facade
         {
             return "Comienza una batalla para elegir tus pokemon!";
         } 
-        if (player.Pokemons.Count > 0)
+        if (player.Pokemons.Count == 6)
         {
             return "Ya tienes seleccionados tus pokemon, comienza a pelear!";
         }
@@ -494,5 +494,31 @@ public class Facade
         int pokemonsFaltantes = 6 - selectedPokemons.Count;
         return $"❌ {playerDisplayName} aún no está listo para combatir. Le faltan {pokemonsFaltantes} Pokémon.";
     }
+
+    public bool StartBattle(string displayName)
+    {
+        Battle battle = BattlesList.GetBattleByPlayer(displayName);
+        
+        if (battle != null && battle.ReadyToStart)
+        {
+            battle.BattleStarted = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    public Trainer? GetOpponent(string displayName)
+    {
+        Battle battle = BattlesList.GetBattleByPlayer(displayName);
+        
+        if (battle.Player1.DisplayName == displayName)
+        {
+            return battle.Player2;
+        }
+        
+        return battle.Player1;
+    }
+    
 }
 
