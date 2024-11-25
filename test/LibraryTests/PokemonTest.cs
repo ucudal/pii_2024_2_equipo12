@@ -1,15 +1,10 @@
 ﻿using NUnit.Framework;
 using Poke.Clases;
+using Ucu.Poo.DiscordBot.Commands;
 using Ucu.Poo.DiscordBot.Domain;
 using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 
 namespace LibraryTests
-{
-    using NUnit.Framework;
-using Ucu.Poo.DiscordBot.Commands;
-using Ucu.Poo.DiscordBot.Domain;
-
-namespace Ucu.Poo.DiscordBot.Tests
 {
     [TestFixture]
     public class BattleSimulationTest
