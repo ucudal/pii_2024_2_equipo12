@@ -20,7 +20,7 @@ public class AttackCommand : ModuleBase<SocketCommandContext>
     public async Task ExecuteAsync(string attackName)
     {
             string displayName = CommandHelper.GetDisplayName(Context);
-            var result = Facade.Instance.AttackPokemon(displayName, attackName);
+            var result = Facade.Instance.DetermineAttack(displayName, attackName);
             if (result.OpponentDisplayName != null)
             {
                 await ReplyAsync($"{result.OpponentDisplayName}:\n {result.message}");

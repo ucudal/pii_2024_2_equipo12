@@ -1,3 +1,5 @@
+using Ucu.Poo.DiscordBot.Domain;
+
 namespace Poke.Clases
 {
     /// <summary>
@@ -73,5 +75,7 @@ namespace Poke.Clases
         {
             return $"{Name} (Daño: {Damage}  Tipo: {AttackType})";
         }
+        
+        
     }
 }

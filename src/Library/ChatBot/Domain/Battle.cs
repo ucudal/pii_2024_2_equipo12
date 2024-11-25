@@ -109,10 +109,14 @@ public class Battle
         return Player1.PokemonList.Count == 6 && Player2.PokemonList.Count == 6;
     }
 
-    public string? ChangeTurn()
+    public string? ChangeTurn(Trainer player)
     { 
         Turn = Turn == Player1 ? Player2 : Player1; // Cambia el turno
         ActualTurn += 1;
+        if (player.CoolDown != 0)
+        {
+            player.CoolDown -= 1;
+        }
         return BattleFinished();
     }
 }
