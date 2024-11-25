@@ -74,7 +74,7 @@ namespace LibraryTests
     [TestFixture]
     public class BattleListTests
     {
-        private BattleList battleList;
+        private BattlesList battleList;
         private Battle battle1;
         private Battle battle2;
         private Trainer trainer1;
@@ -85,45 +85,33 @@ namespace LibraryTests
         [SetUp]
         public void SetUp()
         {
-            battleList = new BattleList();
             trainer1 = new Trainer("Trainer1");
             trainer2 = new Trainer("Trainer2");
-            trainer3 = new Trainer("Trainer3");
-            trainer4 = new Trainer("Trainer4");
 
             battle1 = new Battle(trainer1, trainer2);
-            battle2 = new Battle(trainer3, trainer4);
         }
 
         [Test]
         public void AddBattle_Test()
         {
-            battleList.AddBattle(battle1);
-            Assert.That(battleList.Battles, Contains.Item(battle1), "The battle list should contain battle1.");
+            battleList.AddBattle(trainer1, trainer2);
+            Assert.That(battleList, Contains.Item(battle1), "La lista de batallas debería contener battle1.");
         }
 
         [Test]
         public void GetBattle_Test()
         {
-            battleList.AddBattle(battle1);
-            var retrievedBattle = battleList.GetBattle(trainer1, trainer2);
-            Assert.That(retrievedBattle, Is.EqualTo(battle1), "The retrieved battle should be battle1.");
+            battleList.AddBattle(trainer1, trainer2);
+            var retrievedBattle = battleList.GetBattleByPlayer(trainer1.DisplayName);
+            Assert.That(retrievedBattle, Is.EqualTo(battle1), "La batalla debería ser battle1.");
         }
 
         [Test]
         public void BattleExists_Test()
         {
-            battleList.AddBattle(battle1);
-            bool exists = battleList.BattleExists(trainer1, trainer2);
-            Assert.That(exists, Is.True, "The battle between trainer1 and trainer2 should exist.");
-        }
-
-        [Test]
-        public void RemoveBattle_Test()
-        {
-            battleList.AddBattle(battle1);
-            battleList.RemoveBattle(battle1);
-            Assert.That(battleList.Battles, Does.Not.Contain(battle1), "The battle list should not contain battle1 after removal.");
+            battleList.AddBattle(trainer1, trainer2);
+            var exists = battleList.GetBattleByPlayer(trainer1.DisplayName);
+            Assert.That(exists, Is.Not.Null, "Deberia existir una batalla.");
         }
     }
     [TestFixture]
