@@ -79,79 +79,98 @@ public static class PokemonCatalog
                 return new List<Attack> 
                 {
                     new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Vine Whip", 45, Poke.Clases.Type.PokemonType.Plant, false),
-                    new Poisoned("Poison Powder", 0, Poke.Clases.Type.PokemonType.Poison, true)
+                    new Attack("VineWhip", 45, Poke.Clases.Type.PokemonType.Plant, false),
+                    new Poisoned("PoisonPowder", 60, Poke.Clases.Type.PokemonType.Poison, true),
+                    new Burned("Flamethrower", 90, Poke.Clases.Type.PokemonType.Fire, true),
                 };
             case Catalog.Charmander:
                 return new List<Attack>
                 {
                     new Attack("Scratch", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Ember", 40, Poke.Clases.Type.PokemonType.Fire, true),
-                    new Burned("Flamethrower", 90, Poke.Clases.Type.PokemonType.Fire, true)
+                    new Attack("Ember", 40, Poke.Clases.Type.PokemonType.Fire, false),
+                    new Burned("Flamethrower", 90, Poke.Clases.Type.PokemonType.Fire, true),
+                    new Paralized("ThunderWave", 100, Poke.Clases.Type.PokemonType.Electric, true),
                 };
             case Catalog.Squirtle:
                 return new List<Attack>
                 {
                     new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Water Gun", 40, Poke.Clases.Type.PokemonType.Water, true),
-                    new Attack("Bubble", 40, Poke.Clases.Type.PokemonType.Water, true)
+                    new Attack("WaterGun", 35, Poke.Clases.Type.PokemonType.Water, false),
+                    new Paralized("Bubble", 60, Poke.Clases.Type.PokemonType.Water, true),
+                    new IsAsleep("Sing", 100, Poke.Clases.Type.PokemonType.Normal, true),
                 };
             case Catalog.Pikachu:
                 return new List<Attack>
                 {
-                    new Attack("Quick Attack", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Thunder Shock", 40, Poke.Clases.Type.PokemonType.Electric, true),
-                    new Paralized("Thunder Wave", 0, Poke.Clases.Type.PokemonType.Electric, true)
+                    new Attack("QuickAttack", 40, Poke.Clases.Type.PokemonType.Normal, false),
+                    new Attack("ThunderShock", 40, Poke.Clases.Type.PokemonType.Electric, false),
+                    new Paralized("ThunderWave", 65, Poke.Clases.Type.PokemonType.Electric, true),
+                    new IsAsleep("Thunder", 100, Poke.Clases.Type.PokemonType.Electric, true)
                 };
             case Catalog.Jigglypuff:
                 return new List<Attack>
                 {
                     new Attack("Pound", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new IsAsleep("Sing", 0, Poke.Clases.Type.PokemonType.Normal, true),
-                    new Attack("Double Slap", 15, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Body Slam", 85, Poke.Clases.Type.PokemonType.Normal, false)
+                    new Attack("Sing", 0, Poke.Clases.Type.PokemonType.Normal, false),
+                    new Burned("DoubleSlap", 65, Poke.Clases.Type.PokemonType.Normal, true),
+                    new Poisoned("BodySlam", 85, Poke.Clases.Type.PokemonType.Normal, true),
                 };
             case Catalog.Eevee:
                 return new List<Attack>
                 {
-                    new Attack("Quick Attack", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Bite", 60, Poke.Clases.Type.PokemonType.Normal, false) 
+                    new Attack("QuickAttack", 40, Poke.Clases.Type.PokemonType.Normal, false),
+                    new Attack("Bite", 60, Poke.Clases.Type.PokemonType.Normal, false),
+                    new Burned("Flamethrower", 70, Poke.Clases.Type.PokemonType.Fire, true),
+                    new IsAsleep("Swift", 100, Poke.Clases.Type.PokemonType.Normal, true),
                 };
             case Catalog.Psyduck:
                 return new List<Attack>
                 {
-                    new Attack("Water Gun", 40, Poke.Clases.Type.PokemonType.Water, true),
-                    new Attack("Confusion", 50, Poke.Clases.Type.PokemonType.Psychic, true)
+                    new Attack("WaterGun", 40, Poke.Clases.Type.PokemonType.Water, false),
+                    new Attack("Confusion", 50, Poke.Clases.Type.PokemonType.Psychic, false),
+                    new IsAsleep("Disable", 30, Poke.Clases.Type.PokemonType.Psychic, true),
+                    new Paralized("HydroPump", 110, Poke.Clases.Type.PokemonType.Water, true),
                 };
             case Catalog.Geodude:
                 return new List<Attack>
                 {
                     new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false),
-                    new Attack("Rock Throw", 50, Poke.Clases.Type.PokemonType.Rock, false)
+                    new Attack("RockThrow", 50, Poke.Clases.Type.PokemonType.Rock, false),
+                    new Burned("Magnitude", 80, Poke.Clases.Type.PokemonType.Rock, true),
+                    new Poisoned("Earthquake", 100, Poke.Clases.Type.PokemonType.Psychic, true),
                 };
             case Catalog.Machop:
                 return new List<Attack>
                 {
-                    new Attack("Karate Chop", 50, Poke.Clases.Type.PokemonType.Fighter, true),
-                    new Attack("Low Kick", 50, Poke.Clases.Type.PokemonType.Fighter, false)
+                    new Attack("KarateChop", 50, Poke.Clases.Type.PokemonType.Fighter, false),
+                    new Attack("LowKick", 50, Poke.Clases.Type.PokemonType.Fighter, false),
+                    new IsAsleep("SeismicToss", 80, Poke.Clases.Type.PokemonType.Fighter, true),
+                    new Burned("FirePunch", 100, Poke.Clases.Type.PokemonType.Fire, true),
+                    
                 };
             case Catalog.Gastly:
                 return new List<Attack>
                 {
                     new Attack("Lick", 30, Poke.Clases.Type.PokemonType.Ghost, false),
-                    new Attack("Night Shade", 50, Poke.Clases.Type.PokemonType.Ghost, true)
+                    new Attack("NightShade", 50, Poke.Clases.Type.PokemonType.Ghost, false),
+                    new IsAsleep("DreamEater", 75, Poke.Clases.Type.PokemonType.Psychic, true),
+                    new Burned("ShadowBall", 100, Poke.Clases.Type.PokemonType.Ghost, true),
                 };
             case Catalog.Oddish:
                 return new List<Attack>
                 {
-                    new Attack("Absorb", 20, Poke.Clases.Type.PokemonType.Plant, true),
-                    new Poisoned("Poison Powder", 0, Poke.Clases.Type.PokemonType.Poison, true)
+                    new Attack("Absorb", 20, Poke.Clases.Type.PokemonType.Plant, false),
+                    new Attack("PoisonPowder", 35, Poke.Clases.Type.PokemonType.Poison, false),
+                    new Paralized("Acid", 40, Poke.Clases.Type.PokemonType.Poison, true),
+                    new IsAsleep("SolarBeam", 100, Poke.Clases.Type.PokemonType.Plant, true),
                 };
             case Catalog.Growlithe:
                 return new List<Attack>
                 {
-                    new Attack("Ember", 40, Poke.Clases.Type.PokemonType.Fire, true),
-                    new Attack("Bite", 60, Poke.Clases.Type.PokemonType.Normal, false)
+                    new Attack("Ember", 40, Poke.Clases.Type.PokemonType.Fire, false),
+                    new Attack("Bite", 60, Poke.Clases.Type.PokemonType.Normal, false),
+                    new Burned("Flamethrower", 90, Poke.Clases.Type.PokemonType.Fire, true),
+                    new Poisoned("FireBlast", 100, Poke.Clases.Type.PokemonType.Fire, true),
                 };
             default:
                 throw new ArgumentException("Pokémon no encontrado en el catálogo.");
