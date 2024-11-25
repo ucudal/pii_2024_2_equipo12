@@ -12,7 +12,7 @@ public class UseInitialPokemonCommand : ModuleBase<SocketCommandContext>
     {
         string displayName = CommandHelper.GetDisplayName(Context);
 
-        await ReplyAsync($"{displayName}:\n{Facade.Instance.AssignActualPokemon(displayName, pokemonName)}"  +
+        await ReplyAsync($"{displayName}:\n{Facade.Instance.AssignActualPokemon(displayName, pokemonName).message}"  +
                          $"\n{Facade.Instance.GetPokemonAttacks(displayName, pokemonName)}" );
     }
 }

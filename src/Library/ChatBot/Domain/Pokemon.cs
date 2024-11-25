@@ -221,6 +221,7 @@ public class Pokemon
             double AttackCapacity = random.Next(0, 2); // 0 o 1 definen si puede atacar
         }
     }
+    
 
     public Attack? GetAttackByName(string attackName)
     {
