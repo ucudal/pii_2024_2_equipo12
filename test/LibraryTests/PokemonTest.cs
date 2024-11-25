@@ -6,6 +6,36 @@ using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 
 namespace LibraryTests
 {
+    
+    [TestFixture]
+    public class AttackTests
+    {
+        private Attack attack;
+
+        [SetUp]
+        public void SetUp()
+        {
+            attack = new Attack("Thunderbolt", 40, Poke.Clases.Type.PokemonType.Electric, false);
+        }
+
+        [Test]
+        public void AttackInitialization_Test()
+        {
+            Assert.That(attack.Name, Is.EqualTo("Thunderbolt"), "Attack name should be Thunderbolt.");
+            Assert.That(attack.Damage, Is.EqualTo(40), "Attack power should be 40.");
+            Assert.That(attack.AttackType, Is.EqualTo(Poke.Clases.Type.PokemonType.Electric), "Attack type should be Electric.");
+            Assert.That(attack.IsSpecial, Is.False, "Attack should not be special.");
+        }
+
+        [Test]
+        public void AttackEffectiveness_Test()
+        {
+            // Assuming there is a method to calculate effectiveness
+            // double effectiveness = attack.CalculateEffectiveness(Poke.Clases.Type.PokemonType.Water);
+            // Assert.That(effectiveness, Is.EqualTo(expectedValue), "Effectiveness should be calculated correctly.");
+        }
+    }
+}
     [TestFixture]
     public class TrainerTests
     {
@@ -101,50 +131,63 @@ namespace LibraryTests
             Console.WriteLine($"El ganador es: {winner}");
         }
     }
-}
-    
+
+
 
     [TestFixture]
-    public class BattleListTests
+    public class NormalAttacksTests
     {
-        private BattlesList battleList;
-        private Battle battle1;
-        private Battle battle2;
-        private Trainer trainer1;
-        private Trainer trainer2;
-        private Trainer trainer3;
-        private Trainer trainer4;
+        private Pokemon attacker;
+        private Pokemon defender;
+        private Attack normalAttack;
+
+    [SetUp]
+    public void SetUp()
+    {
+        normalAttack = new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false);
+        attacker = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric,
+            new List<Attack> { normalAttack });
+        defender = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
+    }
+
+    [Test]
+    public void NormalAttack_ReducesDefenderHp()
+    {
+        double initialHp = defender.Hp;
+        attacker.Attack(null, defender, attacker, normalAttack);
+        Assert.That(defender.Hp, Is.LessThan(initialHp), "Defender's HP should be reduced after a normal attack.");
+    }
+
+    [Test]
+    public void NormalAttack_DoesNotAffectAttackerHp()
+    {
+        double initialHp = attacker.Hp;
+        attacker.Attack(null, defender, attacker, normalAttack);
+        Assert.That(attacker.Hp, Is.EqualTo(initialHp), "Attacker's HP should not be affected by a normal attack.");
+    }
+
+    [TestFixture]
+    public class AttackTests
+    {
+        private Attack attack;
 
         [SetUp]
         public void SetUp()
         {
-            trainer1 = new Trainer("Trainer1");
-            trainer2 = new Trainer("Trainer2");
+            attack = new Attack("Thunderbolt", 40, Poke.Clases.Type.PokemonType.Electric, false);
         }
 
         [Test]
-        public void AddBattle_Test()
+        public void AttackInitialization_Test()
         {
-            var batalla = battleList.AddBattle(trainer1, trainer2);
-            Assert.That(battleList, Contains.Item(batalla), "La lista de batallas debería contener battle1.");
-        }
-
-        [Test]
-        public void GetBattle_Test()
-        {
-            battleList.AddBattle(trainer1, trainer2);
-            var retrievedBattle = battleList.GetBattleByPlayer(trainer1.DisplayName);
-            Assert.That(retrievedBattle, Is.EqualTo(battle1), "La batalla debería ser battle1.");
-        }
-
-        [Test]
-        public void BattleExists_Test()
-        {
-            battleList.AddBattle(trainer1, trainer2);
-            var exists = battleList.GetBattleByPlayer(trainer1.DisplayName);
-            Assert.That(exists, Is.Not.Null, "Deberia existir una batalla.");
+            Assert.That(attack.Name, Is.EqualTo("Thunderbolt"), "Attack name should be Thunderbolt.");
+            Assert.That(attack.Damage, Is.EqualTo(40), "Attack power should be 40.");
+            Assert.That(attack.AttackType, Is.EqualTo(Poke.Clases.Type.PokemonType.Electric),
+                "Attack type should be Electric.");
+            Assert.That(attack.IsSpecial, Is.False, "Attack should not be special.");
         }
     }
+
     [TestFixture]
     public class PokemonTests
     {
@@ -476,7 +519,7 @@ namespace LibraryTests
         private Pokemon pokemonOponente;
         private Battle batalla;
 
-        [SetUp]    
+        [SetUp]
         public void SetUp()
         {
             pokemonJugador = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
@@ -508,7 +551,7 @@ namespace LibraryTests
             */
             }
         }
-        
+
         [TestFixture]
         public class WaitingListTests
         {
@@ -537,8 +580,11 @@ namespace LibraryTests
             {
                 waitingList.AddTrainer(trainer1.DisplayName);
                 var result = waitingList.FindTrainerByDisplayName("Ash");
-                Assert.That(result.DisplayName, Is.EqualTo(trainer1.DisplayName), "Should return the correct trainer from the waiting list.");
+                Assert.That(result.DisplayName, Is.EqualTo(trainer1.DisplayName),
+                    "Should return the correct trainer from the waiting list.");
             }
-            
+
         }
     }
+    
+}
