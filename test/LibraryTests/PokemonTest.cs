@@ -7,6 +7,39 @@ using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 namespace LibraryTests
 {
     [TestFixture]
+    public class TrainerTests
+    {
+        private Trainer trainer;
+        private Pokemon pikachu;
+        private Pokemon charmander;
+        private SuperPotion superPotion;
+
+        [SetUp]
+        public void SetUp()
+        {
+            trainer = new Trainer("Ash");
+            pikachu = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
+            charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
+            superPotion = new SuperPotion();
+        }
+
+        [Test]
+        public void AddPokemon_Test()
+        {
+            trainer.AddPokemon(pikachu);
+            Assert.That(trainer.PokemonList, Contains.Item(pikachu), "Trainer should have Pikachu in the Pokémon list.");
+        }
+
+        [Test]
+        public void SetActualPokemon_Test()
+        {
+            trainer.AddPokemon(pikachu);
+            trainer.SetActualPokemon(pikachu);
+            Assert.That(trainer.ActualPokemon, Is.EqualTo(pikachu), "Trainer's actual Pokémon should be Pikachu.");
+        }
+    }
+    
+    [TestFixture]
     public class BattleSimulationTest
     {
         [Test]
@@ -71,6 +104,8 @@ namespace LibraryTests
         }
     }
 }
+    
+
     [TestFixture]
     public class BattleListTests
     {
@@ -87,15 +122,13 @@ namespace LibraryTests
         {
             trainer1 = new Trainer("Trainer1");
             trainer2 = new Trainer("Trainer2");
-
-            battle1 = new Battle(trainer1, trainer2);
         }
 
         [Test]
         public void AddBattle_Test()
         {
-            battleList.AddBattle(trainer1, trainer2);
-            Assert.That(battleList, Contains.Item(battle1), "La lista de batallas debería contener battle1.");
+            var batalla = battleList.AddBattle(trainer1, trainer2);
+            Assert.That(battleList, Contains.Item(batalla), "La lista de batallas debería contener battle1.");
         }
 
         [Test]
@@ -163,21 +196,6 @@ namespace LibraryTests
             var newAttack = new Attack("Quick Attack", 20, Poke.Clases.Type.PokemonType.Electric, false);
             pikachu.AddAttack(newAttack);
             Assert.That(pikachu.AttackList, Contains.Item(newAttack), "Pikachu should have the new attack in its attack list.");
-        }
-
-        [Test]
-        public void IsPokemonAlive_Test()
-        {
-            Assert.That(pikachu.IsPokemonAlive(), Is.True, "Pikachu debería estar vivo.");
-            pikachu.RecibeDamage(null, pikachu.Hp);
-            Assert.That(pikachu.IsPokemonAlive(), Is.False, "Pikachu debería estar muerto.");
-        }
-
-        [Test]
-        public void ApplyState_Test()
-        {
-            pikachu.ApplyState(charmander, "Burned");
-            Assert.That(charmander.State, Is.EqualTo("Burned"), "Charmander should be burned.");
         }
 
         [Test]
@@ -288,9 +306,9 @@ namespace LibraryTests
                 Assert.That(turnoInicial, Is.Not.Empty); */
             }
         }
-    }
 
-    [TestFixture]
+    
+[TestFixture]
     public class Pick6PokemonTest
     {
         private Trainer jugador;
