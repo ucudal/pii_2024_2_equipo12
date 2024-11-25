@@ -8,11 +8,11 @@ public class UseInitialPokemonCommand : ModuleBase<SocketCommandContext>
     [Command("use")]
     [Summary("Selecciona el primer pokemon para batallar")]
     
-    public async Task ExecuteAsync(string pokemonName, double health)
+    public async Task ExecuteAsync(string pokemonName)
     {
         string displayName = CommandHelper.GetDisplayName(Context);
 
         await ReplyAsync($"{displayName}:\n{Facade.Instance.AssignActualPokemon(displayName, pokemonName)}"  +
-                         $"\n   {Facade.Instance.GetPokemonAttacks(displayName, pokemonName, health)}" );
+                         $"\n{Facade.Instance.GetPokemonAttacks(displayName, pokemonName)}" );
     }
 }
