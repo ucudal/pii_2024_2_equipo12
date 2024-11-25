@@ -354,22 +354,29 @@ namespace LibraryTests
         {
             var pokemon1 = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric);
             var pokemonOponente = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
-    
+
             jugador = new Trainer("Jugador1");
             jugador.AddPokemon(pokemon1);
             jugador.SetActualPokemon(pokemon1);
-    
+
             oponente = new Trainer("Jugador2");
             oponente.AddPokemon(pokemonOponente);
             oponente.SetActualPokemon(pokemonOponente);
-    
+
             batalla = new Battle(jugador, oponente);
         }
-        
+
         [Test]
         public void IndicarDeQuienEsElTurno_Test()
         {
-            Trainer turnoInicial = batalla.Turn;
+            // Inicializa el turno
+            batalla.InitialTurn();
+
+            // Verifica que el turno inicial sea del jugador o del oponente
+            Assert.That(batalla.Turn, Is.EqualTo(jugador).Or.EqualTo(oponente),
+                "El turno inicial debe ser del jugador o del oponente.");
+
+            // Ejecuta el primer turno
             if (batalla.Turn == jugador)
             {
                 Assert.That(batalla.Turn, Is.EqualTo(jugador), "El turno debería ser del jugador.");
