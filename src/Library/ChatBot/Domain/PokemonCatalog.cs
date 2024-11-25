@@ -129,7 +129,7 @@ public static class PokemonCatalog
                     new Attack("WaterGun", 40, Poke.Clases.Type.PokemonType.Water, false),
                     new Attack("Confusion", 50, Poke.Clases.Type.PokemonType.Psychic, false),
                     new IsAsleep("Disable", 30, Poke.Clases.Type.PokemonType.Psychic, true),
-                    new Paralized("HydroPump", 110, Poke.Clases.Type.PokemonType.Water, true),
+                    new Paralized("HydroPump", 100, Poke.Clases.Type.PokemonType.Water, true),
                 };
             case Catalog.Geodude:
                 return new List<Attack>
