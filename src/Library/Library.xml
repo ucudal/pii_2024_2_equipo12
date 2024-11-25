@@ -36,18 +36,6 @@
             atacar a un pokemon enemigo.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.SpecialAttackCommand">
-            <summary>
-            Esta clase implementa el comando 'specialAttackPokemon' del bot. Este comando le permite al usuario
-            realizar un ataque especial a un pokemon enemigo.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.SpecialAttackCommand.ExecuteAsync(System.String,System.String)">
-            <summary>
-            Implementa el comando 'specialAttackPokemon'. Este comando le permite al usuario
-            realizar un ataque especial a un pokemon enemigo.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
             <summary>
             Esta clase implementa el comando 'changepokemon' del bot. Este comando permite
@@ -350,7 +338,7 @@
             <param name="opponentDisplayName">El oponente.</param>
             <returns> Un mensaje de confirmación del ataque </returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.SpecialAttackPokemon(System.String,System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.SpecialAttackPokemon(System.String,System.String)">
             <summary>
             Usuario gasta su turno atacando al oponente con un ataque especial de su pokemon
             </summary>

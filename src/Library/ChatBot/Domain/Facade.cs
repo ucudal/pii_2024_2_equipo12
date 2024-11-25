@@ -241,7 +241,7 @@ public class Facade
                         if (pokemon.IsAlive)
                         {
                             player.ActualPokemon = pokemon;
-                            string? battleFinished = battle.ChangeTurn();
+                            string? battleFinished = battle.ChangeTurn(player);
                             if (battleFinished != null)
                             {
                                 return battleFinished;
@@ -316,7 +316,7 @@ public class Facade
                         if (attack != null && attack.IsSpecial == false ) // Descartar los ataques especiales
                         {
                             string? isOpponentPokemonDead = playerPokemon.Attack(player, opponent.ActualPokemon, playerPokemon, attack);
-                            string? battleFinished = battle.ChangeTurn();
+                            string? battleFinished = battle.ChangeTurn(player);
                             if (battleFinished != null)
                             {
                                 return (battleFinished, null);
@@ -345,31 +345,78 @@ public class Facade
     /// <param name="specialAttackName"></param>
     /// <param name="opponentDisplayName"></param>
     /// <returns> Un mensaje de confirmación del ataque especial </returns>
-    public string SpecialAttackPokemon(string playerDisplayName, string specialAttackName, string opponentDisplayName)
+   
+    public (string message, string? OpponentDisplayName) SpecialAttackPokemon(string playerDisplayName, string specialAttackName)
     {
-        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
-        Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
-        if (player.Stage != 2 || battle.Turn != player || battle.ActualTurn % 2 != 0) // si Actualturn es impar, no puede atacar
+        Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(playerDisplayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
+        if (opponent == null || battle == null)
         {
-            return "❌ No puedes atacar en este momento";
+            return ("❌ Debes tener un oponente y una batalla empezada para poder atacar", null);
         }
-        else
+
+        if (battle.BattleStarted)
         {
-            Pokemon playerPokemon = player.ActualPokemon;
-            Attack? specialAttack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == specialAttackName);
-            if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
+            if (player.ActualPokemon != null && opponent.ActualPokemon != null)
             {
-                playerPokemon.Attack(null, opponent.ActualPokemon, playerPokemon, specialAttack);
-                battle.ActualTurn += 1;
-                battle.ChangeTurn();
-                return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨";
+                if (battle.Turn == player)
+                {
+                    if (player.CoolDown == 0)
+                    {
+                        Pokemon playerPokemon = player.ActualPokemon;
+                        if (playerPokemon.IsAlive)
+                        {
+                            Attack? specialAttack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == specialAttackName);
+                            if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
+                            {
+                                string? isOpponentPokemonDead = playerPokemon.Attack(player, opponent.ActualPokemon,
+                                    playerPokemon, specialAttack);
+                                player.CoolDown += 2; 
+                                string? battleFinished = battle.ChangeTurn(player);
+                                if (battleFinished != null)
+                                {
+                                    return (battleFinished, null);
+                                }
+
+                                if (isOpponentPokemonDead != null)
+                                {
+                                    return (isOpponentPokemonDead, opponent.DisplayName);
+                                }
+
+                                return (
+                                    $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨",
+                                    null);
+                            }
+
+                            return ("❌ No tienes ese ataque especial", null);
+                        }
+                        return ($"❌ {playerPokemon.Name} ha muerto, usa el comando !change para cambiar a tu próximo pokemon.", null);
+                    }
+                    return ($"❌ No puedes lanzar un ataque especial, tienes un cooldown de {player.CoolDown} turnos", null);
+                }
+                return ($"❌ No puedes atacar, es el turno de {opponent.DisplayName}", null);
             }
-            return "❌ No tienes ese ataque especial";
-            
+            return ($"❌ Los dos jugadores deben tener seleccionado un pokemon, usa el comando !use", null);
         }
+        return ("❌ La batalla aun no empezó, selecciona tus pokemon!", null);
     }
-    
+
+    public (string message, string? OpponentDisplayName) DetermineAttack(string displayName, string attackName)
+    {
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Pokemon pokemon = player.ActualPokemon;
+        Attack attack = pokemon.GetAttackByName(attackName);
+        if (attack != null)
+        {
+            if (attack.IsSpecial = true)
+            {
+                return SpecialAttackPokemon(displayName, attackName);
+            }
+            return AttackPokemon(displayName, attackName);
+        }
+        return ("❌ No tienes ese ataque", null);  
+    }
     /// <summary>
     /// Verifica si un jugador está en una batalla.
     /// </summary>

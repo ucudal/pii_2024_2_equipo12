@@ -33,6 +33,9 @@ using Poke.Clases;
         /// Lista de items que el entrenador tiene disponibles.
         /// </summary>
         public List<Item> Items { get; }
+        
+        
+        public int CoolDown { get; set; }
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="Trainer"/> con
@@ -176,5 +179,6 @@ using Poke.Clases;
             }
             return null;
         }
+        
         
     }
