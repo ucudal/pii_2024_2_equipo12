@@ -501,4 +501,37 @@ namespace LibraryTests
             */
             }
         }
+        
+        [TestFixture]
+        public class WaitingListTests
+        {
+            private WaitingList waitingList;
+            private Trainer trainer1;
+            private Trainer trainer2;
+
+            [SetUp]
+            public void SetUp()
+            {
+                waitingList = new WaitingList();
+                trainer1 = new Trainer("Ash");
+                trainer2 = new Trainer("Misty");
+            }
+
+            [Test]
+            public void AddTrainer_Test()
+            {
+                waitingList.AddTrainer(trainer1.DisplayName);
+                var result = waitingList.FindTrainerByDisplayName("Ash");
+                Assert.That(result, Is.Not.Null, "Trainer should be added to the waiting list.");
+            }
+
+            [Test]
+            public void FindTrainerByDisplayName_Test()
+            {
+                waitingList.AddTrainer(trainer1.DisplayName);
+                var result = waitingList.FindTrainerByDisplayName("Ash");
+                Assert.That(result.DisplayName, Is.EqualTo(trainer1.DisplayName), "Should return the correct trainer from the waiting list.");
+            }
+            
+        }
     }
