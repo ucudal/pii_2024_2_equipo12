@@ -6,7 +6,104 @@ using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 
 namespace LibraryTests
 {
+    
+    [TestFixture]
+    public class ParalizedStateTests
+    {
+        private Pokemon charmander;
 
+        [SetUp]
+        public void SetUp()
+        {
+            charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
+        }
+
+        [Test]
+        public void ParalizedState_IsSetCorrectly()
+        {
+            charmander.Paralized = true;
+            Assert.That(charmander.Paralized, Is.True, "Charmander should be paralyzed.");
+        }
+
+        [Test]
+        public void ParalizedState_IsResetCorrectly()
+        {
+            charmander.Paralized = true;
+            charmander.Paralized = false;
+            Assert.That(charmander.Paralized, Is.False, "Charmander should not be paralyzed.");
+        }
+    }
+        
+    
+    [TestFixture]
+    public class BurnedStateTests
+    {
+        private Pokemon charmander;
+
+        [SetUp]
+        public void SetUp()
+        {
+            charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire);
+        }
+
+        [Test]
+        public void BurnedState_ReducesHp()
+        {
+            charmander.Burned = true;
+            double initialHp = charmander.Hp;
+            charmander.StateActualization();
+            Assert.That(charmander.Hp, Is.LessThan(initialHp), "Charmander's HP should be reduced due to burn.");
+        }
+
+        [Test]
+        public void BurnedState_DoesNotReduceHpWhenNotBurned()
+        {
+            double initialHp = charmander.Hp;
+            charmander.StateActualization();
+            Assert.That(charmander.Hp, Is.EqualTo(initialHp), "Charmander's HP should not be reduced when not burned.");
+        }
+    }
+    [TestFixture]
+    public class BattleTests
+    {
+        private Trainer trainer1;
+        private Trainer trainer2;
+        private Battle battle;
+        private Pokemon pikachu;
+        private Pokemon charmander;
+        private Attack tackle;
+
+        [SetUp]
+        public void SetUp()
+        {
+            trainer1 = new Trainer("Ash");
+            trainer2 = new Trainer("Gary");
+            tackle = new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false);
+            pikachu = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric, new List<Attack> { tackle });
+            charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire, new List<Attack> { tackle });
+            trainer1.AddPokemon(pikachu);
+            trainer2.AddPokemon(charmander);
+            battle = new Battle(trainer1, trainer2);
+        }
+        
+
+        [Test]
+        public void BattleFinished_Test()
+        {
+            Assert.That(battle.BattleFinished(), Is.Null, "Battle should not be finished initially.");
+            charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
+            Assert.That(battle.BattleFinished(), Is.Not.Null, "Battle should be finished when one trainer's Pokémon are all fainted.");
+        }
+
+        [Test]
+        public void GetWinner_Test()
+        {
+            Assert.That(battle.BattleFinished(), Is.Null, "There should be no winner initially.");
+            charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
+            Assert.That(battle.BattleFinished(), Is.EqualTo($"✅ {trainer1.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!"), "Trainer1 should be the winner when trainer2's Pokémon are all fainted.");
+        }
+    }
+    
     [TestFixture]
     public class TotalCureTests
     {
