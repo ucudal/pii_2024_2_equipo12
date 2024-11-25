@@ -30,7 +30,7 @@
             atacar a un pokemon enemigo.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.AttackCommand.ExecuteAsync(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Commands.AttackCommand.ExecuteAsync(System.String)">
             <summary>
             Implementa el comando 'attackPokemon'. Este comando le permite al usuario
             atacar a un pokemon enemigo.
@@ -220,12 +220,12 @@
             Contador del turno actual.
             </summary>
         </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.ReadyToStart">
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.BattleStarted">
             <summary>
             Booleano que se vuelve true cuando los dos entrenadores tienen los pokemones suficientes para la batalla.
             </summary>
         </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.BattleStarted">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
             <summary>
             Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
             valores recibidos como argumento.
@@ -310,7 +310,7 @@
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.StartBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CreateNewBattle(System.String,System.String)">
             <summary>
             Crea una batalla entre dos jugadores.
             </summary>
@@ -341,7 +341,7 @@
             <param name="potionName">El nombre de la poción.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AttackPokemon(System.String,System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AttackPokemon(System.String,System.String)">
             <summary>
             Usuario gasta su turno atacando al oponente con un ataque de su pokemon
             </summary>
@@ -359,6 +359,20 @@
             <param name="opponentDisplayName"></param>
             <returns> Un mensaje de confirmación del ataque especial </returns>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.IsPlayerInGame(System.String)">
+            <summary>
+            Verifica si un jugador está en una batalla.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador.</param>
+            <returns>Un booleano indicando si el jugador pertenece a una batalla.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PlayerWithPokemon(System.String)">
+            <summary>
+            Verifica si un jugador cuenta con los pokemon necesarios para combatir.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador.</param>
+            <returns>Un mensaje indicando si el jugador tiene los 6 pokemon o null en el caso que el jugador no este en una batalla.</returns>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PokemonSelection(System.String,System.String)">
             <summary>
             Gestiona la selección de Pokémon por parte de un jugador, validando
@@ -374,22 +388,19 @@
             con el proceso de selección.
             </returns> 
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.ShowCurrentSelections(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckToStartBattle(System.String)">
             <summary>
-            Muestra los Pokémon actualmente seleccionados por un jugador.
+            Verifica si la batalla esta lista para iniciar.
             </summary>
-            <param name="playerDisplayName">El nombre del jugador cuyas selecciones se mostrarán.</param>
-            <returns>
-            Una cadena que lista los Pokémon seleccionados por el jugador. Si no
-            hay selecciones, se indica que la lista está vacía.
-            </returns>
+            <param name="displayName">El nombre del jugador.</param>
+            <returns>Un booleano indicando si la batalla está lista.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckIfPlayerIsReady(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetOpponent(System.String)">
             <summary>
-            Verifica si un jugador está listo para combatir.
+            Obtiene el opponente del jugador pasado como parametro.
             </summary>
             <param name="playerDisplayName">El nombre del jugador.</param>
-            <returns>Un mensaje indicando si el jugador está listo o qué le falta para estarlo.</returns>
+            <returns>Un entrenador oponente.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog">
             <summary>
@@ -410,9 +421,9 @@
             <returns>Una instancia del Pokémon especificado.</returns>
             <exception cref="T:System.ArgumentException">Se lanza si el Pokémon no está en el catálogo.</exception>
         </member>
-        <member name="F:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.PokemonAttacks">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatAttackList(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
             <summary>
-            Diccionario que asocia cada entrada del catálogo con una lista de ataques específicos para ese Pokémon.
+            Función que asocia cada entrada del catálogo con una lista de ataques específicos para ese Pokémon.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Trainer">
@@ -431,7 +442,7 @@
             2: En una batalla, con los pokemones seleccionados
             </summary>
         </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Pokemons">
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.PokemonList">
             <summary>
             Lista de pokemones del entrenador.
             </summary>
@@ -457,9 +468,8 @@
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.AddPokemon(Poke.Clases.Pokemon)">
             <summary>
-            Agrega un pokemon a la lista de pokemones del entrenador.
+            Agrega un Pokémon a la selección del usuario.
             </summary>
-            <param name="pokemon">El pokemon a agregar.</param>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.GetTotalPokemonLife">
             <summary>
@@ -554,21 +564,6 @@
             Retorna una lista de todos los jugadores en la lista de espera.
             </summary>
             <returns>Una lista de jugadores esperando para jugar.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.AddPokemon(System.String,Poke.Clases.Pokemon)">
-            <summary>
-            Agrega un Pokémon a la selección del usuario.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.GetUserSelections(System.String)">
-            <summary>
-            Obtiene la lista de Pokémon seleccionados por el usuario.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Services.UserPokemonSelectionService.ClearSelections(System.String)">
-            <summary>
-            Limpia todas las selecciones del usuario.
-            </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Services.Bot">
             <summary>
@@ -677,13 +672,13 @@
             <param name="state">Estado inicial del Pokémon.</param>
             <param name="type">Tipo del Pokémon.</param>
         </member>
-        <member name="M:Poke.Clases.Pokemon.IsAlive">
+        <member name="M:Poke.Clases.Pokemon.IsPokemonAlive">
             <summary>
             Verifica si el Pokémon está vivo.
             </summary>
             <returns>Mensaje indicando si el Pokémon está vivo o muerto.</returns>
         </member>
-        <member name="M:Poke.Clases.Pokemon.Attack(Poke.Clases.Pokemon,Poke.Clases.Pokemon,Poke.Clases.Attack)">
+        <member name="M:Poke.Clases.Pokemon.Attack(Ucu.Poo.DiscordBot.Domain.Trainer,Poke.Clases.Pokemon,Poke.Clases.Pokemon,Poke.Clases.Attack)">
             <summary>
             Realiza un ataque contra otro Pokémon si tiene la capacidad para hacerlo.
             </summary>
@@ -697,7 +692,7 @@
             </summary>
             <param name="nuevoAttack">El ataque a añadir.</param>
         </member>
-        <member name="M:Poke.Clases.Pokemon.RecibeDamage(System.Double)">
+        <member name="M:Poke.Clases.Pokemon.RecibeDamage(Ucu.Poo.DiscordBot.Domain.Trainer,System.Double)">
             <summary>
             Aplica daño al Pokémon, reduciendo sus puntos de vida.
             </summary>

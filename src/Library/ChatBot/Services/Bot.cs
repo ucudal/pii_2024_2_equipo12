@@ -19,6 +19,14 @@ public class Bot : IBot
     private readonly DiscordSocketClient client;
     private readonly CommandService commands;
 
+    public DiscordSocketClient Client
+    {
+        get
+        {
+            return client;
+        } 
+    }
+
     public Bot(ILogger<Bot> logger, IConfiguration configuration)
     {
         this.logger = logger;

@@ -68,5 +68,10 @@ namespace Poke.Clases
             // Calcular el daño final aplicando la efectividad
             return Damage * effectiveness;
         }
+
+        public string AttackInfo()
+        {
+            return $"{Name} (Daño: {Damage}  Tipo: {AttackType})";
+        }
     }
 }

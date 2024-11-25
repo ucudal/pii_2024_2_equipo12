@@ -63,11 +63,11 @@ namespace LibraryTests
 
             jugador1 = new Trainer("Jugador 1");
             jugador1.AddPokemon(new Pokemon("Pikachu", 1, 10, "1", Poke.Clases.Type.PokemonType.Electric, attackList));
-            jugador1.SetActualPokemon(jugador1.Pokemons[0]);
+            jugador1.SetActualPokemon(jugador1.PokemonList[0]);
 
             jugador2 = new Trainer("Jugador 2");
             jugador2.AddPokemon(new Pokemon("Charizard", 1, 10, "2", Poke.Clases.Type.PokemonType.Fire, attackList));
-            jugador2.SetActualPokemon(jugador2.Pokemons[0]);
+            jugador2.SetActualPokemon(jugador2.PokemonList[0]);
 
             waitList = new WaitingList(jugador1, jugador2);
             battle = new Battle(jugador1, jugador2);
@@ -138,7 +138,7 @@ namespace LibraryTests
             jugador.AddPokemon(catalogoPokemon[i]);
         }
         // Verificar que el jugador tiene 6 Pokémon
-        Assert.That(jugador.Pokemons.Count, Is.EqualTo(6), "El jugador debería tener 6 Pokémon.");
+        Assert.That(jugador.PokemonList.Count, Is.EqualTo(6), "El jugador debería tener 6 Pokémon.");
         }
     }
 

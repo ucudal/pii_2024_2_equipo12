@@ -19,9 +19,10 @@ public class StartBattleCommand : ModuleBase<SocketCommandContext>
     {
         string displayName = CommandHelper.GetDisplayName(Context);
 
-        if (Facade.Instance.StartBattle(displayName))
+        if (Facade.Instance.CheckToStartBattle(displayName))
         {
             await ReplyAsync($"Comienza {displayName} vs {Facade.Instance.GetOpponent(displayName).DisplayName}");
+            await ReplyAsync("Con cual de tus pokemones quieres empezar? \n");
         }
     }
 }

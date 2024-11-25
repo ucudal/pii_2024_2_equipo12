@@ -33,8 +33,6 @@ public class Battle
     /// <summary>
     /// Booleano que se vuelve true cuando los dos entrenadores tienen los pokemones suficientes para la batalla.
     /// </summary>
-    public bool ReadyToStart { get; set; }
-    
     public bool BattleStarted { get; set; }
 
     /// <summary>
@@ -49,10 +47,10 @@ public class Battle
         Player1 = player1;
         State = "NotStarted";
         ActualTurn = 1;
-        ReadyToStart = false;
+        BattleStarted = false;
     }
     
-    public void InitialTurn()
+    public Trainer InitialTurn()
     {
         Random random = new Random();
         var initialTurn = random.Next(1, 3); // 1 para el primer jugador, 2 para el segundo jugador
@@ -64,18 +62,18 @@ public class Battle
         {
             Turn = Player2;
         }
+        return Turn;
     }
     
     public string? BattleFinished()
     {
         if (Player1.GetTotalPokemonLife() == 0)
         {
-            Console.WriteLine("El jugador 2 ha ganado");
-            return $"{Player2.DisplayName} ha ganado";
+            return $"✅ {Player2.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!";
         }
         if (Player2.GetTotalPokemonLife() == 0)
         {
-            return $"{Player1.DisplayName} ha ganado";
+            return $"✅ {Player1.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!";
         }
         return null;
     }
@@ -104,5 +102,17 @@ public class Battle
     public void EndBattle()
     {
         this.State = "Finished";
+    }
+
+    public bool ReadyForBattle()
+    {
+        return Player1.PokemonList.Count == 6 && Player2.PokemonList.Count == 6;
+    }
+
+    public string? ChangeTurn()
+    { 
+        Turn = Turn == Player1 ? Player2 : Player1; // Cambia el turno
+        ActualTurn += 1;
+        return BattleFinished();
     }
 }
