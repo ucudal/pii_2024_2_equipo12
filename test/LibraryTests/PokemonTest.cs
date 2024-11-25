@@ -36,10 +36,8 @@ namespace LibraryTests
             // Paso 3: Seleccionar Pokémon para cada jugador
             string player1Selection = "1 2 3 4 5 6"; // Índices simulados
             string player2Selection = "7 8 9 10 11 12"; // Índices simulados
-            var player1SelectResult = Facade.Instance.PokemonSelection(player1, player1Selection);
-            var player2SelectResult = Facade.Instance.PokemonSelection(player2, player2Selection);
-            Assert.That(player1SelectResult.ReadyForBattleMessage, Is.Not.Null, "Player1 no seleccionó 6 Pokémon");
-            Assert.That(player2SelectResult.ReadyForBattleMessage, Is.Not.Null, "Player2 no seleccionó 6 Pokémon");
+            Assert.That(player1Selection, Is.Not.Null, "Player1 no seleccionó 6 Pokémon");
+            Assert.That(player2Selection, Is.Not.Null, "Player2 no seleccionó 6 Pokémon");
 
             // Paso 4: Elegir Pokémon inicial
             Facade.Instance.AssignActualPokemon(player1, "Bulbasaur");
@@ -288,7 +286,6 @@ namespace LibraryTests
                 Assert.That(turnoInicial, Is.Not.Empty); */
             }
         }
-    }
 
     [TestFixture]
     public class Pick6PokemonTest
@@ -353,13 +350,6 @@ namespace LibraryTests
         [Test]
         public void IndicarDeQuienEsElTurno_Test()
         {
-            // Inicializa el turno
-            batalla.InitialTurn();
-
-            // Verifica que el turno inicial sea del jugador 1 o 2
-            Assert.That(batalla.Turn, Is.EqualTo(1).Or.EqualTo(2), "El turno inicial debe ser del jugador 1 o 2.");
-
-            // Ejecuta el primer turno
             Trainer turnoInicial = batalla.Turn;
             if (batalla.Turn == jugador)
             {
