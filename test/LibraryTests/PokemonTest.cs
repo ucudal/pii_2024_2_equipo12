@@ -2,10 +2,211 @@
 using Poke.Clases;
 using Ucu.Poo.DiscordBot.Domain;
 using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
-using Type = System.Type;
 
 namespace LibraryTests
 {
+    using NUnit.Framework;
+using Ucu.Poo.DiscordBot.Commands;
+using Ucu.Poo.DiscordBot.Domain;
+
+namespace Ucu.Poo.DiscordBot.Tests
+{
+    [TestFixture]
+    public class BattleSimulationTest
+    {
+        [Test]
+        public void SimulateFullBattle()
+        {
+            // Crear instancias de comandos
+            var joinCommand = new JoinCommand();
+            var battleCommand = new BattleCommand();
+            var selectPokemonCommand = new SelectPokemonCommand();
+            var useInitialPokemonCommand = new UseInitialPokemonCommand();
+            var attackCommand = new AttackCommand();
+            var usePotionCommand = new UsePotionCommand();
+            var changePokemonCommand = new ChangePokemonCommand();
+
+            // Simular nombres de jugadores
+            string player1 = "Marto";
+            string player2 = "Kike";
+
+            // Paso 1: Ambos jugadores se unen a la lista de espera
+            Facade.Instance.AddTrainerToWaitingList(player1);
+            Facade.Instance.AddTrainerToWaitingList(player2);
+
+            // Paso 2: Crear una batalla entre los dos jugadores
+            var battleResult = Facade.Instance.CreateNewBattle(player1, player2);
+            Assert.That(battleResult, Is.Not.Null, "La batalla no se pudo iniciar correctamente");
+
+            // Paso 3: Seleccionar Pokémon para cada jugador
+            string player1Selection = "1 2 3 4 5 6"; // Índices simulados
+            string player2Selection = "7 8 9 10 11 12"; // Índices simulados
+            var player1SelectResult = Facade.Instance.PokemonSelection(player1, player1Selection);
+            var player2SelectResult = Facade.Instance.PokemonSelection(player2, player2Selection);
+            Assert.That(player1SelectResult.ReadyForBattleMessage, Is.Not.Null, "Player1 no seleccionó 6 Pokémon");
+            Assert.That(player2SelectResult.ReadyForBattleMessage, Is.Not.Null, "Player2 no seleccionó 6 Pokémon");
+
+            // Paso 4: Elegir Pokémon inicial
+            Facade.Instance.AssignActualPokemon(player1, "Bulbasaur");
+            Facade.Instance.AssignActualPokemon(player2, "Charmander");
+
+            // Paso 5: Simular turnos hasta que uno de los jugadores gane
+            string winner = null;
+            while (winner == null)
+            {
+                // Turno de Player1
+                var player1Attack = Facade.Instance.AttackPokemon(player1, "Tackle");
+                Assert.That(player1Attack, Is.Not.Null, "El ataque de Player1 no se ejecutó correctamente");
+
+                // Comprobar si alguien ganó
+                winner = Facade.Instance.GetBattleResult(player1, player2);
+                if (winner != null) break;
+
+                // Turno de Player2
+                var player2Attack = Facade.Instance.AttackPokemon(player2, "Ember");
+                Assert.That(player2Attack, Is.Not.Null, "El ataque de Player2 no se ejecutó correctamente");
+
+                // Comprobar si alguien ganó
+                winner = Facade.Instance.GetBattleResult(player1, player2);
+            }
+
+            // Validar que la batalla terminó y hay un ganador
+            Assert.That(winner, Is.Not.Null, "La batalla no tiene un ganador");
+            Console.WriteLine($"El ganador es: {winner}");
+        }
+    }
+}
+    [TestFixture]
+    public class BattleListTests
+    {
+        private BattleList battleList;
+        private Battle battle1;
+        private Battle battle2;
+        private Trainer trainer1;
+        private Trainer trainer2;
+        private Trainer trainer3;
+        private Trainer trainer4;
+
+        [SetUp]
+        public void SetUp()
+        {
+            battleList = new BattleList();
+            trainer1 = new Trainer("Trainer1");
+            trainer2 = new Trainer("Trainer2");
+            trainer3 = new Trainer("Trainer3");
+            trainer4 = new Trainer("Trainer4");
+
+            battle1 = new Battle(trainer1, trainer2);
+            battle2 = new Battle(trainer3, trainer4);
+        }
+
+        [Test]
+        public void AddBattle_Test()
+        {
+            battleList.AddBattle(battle1);
+            Assert.That(battleList.Battles, Contains.Item(battle1), "The battle list should contain battle1.");
+        }
+
+        [Test]
+        public void GetBattle_Test()
+        {
+            battleList.AddBattle(battle1);
+            var retrievedBattle = battleList.GetBattle(trainer1, trainer2);
+            Assert.That(retrievedBattle, Is.EqualTo(battle1), "The retrieved battle should be battle1.");
+        }
+
+        [Test]
+        public void BattleExists_Test()
+        {
+            battleList.AddBattle(battle1);
+            bool exists = battleList.BattleExists(trainer1, trainer2);
+            Assert.That(exists, Is.True, "The battle between trainer1 and trainer2 should exist.");
+        }
+
+        [Test]
+        public void RemoveBattle_Test()
+        {
+            battleList.AddBattle(battle1);
+            battleList.RemoveBattle(battle1);
+            Assert.That(battleList.Battles, Does.Not.Contain(battle1), "The battle list should not contain battle1 after removal.");
+        }
+    }
+    [TestFixture]
+    public class PokemonTests
+    {
+        private Pokemon pikachu;
+        private Pokemon charmander;
+        private Attack thunderbolt;
+        private Attack ember;
+
+        [SetUp]
+        public void SetUp()
+        {
+            thunderbolt = new Attack("Thunderbolt", 40, Poke.Clases.Type.PokemonType.Bug, false);
+            ember = new Attack("Ember", 30, Poke.Clases.Type.PokemonType.Dragon, true);
+            pikachu = new Pokemon("Pikachu", 100, 1, "1", Poke.Clases.Type.PokemonType.Electric, new List<Attack> { thunderbolt });
+            charmander = new Pokemon("Charmander", 100, 1, "2", Poke.Clases.Type.PokemonType.Fire, new List<Attack> { ember });
+        }
+
+        [Test]
+        public void Attack_Test()
+        {
+            int initialHealth = (int)charmander.Hp;
+            pikachu.Attack(null, charmander, pikachu, thunderbolt);
+            Assert.That(charmander.Hp, Is.LessThan(initialHealth), "Charmander should have received damage.");
+        }
+
+        [Test]
+        public void ReceiveDamage_Test()
+        {
+            double damage = 20;
+            double initialHealth = pikachu.Hp;
+            pikachu.RecibeDamage(null, damage);
+            Assert.That(pikachu.Hp, Is.EqualTo(initialHealth - damage), "Pikachu should have received damage.");
+        }
+
+        [Test]
+        public void Heal_Test()
+        {
+            pikachu.RecibeDamage(null, 50);
+            double healthAfterDamage = pikachu.Hp;
+            pikachu.AddHP(30);
+            Assert.That(pikachu.Hp, Is.EqualTo(healthAfterDamage + 30), "Pikachu should have recovered health.");
+        }
+
+        [Test]
+        public void AddAttack_Test()
+        {
+            var newAttack = new Attack("Quick Attack", 20, Poke.Clases.Type.PokemonType.Electric, false);
+            pikachu.AddAttack(newAttack);
+            Assert.That(pikachu.AttackList, Contains.Item(newAttack), "Pikachu should have the new attack in its attack list.");
+        }
+
+        [Test]
+        public void IsPokemonAlive_Test()
+        {
+            Assert.That(pikachu.IsPokemonAlive(), Is.True, "Pikachu debería estar vivo.");
+            pikachu.RecibeDamage(null, pikachu.Hp);
+            Assert.That(pikachu.IsPokemonAlive(), Is.False, "Pikachu debería estar muerto.");
+        }
+
+        [Test]
+        public void ApplyState_Test()
+        {
+            pikachu.ApplyState(charmander, "Burned");
+            Assert.That(charmander.State, Is.EqualTo("Burned"), "Charmander should be burned.");
+        }
+
+        [Test]
+        public void StateActualization_Test()
+        {
+            charmander.Poisoned = true;
+            double initialHealth = charmander.Hp;
+            charmander.StateActualization();
+            Assert.That(charmander.Hp, Is.LessThan(initialHealth), "Charmander should lose health due to poison.");
+        }
+    }
+        
     [TestFixture]
     public class PlayersWaitListTest
     {
