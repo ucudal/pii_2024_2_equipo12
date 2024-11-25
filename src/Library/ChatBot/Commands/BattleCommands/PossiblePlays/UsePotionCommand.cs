@@ -21,6 +21,6 @@ public class UsePotionCommand : ModuleBase<SocketCommandContext>
     {
         string displayName = CommandHelper.GetDisplayName(Context);
         string result = Facade.Instance.UsePotion(displayName, potionName);
-        await ReplyAsync(potionName);
+        await ReplyAsync($"{displayName}:\n{result}");
     }
 }

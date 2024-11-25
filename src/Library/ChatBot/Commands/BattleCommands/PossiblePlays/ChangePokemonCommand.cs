@@ -14,13 +14,12 @@ public class ChangePokemonCommand : ModuleBase<SocketCommandContext>
     /// Implementa el comando 'changepokemon'. Este comando permite al jugador
     /// cambiar su Pokémon actual por otro de los seleccionados.
     /// </summary>
-    [Command("changePokemon")]
+    [Command("change")]
     [Summary("Permite al usuario cambiar su Pokémon actual por otro de los seleccionados.")]
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync(string pokemonName)
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        await ReplyAsync(Facade.Instance.ChangePokemon(displayName, pokemonName));
-        
+        await ReplyAsync(  $"{displayName}:\n{Facade.Instance.ChangePokemon(displayName, pokemonName)}");
     }
 }

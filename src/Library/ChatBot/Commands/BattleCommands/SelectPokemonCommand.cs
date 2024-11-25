@@ -22,8 +22,16 @@ namespace Ucu.Poo.DiscordBot.Commands
             [Summary("Índices de los Pokémon a seleccionar separados por espacios")] string indices)
         {
             string displayName = CommandHelper.GetDisplayName(Context);
-            await ReplyAsync(Facade.Instance.PokemonSelection(displayName, indices));
-           
+            var result = Facade.Instance.PokemonSelection(displayName, indices);
+            await ReplyAsync($"{displayName}:\n{result.ListaPokemon}");
+            if (result.ReadyForBattleMessage != null)
+            {
+                await ReplyAsync($"{result.ReadyForBattleMessage}\n\nUsa el comando !use para elegir tu pokemon inicial!");
+            }
+            if (result.InitialTurn != null)
+            {
+                await ReplyAsync($"Es el turno de {result.InitialTurn.DisplayName}");
+            }
         }
     }
 }

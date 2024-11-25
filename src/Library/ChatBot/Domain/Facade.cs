@@ -222,28 +222,41 @@ public class Facade
 
     public string ChangePokemon(string displayName, string pokemonName)
     {
-        Trainer player = this.WaitingList.FindTrainerByDisplayName(displayName);
-        // encontrar battle
-        Battle battle = BattlesList.GetBattleByPlayer(displayName);
-        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+        if (battle == null)
         {
-            return "❌ No puedes cambiar de pokemon en este momento";
+            return "❌ Tienes que estar en una batalla para cambiar a un pokemon.";
         }
-        else
+        if (battle.BattleStarted)
         {
-            Pokemon? pokemon = player.Pokemons.Find(pokemon => pokemon.Name == pokemonName);
-            if (pokemon != null)
+            if (player.ActualPokemon != null && opponent.ActualPokemon != null)
             {
-                player.ActualPokemon = pokemon;
-                battle.ActualTurn += 1;
-                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
-                return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁";
+                if (battle.Turn == player)
+                {
+                    Pokemon? pokemon = player.PokemonList.Find(pokemon => pokemon.Name == pokemonName);
+                    if (pokemon != null)
+                    {
+                        if (pokemon.IsAlive)
+                        {
+                            player.ActualPokemon = pokemon;
+                            string? battleFinished = battle.ChangeTurn();
+                            if (battleFinished != null)
+                            {
+                                return battleFinished;
+                            }
+                            return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁";
+                        }
+                        return $"❌ {pokemon.Name} esta muerto, no puedes elegir este pokemon.";
+                    }
+                    return "❌ No tienes ese pokemon";
+                }
+                return $"❌ No puedes cambiar pokemon, es el turno de {opponent.DisplayName}";
             }
-            else
-            {
-                return "❌ No tienes ese pokemon";
-            }
+            return $"❌ Los dos jugadores deben tener seleccionado un pokemon, usa el comando !use";
         }
+        return "❌ La batalla aun no empezó, selecciona tus pokemon!";
     }
     
     /// <summary>
@@ -255,23 +268,22 @@ public class Facade
     /// <returns>Un mensaje con el resultado.</returns>
     public string UsePotion(string playerDisplayName, string potionName)
     {
-        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
+        Trainer player = BattlesList.GetPlayerInBattle(playerDisplayName);
         Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
-        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
+        if (player == null || battle == null)
         {
             return "❌ No puedes usar pociones en este momento";
         }
-        else
+
+        Item? potion = player.Items.Find(item => item.Name == potionName);
+        if (potion != null)
         {
-            Item? potion = player.Items.Find(item => item.Name == potionName);
-            if (potion != null)
-            {
-                player.UseItem(potion, player.ActualPokemon);
-                player.Items.Remove(potion);
-                return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
-            }
-            return "❌ No tienes esa poción";
+            player.UseItem(potion, player.ActualPokemon);
+            player.Items.Remove(potion);
+            return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
         }
+        return "❌ No tienes esa poción";
+        
     }
 
     /// <summary>
@@ -281,31 +293,49 @@ public class Facade
     /// <param name="attackName">El nombre del ataque.</param>
     /// <param name="opponentDisplayName">El oponente.</param>
     /// <returns> Un mensaje de confirmación del ataque </returns>
-    public string AttackPokemon(string playerDisplayName, string attackName, string opponentDisplayName)
+    public (string message, string? OpponentDisplayName) AttackPokemon(string playerDisplayName, string attackName)
     {
-        Trainer player = this.WaitingList.FindTrainerByDisplayName(playerDisplayName);
-        Trainer opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName);
-        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
-        if (player.Stage != 2 || battle.Turn != player || battle.BattleStarted == false)
+        Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(playerDisplayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
+        if (opponent == null || battle == null)
         {
-            return "❌ No puedes atacar en este momento";
+            return ("❌ Debes tener un oponente y una batalla empezada para poder atacar", null);
         }
-        else
+
+        if (battle.BattleStarted)
         {
-            Pokemon playerPokemon = player.ActualPokemon;
-            Attack? attack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == attackName);
-            if (attack != null && attack.IsSpecial == false ) // Descartar los ataques especiales
+            if (player.ActualPokemon != null && opponent.ActualPokemon != null)
             {
-                playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, attack);
-                battle.ActualTurn += 1;
-                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
-                return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque {attack.Name} 🔥✨";
+                if (battle.Turn == player)
+                {
+                    Pokemon playerPokemon = player.ActualPokemon;
+                    if (playerPokemon.IsAlive)
+                    {
+                        Attack? attack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == attackName);
+                        if (attack != null && attack.IsSpecial == false ) // Descartar los ataques especiales
+                        {
+                            string? isOpponentPokemonDead = playerPokemon.Attack(player, opponent.ActualPokemon, playerPokemon, attack);
+                            string? battleFinished = battle.ChangeTurn();
+                            if (battleFinished != null)
+                            {
+                                return (battleFinished, null);
+                            }
+                            if (isOpponentPokemonDead != null)
+                            {
+                                return (isOpponentPokemonDead, opponent.DisplayName);
+                            }
+                            return ($"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque {attack.Name} 🔥✨", null);
+                        }
+                        return ("❌ No tienes ese ataque", null);
+                    }
+                    return ($"❌ {playerPokemon.Name} ha muerto, usa el comando !change para cambiar a tu próximo pokemon.", null);
+                }
+                return ($"❌ No puedes atacar, es el turno de {opponent.DisplayName}", null);
             }
-            else
-            {
-                return "❌ No tienes ese ataque";
-            }
+            return ($"❌ Los dos jugadores deben tener seleccionado un pokemon, usa el comando !use", null);
         }
+        return ("❌ La batalla aun no empezó, selecciona tus pokemon!", null);
     }
     
     /// <summary>
@@ -330,15 +360,13 @@ public class Facade
             Attack? specialAttack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == specialAttackName);
             if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
             {
-                playerPokemon.Attack(opponent.ActualPokemon, playerPokemon, specialAttack);
+                playerPokemon.Attack(null, opponent.ActualPokemon, playerPokemon, specialAttack);
                 battle.ActualTurn += 1;
-                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
+                battle.ChangeTurn();
                 return $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨";
             }
-            else
-            {
-                return "❌ No tienes ese ataque especial";
-            }
+            return "❌ No tienes ese ataque especial";
+            
         }
     }
     
@@ -370,7 +398,7 @@ public class Facade
         {
             return "Comienza una batalla para elegir tus pokemon!";
         } 
-        if (player.Pokemons.Count == 6)
+        if (player.PokemonList.Count == 6)
         {
             return "Ya tienes seleccionados tus pokemon, comienza a pelear!";
         }
@@ -391,31 +419,29 @@ public class Facade
     /// Una cadena que contiene mensajes de confirmación o error relacionados
     /// con el proceso de selección.
     /// </returns> 
-    public string PokemonSelection(string playerDisplayName, string indices)
+    public (string ListaPokemon, string? ReadyForBattleMessage, Trainer? InitialTurn) 
+        PokemonSelection(string playerDisplayName, string indices)
     {
     Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
     Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
         if (player.Stage != 2)
         {
-            return $"❌ No puedes seleccionar pokemones en este momento.";
+            return ("❌ No puedes seleccionar pokemones en este momento.", null, null);
         }
         
         // Limpia cualquier selección previa del jugador.
-        UserPokemonSelectionService.ClearSelections(playerDisplayName);
+        player.PokemonList.Clear();
         
         // Divide los índices proporcionados y verifica si tienen exactamente 6.
         var selectedIndices = indices.Split(' ')
                                      .Select(i => int.TryParse(i, out int index) ? index - 1 : -1)
                                      .ToList();
 
-        if (selectedIndices.Count != 6)
-        {
-            return $"❌ Debes seleccionar exactamente 6 Pokémon. Has proporcionado {selectedIndices.Count} índices.";
-        }
-
         if (selectedIndices.Any(index => index < 0))
         {
-            return $"❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos que esten dentro del catálogo.";
+            return (
+                "❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos que esten dentro del catálogo.",
+                null, null);
         }
 
         var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
@@ -430,33 +456,18 @@ public class Facade
             }
 
             var catalogEntry = catalog[index];
-            try
-            {
-                var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
-                bool? added = UserPokemonSelectionService.AddPokemon(player, pokemon);
-
-                if (added.Value)
-                {
-                    result.AppendLine($"✅ **{pokemon.Name}** ha sido seleccionado.");
-                }
-                else if (added == null) 
-                {
-                    result.AppendLine($"❌ **{pokemon.Name}** no se añadio porque ya cuentas con 6 pokemones.");
-                }
-                else
-                {
-                    result.AppendLine($"❌ **{pokemon.Name}** ya está en tu lista de seleccionados, haz la seleccion denuevo.");
-                }
-            }
-            catch (ArgumentException)
-            {
-                result.AppendLine($"❌ No se pudo agregar el Pokémon del índice {index}.");
-            }
+            var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
+            result.AppendLine(player.AddPokemon(pokemon));
         }
-        battle.ReadyToStart = true;
-        player.Stage = 2;
-        return result.ToString();
+
+        if (battle.ReadyForBattle())
+        {
+            battle.BattleStarted = true;
+            return (result.ToString(), $"{playerDisplayName} y {battle.Player2.DisplayName} tienen 6 pokemon, comienza la batalla!", battle.InitialTurn());
+        }
+        return (result.ToString(), null, null);
     }
+    
     /*public string InitializePokemons()
     {
         allPokemons = new List<Pokemon>();
@@ -476,40 +487,13 @@ public class Facade
 
         return "Pokomons iniciados."; 
     }*/
-
-    /// <summary>
-    /// Muestra los Pokémon actualmente seleccionados por un jugador.
-    /// </summary>
-    /// <param name="playerDisplayName">El nombre del jugador cuyas selecciones se mostrarán.</param>
-    /// <returns>
-    /// Una cadena que lista los Pokémon seleccionados por el jugador. Si no
-    /// hay selecciones, se indica que la lista está vacía.
-    /// </returns>
-    public static string ShowCurrentSelections(string playerDisplayName)
-    {
-        var selections = UserPokemonSelectionService.GetUserSelections(playerDisplayName);
-        if (selections.Count == 0)
-        {
-            return "📭 No has seleccionado ningún Pokémon aún.";
-        }
-
-        var sb = new StringBuilder();
-        sb.AppendLine("📋 **Tus Pokémon seleccionados actualmente:**");
-        for (int i = 0; i < selections.Count; i++)
-        {
-            sb.AppendLine($"{i + 1}. {selections[i].Name}");
-        }
-        
-        return sb.ToString();
-    }
-   
     
     /// <summary>
     /// Verifica si un jugador está listo para combatir.
     /// </summary>
     /// <param name="playerDisplayName">El nombre del jugador.</param>
     /// <returns>Un mensaje indicando si el jugador está listo o qué le falta para estarlo.</returns>
-    public string CheckIfPlayerIsReady(string playerDisplayName)
+    /*public string CheckIfPlayerIsReady(string playerDisplayName)
     {
         // Obtener la lista de Pokémon seleccionados por el jugador
         var selectedPokemons = UserPokemonSelectionService.GetUserSelections(playerDisplayName);
@@ -529,7 +513,7 @@ public class Facade
         // Determinar cuántos Pokémon faltan para llegar a 6
         int pokemonsFaltantes = 6 - selectedPokemons.Count;
         return $"❌ {playerDisplayName} aún no está listo para combatir. Le faltan {pokemonsFaltantes} Pokémon.";
-    }
+    }*/
     
     /// <summary>
     /// Verifica si la batalla esta lista para iniciar.
@@ -540,7 +524,7 @@ public class Facade
     {
         Battle battle = BattlesList.GetBattleByPlayer(displayName);
         
-        if (battle != null && battle.ReadyToStart)
+        if (battle != null && battle.BattleStarted)
         {
             battle.BattleStarted = true;
             return true;
@@ -579,6 +563,44 @@ public class Facade
         player.ActualPokemon = foundPokemon;
         return $"✅ {pokemonName} esta listo para la batalla.";
     }
+
+    public string GetPokemonAttacks(string displayName, string pokemonName)
+    {
+        Trainer player = BattlesList.GetPlayerInBattle(displayName);
+        Pokemon actualPokemon = player.GetPokemon(pokemonName);
+        var result = new StringBuilder();
+
+        foreach (var attack in actualPokemon.AttackList)
+        {
+            result.AppendLine(attack.AttackInfo());
+        }
+
+        return "Lista de ataques:\n" + result.ToString();
+    }
     
+    public string? GetBattleResult(string player1DisplayName, string player2DisplayName)
+    {
+        // Obtener la batalla actual entre los dos jugadores
+        var battle = BattlesList.GetBattleByPlayer(player1DisplayName);
+
+        if (battle == null)
+        {
+            return null; // No hay batalla activa entre estos jugadores
+        }
+
+        // Verificar si uno de los jugadores ha perdido todos sus Pokémon
+        if (battle.Player1.GetTotalPokemonLife() == 0)
+        {
+            return $"{battle.Player2.DisplayName} ha ganado la batalla";
+        }
+
+        if (battle.Player2.GetTotalPokemonLife() == 0)
+        {
+            return $"{battle.Player1.DisplayName} ha ganado la batalla";
+        }
+
+        return null; // La batalla aún está en progreso
+    }
+
 }
 

@@ -20,6 +20,6 @@ public class SpecialAttackCommand : ModuleBase<SocketCommandContext>
     {
         string displayName = CommandHelper.GetDisplayName(Context);
         string result = Facade.Instance.SpecialAttackPokemon(displayName, opponentName, specialAttackName);
-        await ReplyAsync(result);
+        await ReplyAsync( $"{displayName}:\n {result}");
     }
 }
