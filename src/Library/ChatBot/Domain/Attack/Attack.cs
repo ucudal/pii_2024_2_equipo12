@@ -71,7 +71,7 @@ namespace Poke.Clases
 
         public string AttackInfo()
         {
-            return $"{Name} (Daño: {Damage}  Tipo: {AttackType})";
+            return $"{Name} (Daño: {Damage}  Tipo: {AttackType}  Especial: {IsSpecial})";
         }
     }
 }
