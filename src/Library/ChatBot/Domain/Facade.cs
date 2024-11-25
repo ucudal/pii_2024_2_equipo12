@@ -564,7 +564,7 @@ public class Facade
         return $"✅ {pokemonName} esta listo para la batalla.";
     }
 
-    public string GetPokemonAttacks(string displayName, string pokemonName)
+    public string GetPokemonAttacks(string displayName, string pokemonName, double health)
     {
         Trainer player = BattlesList.GetPlayerInBattle(displayName);
         Pokemon actualPokemon = player.GetPokemon(pokemonName);
@@ -575,7 +575,7 @@ public class Facade
             result.AppendLine(attack.AttackInfo());
         }
 
-        return "Lista de ataques:\n" + result.ToString();
+        return $"Puntos de vida: {health}. \n" + "\n Lista de ataques:." + result.ToString();
     }
     
     public string? GetBattleResult(string player1DisplayName, string player2DisplayName)
