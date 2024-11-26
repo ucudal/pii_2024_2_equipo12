@@ -254,19 +254,43 @@ public class Facade
     /// <returns>Un mensaje con el resultado.</returns>
     public string UsePotion(string playerDisplayName, string potionName)
     {
-        Trainer player = BattlesList.GetPlayerInBattle(playerDisplayName);
-        Battle battle = BattlesList.GetBattleByPlayer(playerDisplayName);
-        if (player == null || battle == null)
+        Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(playerDisplayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
+        var result = InitialVerifications(player, opponent, battle, false);
+        if (result != null)
         {
-            return "❌ No puedes usar pociones en este momento";
+            return result.Value.message;
         }
-
         Item? potion = player.Items.Find(item => item.Name == potionName);
         if (potion != null)
         {
-            player.UseItem(potion, player.ActualPokemon);
+            if (potion is RevivePotion)
+            {
+                if (player.ActualPokemon.IsAlive)
+                {
+                    return "❌ No puedes usar Revive en un Pokémon que ya está vivo.";
+                }
+                player.UseItem(potion, player.ActualPokemon);
+            }
+            else if (potion is SuperPotion)
+            {
+                if (!player.ActualPokemon.IsAlive)
+                {
+                    return "❌ No puedes usar SuperPotion en un Pokémon que está muerto.";
+                }
+                player.UseItem(potion, player.ActualPokemon);
+            }
+            else if (potion is TotalCure)
+            {
+                if (!player.ActualPokemon.IsAlive)
+                {
+                    return "❌ No puedes usar la pocion de Cura Total en un Pokémon que está muerto.";
+                }
+                player.UseItem(potion, player.ActualPokemon);
+            }
             player.Items.Remove(potion);
-            return $"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙";
+            return $"✨🧙 Usaste {potionName} en tu Pokémon {player.ActualPokemon.Name} ✨🧙";
         }
         return "❌ No tienes esa poción";
         
