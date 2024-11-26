@@ -590,6 +590,19 @@ public class Facade
         return (result.ToString(), null, null);
     }
 
+    public string message GetPokemons(string displayName)
+    {
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        var sb = new StringBuilder();
+
+        foreach (var pokemon in player.PokemonList)
+        {
+            sb.AppendLine($"{pokemon.Name}  Hp: {pokemon.Hp}  Estado: {pokemon.State}");
+        }
+
+        return sb;
+    }
+
     /// <summary>
     /// Verifica si la batalla está lista para iniciar.
     /// </summary>
