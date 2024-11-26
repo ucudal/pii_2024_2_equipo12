@@ -266,7 +266,30 @@ public class Facade
         Item? potion = player.Items.Find(item => item.Name == potionName);
         if (potion != null)
         {
-            player.UseItem(potion, player.ActualPokemon);
+            if (potion is RevivePotion)
+            {
+                if (player.ActualPokemon.IsAlive)
+                {
+                    return ("❌ No puedes usar Revive en un Pokémon que ya está vivo.", null);
+                }
+                player.UseItem(potion, player.ActualPokemon);
+            }
+            else if (potion is SuperPotion)
+            {
+                if (!player.ActualPokemon.IsAlive)
+                {
+                    return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto.", null);
+                }
+                player.UseItem(potion, player.ActualPokemon);
+            }
+            else if (potion is TotalCure)
+            {
+                if (!player.ActualPokemon.IsAlive)
+                {
+                    return ("❌ No puedes usar la pocion de Cura Total en un Pokémon que está muerto.", null);
+                }
+                player.UseItem(potion, player.ActualPokemon);
+            }
             // Cambiar turno o finalizar la batalla
             string? battleFinished = battle.ChangeTurn(player);
             if (battleFinished != null)
@@ -616,7 +639,7 @@ public class Facade
         return null; // La batalla aún está en progreso
     }
 
-    public (string message, string? OpponentDisplayName)? InitialVerifications(Trainer player, Trainer opponent, Battle battle, bool? forChange)
+    public (string message, string? OpponentDisplayName)? InitialVerifications(Trainer player, Trainer opponent, Battle battle, bool forChange)
     {
         if (opponent == null || battle == null)
         {
