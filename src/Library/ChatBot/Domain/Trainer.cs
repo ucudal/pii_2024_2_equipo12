@@ -17,7 +17,7 @@ using Poke.Clases;
         /// El estado del entrenador. 1: Esperando en la lista de espera,
         /// 2: En una batalla, con los pokemones seleccionados
         /// </summary>
-        public int Stage { get; set; }
+        public int Stage { get; set; } = 0;
         
         /// <summary>
         /// Lista de pokemones del entrenador.

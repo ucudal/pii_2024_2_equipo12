@@ -72,18 +72,6 @@
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.StartBattleCommand">
-            <summary>
-            Esta clase implementa el comando 'Start' del bot. Este comando permite
-            al jugador empezar la batalla.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.StartBattleCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'start'. Este comando permite
-            al jugador empezar la batalla
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand">
             <summary>
             Esta clase implementa el comando 'availableItems' del bot. Este comando le permite al usuario

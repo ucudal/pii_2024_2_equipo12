@@ -13,6 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class Facade
 {
     private static Facade? _instance;
+    private BattlesList _battlesList;
 
     // Este constructor privado impide que otras clases puedan crear instancias
     // de esta.
@@ -20,6 +21,7 @@ public class Facade
     {
         this.WaitingList = new WaitingList();
         this.BattlesList = new BattlesList();
+        _battlesList = new BattlesList();
     }
 
     /// <summary>
@@ -37,7 +39,12 @@ public class Facade
             return _instance;
         }
     }
-
+    
+    public BattlesList GetBattlesList()
+    {
+        return _battlesList;
+    }
+    
     /// <summary>
     /// Inicializa este singleton. Es necesario solo en los tests.
     /// </summary>
@@ -288,6 +295,10 @@ public class Facade
                 {
                     return ("❌ No puedes usar la pocion de Cura Total en un Pokémon que está muerto.", null);
                 }
+                if (player.ActualPokemon.State == null)
+                {
+                    return ("❌ No puedes usar la pocion de Cura Total en un Pokémon que no tiene estados inducidos.", null);
+                }
                 player.UseItem(potion, player.ActualPokemon);
             }
             // Cambiar turno o finalizar la batalla
@@ -322,10 +333,6 @@ public class Facade
 
         // Verificación del Pokémon del jugador
         Pokemon playerPokemon = player.ActualPokemon;
-        if (!playerPokemon.IsAlive)
-        {
-            return ($"❌ {playerPokemon.Name} ha muerto. Usa el comando !change para cambiar a tu próximo Pokémon.", null);
-        }
 
         // Verificación del ataque
         Attack? attack = playerPokemon.AttackList.Find(a => a.Name == attackName && !a.IsSpecial);
@@ -350,7 +357,7 @@ public class Facade
 
         return ($"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque {attack.Name} 🔥✨", null);
     }
-    
+
     /// <summary>
     /// Usuario gasta su turno atacando al oponente con un ataque especial de su pokemon
     /// </summary>
@@ -358,62 +365,52 @@ public class Facade
     /// <param name="specialAttackName"></param>
     /// <param name="opponentDisplayName"></param>
     /// <returns> Un mensaje de confirmación del ataque especial </returns>
-   
-    public (string message, string? OpponentDisplayName) SpecialAttackPokemon(string playerDisplayName, string specialAttackName)
+
+    public (string message, string? OpponentDisplayName) SpecialAttackPokemon(string playerDisplayName,
+        string specialAttackName)
     {
         Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
         Trainer? opponent = BattlesList.GetOpponnentInBattle(playerDisplayName);
         Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
-        if (opponent == null || battle == null)
+        var result = InitialVerifications(player, opponent, battle, null);
+        if (result != null)
         {
-            return ("❌ Debes tener un oponente y una batalla empezada para poder atacar", null);
+            return result.Value;
         }
 
-        if (battle.BattleStarted)
-        {
-            if (player.ActualPokemon != null && opponent.ActualPokemon != null)
+        if (player.CoolDown == 0)
+        {   
+            // Verificación del Pokémon del jugador
+            Pokemon playerPokemon = player.ActualPokemon;
+            
+            // Verificación del ataque
+            Attack? specialAttack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == specialAttackName);
+            
+            if (specialAttack != null && specialAttack.IsSpecial == true) // Descartar los ataques normales
             {
-                if (battle.Turn == player)
+                //Ejecuta el Ataque
+                string? isOpponentPokemonDead = playerPokemon.Attack(player, opponent.ActualPokemon, playerPokemon, specialAttack);
+                
+                //Aumenta el cooldown a 2 turnos
+                player.CoolDown += 2;
+                
+                string? battleFinished = battle.ChangeTurn(player);
+                if (battleFinished != null)
                 {
-                    if (player.CoolDown == 0)
-                    {
-                        Pokemon playerPokemon = player.ActualPokemon;
-                        if (playerPokemon.IsAlive)
-                        {
-                            Attack? specialAttack = playerPokemon.AttackList.Find(selectedAttack => selectedAttack.Name == specialAttackName);
-                            if (specialAttack != null && specialAttack.IsSpecial == true ) // Descartar los ataques normales
-                            {
-                                string? isOpponentPokemonDead = playerPokemon.Attack(player, opponent.ActualPokemon,
-                                    playerPokemon, specialAttack);
-                                player.CoolDown += 2; 
-                                string? battleFinished = battle.ChangeTurn(player);
-                                if (battleFinished != null)
-                                {
-                                    return (battleFinished, null);
-                                }
-
-                                if (isOpponentPokemonDead != null)
-                                {
-                                    return (isOpponentPokemonDead, opponent.DisplayName);
-                                }
-
-                                return (
-                                    $"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨",
-                                    null);
-                            }
-
-                            return ("❌ No tienes ese ataque especial", null);
-                        }
-                        return ($"❌ {playerPokemon.Name} ha muerto, usa el comando !change para cambiar a tu próximo pokemon.", null);
-                    }
-                    return ($"❌ No puedes lanzar un ataque especial, tienes un cooldown de {player.CoolDown} turnos", null);
+                    return (battleFinished, null);
                 }
-                return ($"❌ No puedes atacar, es el turno de {opponent.DisplayName}", null);
+
+                if (isOpponentPokemonDead != null)
+                {
+                    return (isOpponentPokemonDead, opponent.DisplayName);
+                }
+
+                return ($"✨🔥 {playerPokemon.Name} atacó a {opponent.ActualPokemon.Name} con su ataque especial {specialAttack.Name} 🔥✨", null);
             }
-            return ($"❌ Los dos jugadores deben tener seleccionado un pokemon, usa el comando !use", null);
-        }
-        return ("❌ La batalla aun no empezó, selecciona tus pokemon!", null);
-    }
+            return ("❌ No tienes ese ataque especial", null);
+        } 
+        return ($"❌ No puedes lanzar un ataque especial, tienes un cooldown de {player.CoolDown} turnos", null);
+}
 
     public (string message, string? OpponentDisplayName) DetermineAttack(string displayName, string attackName)
     {
@@ -495,18 +492,22 @@ public class Facade
     /// Una cadena que contiene mensajes de confirmación o error relacionados
     /// con el proceso de selección.
     /// </returns> 
-    public (string ListaPokemon, string? ReadyForBattleMessage, Trainer? InitialTurn) 
-        PokemonSelection(string playerDisplayName, string indices)
+    public (string message, string? ReadyForBattleMessage, Trainer? InitialTurn) PokemonSelection(string displayName, string indices)
+    
+    
     {
-    Trainer? player = BattlesList.GetPlayerInBattle(playerDisplayName);
-    Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+
+        if (opponent == null || battle == null)
+        {
+            return ("❌ Debes tener un oponente y una batalla empezada para poder realizar esta acción", null, null);
+        }
         if (player.Stage != 2)
         {
             return ("❌ No puedes seleccionar pokemones en este momento.", null, null);
         }
-        
-        // Limpia cualquier selección previa del jugador.
-        player.PokemonList.Clear();
         
         // Divide los índices proporcionados y verifica si tienen exactamente 6.
         var selectedIndices = indices.Split(' ')
@@ -539,7 +540,8 @@ public class Facade
         if (battle.ReadyForBattle())
         {
             battle.BattleStarted = true;
-            return (result.ToString(), $"{playerDisplayName} y {battle.Player2.DisplayName} tienen 6 pokemon, comienza la batalla!", battle.InitialTurn());
+            player.Stage = 3;
+            return (result.ToString(), $"{displayName} y {opponent.DisplayName} tienen 6 pokemon, comienza la batalla!", battle.InitialTurn());
         }
         return (result.ToString(), null, null);
     }
@@ -639,7 +641,7 @@ public class Facade
         return null; // La batalla aún está en progreso
     }
 
-    public (string message, string? OpponentDisplayName)? InitialVerifications(Trainer player, Trainer opponent, Battle battle, bool forChange)
+    public (string message, string? OpponentDisplayName)? InitialVerifications(Trainer player, Trainer opponent, Battle battle, bool? forChange)
     {
         if (opponent == null || battle == null)
         {
