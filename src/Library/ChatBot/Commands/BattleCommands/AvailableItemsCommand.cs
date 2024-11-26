@@ -19,7 +19,7 @@ public class AvailableItemsCommand : ModuleBase<SocketCommandContext>
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync(string displayName)
     {
-        string result = Facade.Instance.GetAvailableItems(displayName);
-        await ReplyAsync(result);
+        // Responde con el mensaje de lista de Items
+        await ReplyAsync($"{displayName}:\n{Facade.Instance.GetAvailableItems(displayName).message}");
     }
 }

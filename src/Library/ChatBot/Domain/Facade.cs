@@ -199,19 +199,26 @@ public class Facade
     /// </summary>
     /// <param name="playerDisplayName">El nombre para mostrar del jugador.</param>
     /// <returns>Un mensaje con los items disponibles.</returns>
-    public string GetAvailableItems(string playerDisplayName)
+    public (string message, string? OpponentDisplayName) GetAvailableItems(string displayName)
     {
-        Console.WriteLine("Pociones disponibles: ");
-        if (this.WaitingList.FindTrainerByDisplayName(playerDisplayName).Items != null)
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+        var result = InitialVerifications(player, opponent, battle, false);
+        if (result != null)
         {
-            foreach (Item item in this.WaitingList.FindTrainerByDisplayName(playerDisplayName).Items)
+            return result.Value;
+        }
+        if (BattlesList.GetPlayerInBattle (displayName).Items != null)
+        {
+            foreach (Item item in BattlesList.GetPlayerInBattle(displayName).Items)
             {
-                Console.WriteLine($"{item.Name}");
-                return "Se imprimió la lista de pociones disponibles";
+                var sb = new StringBuilder();
+                sb.AppendLine(item.Name);
+                return ($"Lista de pociones disponibles: \n {result}", null);
             }
         }
-
-        return "No hay pociones disponibles";
+        return ("No hay pociones disponibles", null);
     }
 
     /// <summary>
