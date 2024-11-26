@@ -14,7 +14,7 @@ public class AvailableItemsCommand : ModuleBase<SocketCommandContext>
     /// Implementa el comando 'availableItems'. Este comando le permite al usuario
     /// ver los items disponibles para usar.
     /// </summary>
-    [Command("availableItems")]
+    [Command("items")]
     [Summary("Muestra los items disponibles para usar")]
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync(string displayName)
