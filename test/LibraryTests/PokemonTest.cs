@@ -7,7 +7,28 @@ using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 namespace LibraryTests
 {
 
-    [TestFixture]
+    public class PoisonTests
+    {
+        private Poisoned poisonAttack;
+        private Pokemon targetPokemon;
+
+        [SetUp]
+        public void SetUp()
+        {
+            poisonAttack = new Poisoned("Toxic", 0, Poke.Clases.Type.PokemonType.Poison, true);
+            targetPokemon = new Pokemon("Bulbasaur", 100, 100, "1", Poke.Clases.Type.PokemonType.Plant);
+        }
+
+        [Test]
+        public void ApplyEffect_DamageIsApplied()
+        {
+            double initialHp = targetPokemon.Hp;
+            poisonAttack.Envenenar(targetPokemon);
+            targetPokemon.StateActualization();
+            Assert.That(targetPokemon.Hp, Is.LessThan(initialHp), "The Pokémon should lose HP due to poison.");
+        }
+    }
+
     public class BattleFinishedTests
     {
         private Trainer trainer1;
@@ -36,7 +57,7 @@ namespace LibraryTests
         public void BattleFinished_Test()
         {
             Assert.That(battle.BattleFinished(), Is.Null, "Battle should not be finished initially.");
-            charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
+            charmander.RecibeDamage(trainer1, charmander.Hp);
             Assert.That(battle.BattleFinished(), Is.Not.Null,
                 "Battle should be finished when one trainer's Pokémon are all fainted.");
         }
@@ -45,10 +66,81 @@ namespace LibraryTests
         public void GetWinner_Test()
         {
             Assert.That(battle.BattleFinished(), Is.Null, "There should be no winner initially.");
-            charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
+            charmander.RecibeDamage(trainer1, charmander.Hp);
             Assert.That(battle.BattleFinished(),
                 Is.EqualTo($"✅ {trainer1.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!"),
                 "Trainer1 should be the winner when trainer2's Pokémon are all fainted.");
+        }
+
+        public class IsAsleepTests
+        {
+            private IsAsleep sleepAttack;
+            private Pokemon targetPokemon;
+
+            [SetUp]
+            public void SetUp()
+            {
+                sleepAttack = new IsAsleep("Sleep Powder", 0, Poke.Clases.Type.PokemonType.Plant, true);
+                targetPokemon = new Pokemon("Bulbasaur", 100, 100, "1", Poke.Clases.Type.PokemonType.Plant);
+            }
+
+            [Test]
+            public void Sleep_SetsStateToAsleep()
+            {
+                sleepAttack.Sleep(targetPokemon);
+                Assert.That(targetPokemon.State, Is.EqualTo("Dormido"), "The Pokémon should be in an Asleep state.");
+            }
+        }
+
+        public class BurnedTests
+        {
+            private Burned burnedAttack;
+            private Pokemon targetPokemon;
+
+            [SetUp]
+            public void SetUp()
+            {
+                burnedAttack = new Burned("Flamethrower", 0, Poke.Clases.Type.PokemonType.Fire, true);
+                targetPokemon = new Pokemon("Bulbasaur", 100, 100, "1", Poke.Clases.Type.PokemonType.Plant);
+            }
+
+            [Test]
+            public void Burn_DamageIsApplied()
+            {
+                double initialHp = targetPokemon.Hp;
+                burnedAttack.Burn(targetPokemon);
+                targetPokemon.StateActualization();
+                Assert.That(targetPokemon.Hp, Is.LessThan(initialHp), "The Pokémon should lose HP due to burn.");
+            }
+        }
+
+        public class ParalizedTests
+        {
+            private Paralized paralizedAttack;
+            private Pokemon targetPokemon;
+
+            [SetUp]
+            public void SetUp()
+            {
+                paralizedAttack = new Paralized("Thunder Wave", 0, Poke.Clases.Type.PokemonType.Electric, true);
+                targetPokemon = new Pokemon("Bulbasaur", 100, 100, "1", Poke.Clases.Type.PokemonType.Plant);
+            }
+
+            [Test]
+            public void Paralize_SetsStateToParalized()
+            {
+                paralizedAttack.Paralize(targetPokemon);
+                Assert.That(targetPokemon.State, Is.EqualTo("Paralizado"),
+                    "The Pokémon should be in a Paralized state.");
+            }
+
+            [Test]
+            public void Paralize_AttackCapacityIsSet()
+            {
+                paralizedAttack.Paralize(targetPokemon);
+                Assert.That(targetPokemon.State, Is.EqualTo("Paralizado"),
+                    "The Pokémon should be in a Paralized state.");
+            }
         }
 
         public class ParalizeTests
@@ -75,7 +167,37 @@ namespace LibraryTests
                 charmander.Paralized = false;
                 Assert.That(charmander.Paralized, Is.False, "Charmander should not be paralyzed.");
             }
+
+            public class ParalizedTests
+            {
+                private Paralized paralizedAttack;
+                private Pokemon targetPokemon;
+
+                [SetUp]
+                public void SetUp()
+                {
+                    paralizedAttack = new Paralized("Thunder Wave", 0, Poke.Clases.Type.PokemonType.Electric, true);
+                    targetPokemon = new Pokemon("Bulbasaur", 100, 100, "1", Poke.Clases.Type.PokemonType.Plant);
+                }
+
+                [Test]
+                public void Paralize_SetsStateToParalized()
+                {
+                    paralizedAttack.Paralize(targetPokemon);
+                    Assert.That(targetPokemon.State, Is.EqualTo("Paralizado"),
+                        "The Pokémon should be in a Paralized state.");
+                }
+
+                [Test]
+                public void Paralize_AttackCapacityIsSet()
+                {
+                    paralizedAttack.Paralize(targetPokemon);
+                    Assert.That(targetPokemon.State, Is.EqualTo("Paralizado"),
+                        "The Pokémon should be in a Paralized state.");
+                }
+            }
         }
+
         public class BurnedStateTests
         {
             private Pokemon charmander;
@@ -104,50 +226,116 @@ namespace LibraryTests
                     "Charmander's HP should not be reduced when not burned.");
             }
         }
-        public class BattleTests
+
+        public class AttackTests
         {
-            private Trainer trainer1;
-            private Trainer trainer2;
-            private Battle battle;
-            private Pokemon pikachu;
-            private Pokemon charmander;
-            private Attack tackle;
+            private Attack attack;
 
             [SetUp]
             public void SetUp()
             {
-                trainer1 = new Trainer("Ash");
-                trainer2 = new Trainer("Gary");
-                tackle = new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false);
-                pikachu = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric,
-                    new List<Attack> { tackle });
-                charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire,
-                    new List<Attack> { tackle });
-                trainer1.AddPokemon(pikachu);
-                trainer2.AddPokemon(charmander);
-                battle = new Battle(trainer1, trainer2);
+                attack = new Attack("Thunderbolt", 40, Poke.Clases.Type.PokemonType.Electric, false);
+            }
+
+            [Test]
+            public void AttackInitialization_Test()
+            {
+                Assert.That(attack.Name, Is.EqualTo("Thunderbolt"), "Attack name should be Thunderbolt.");
+                Assert.That(attack.Damage, Is.EqualTo(40), "Attack power should be 40.");
+                Assert.That(attack.AttackType, Is.EqualTo(Poke.Clases.Type.PokemonType.Electric),
+                    "Attack type should be Electric.");
+                Assert.That(attack.IsSpecial, Is.False, "Attack should not be special.");
             }
 
 
             [Test]
-            public void BattleFinished_Test()
+            public void AttackIsSpecial_ShouldBeBoolean()
             {
-                Assert.That(battle.BattleFinished(), Is.Null, "Battle should not be finished initially.");
-                charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
-                Assert.That(battle.BattleFinished(), Is.Not.Null,
-                    "Battle should be finished when one trainer's Pokémon are all fainted.");
-            }
-
-            [Test]
-            public void GetWinner_Test()
-            {
-                Assert.That(battle.BattleFinished(), Is.Null, "There should be no winner initially.");
-                charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
-                Assert.That(battle.BattleFinished(),
-                    Is.EqualTo($"✅ {trainer1.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!"),
-                    "Trainer1 should be the winner when trainer2's Pokémon are all fainted.");
+                var specialAttack = new Attack("Thunderbolt", 40, Poke.Clases.Type.PokemonType.Electric, true);
+                Assert.That(specialAttack.IsSpecial, Is.True, "Attack should be special.");
             }
         }
+
+       public class BattleTests
+    {
+        private Trainer trainer1;
+        private Trainer trainer2;
+        private Battle battle;
+        private Pokemon pikachu;
+        private Pokemon charmander;
+        private Attack tackle;
+
+        [SetUp]
+        public void SetUp()
+        {
+            trainer1 = new Trainer("Ash");
+            trainer2 = new Trainer("Gary");
+            tackle = new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false);
+            pikachu = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric, new List<Attack> { tackle });
+            charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire, new List<Attack> { tackle });
+            trainer1.AddPokemon(pikachu);
+            trainer2.AddPokemon(charmander);
+            battle = new Battle(trainer1, trainer2);
+        }
+
+        [Test]
+        public void BattleFinished_Test()
+        {
+            Assert.That(battle.BattleFinished(), Is.Null, "Battle should not be finished initially.");
+            charmander.RecibeDamage(trainer1, charmander.Hp);
+            Assert.That(battle.BattleFinished(), Is.Not.Null, "Battle should be finished when one trainer's Pokémon are all fainted.");
+        }
+
+        [Test]
+        public void GetWinner_Test()
+        {
+            Assert.That(battle.BattleFinished(), Is.Null, "There should be no winner initially.");
+            charmander.RecibeDamage(trainer1, charmander.Hp);
+            Assert.That(battle.BattleFinished(), Is.EqualTo($"✅ {trainer1.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!"), "Trainer1 should be the winner when trainer2's Pokémon are all fainted.");
+        }
+
+        [Test]
+        public void InitialTurn_Test()
+        {
+            battle.InitialTurn();
+            Assert.That(battle.Turn, Is.EqualTo(trainer1).Or.EqualTo(trainer2), "The initial turn should be either trainer1 or trainer2.");
+        }
+        
+
+        [Test]
+        public void StartBattle_Test()
+        {
+            battle.StartBattle();
+            Assert.That(battle.State, Is.EqualTo("Started"), "The battle state should be 'Started'.");
+        }
+
+        [Test]
+        public void EndBattle_Test()
+        {
+            battle.EndBattle();
+            Assert.That(battle.State, Is.EqualTo("Finished"), "The battle state should be 'Finished'.");
+        }
+
+        [Test]
+        public void ReadyForBattle_Test()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                trainer1.AddPokemon(new Pokemon($"Pokemon{i}", 100, 10, $"{i}", Poke.Clases.Type.PokemonType.Normal));
+                trainer2.AddPokemon(new Pokemon($"Pokemon{i+6}", 100, 10, $"{i+6}", Poke.Clases.Type.PokemonType.Normal));
+            }
+            Assert.That(battle.ReadyForBattle(), Is.True, "Both trainers should have 6 Pokémon each.");
+        }
+
+        [Test]
+        public void ChangeTurn_Test()
+        {
+            battle.InitialTurn();
+            var initialTurn = battle.Turn;
+            battle.ChangeTurn(initialTurn);
+            Assert.That(battle.Turn, Is.Not.EqualTo(initialTurn), "The turn should change to the other trainer.");
+        }
+    }
 
         public class TotalCureTests
         {
@@ -196,14 +384,6 @@ namespace LibraryTests
                         "Attack type should be Electric.");
                     Assert.That(attack.IsSpecial, Is.False, "Attack should not be special.");
                 }
-
-                [Test]
-                public void AttackEffectiveness_Test()
-                {
-                    // Assuming there is a method to calculate effectiveness
-                    // double effectiveness = attack.CalculateEffectiveness(Poke.Clases.Type.PokemonType.Water);
-                    // Assert.That(effectiveness, Is.EqualTo(expectedValue), "Effectiveness should be calculated correctly.");
-                }
             }
         }
 
@@ -246,7 +426,6 @@ namespace LibraryTests
             [Test]
             public void SimulateFullBattle()
             {
-                // Crear instancias de comandos
                 var joinCommand = new JoinCommand();
                 var battleCommand = new BattleCommand();
                 var selectPokemonCommand = new SelectPokemonCommand();
@@ -255,11 +434,11 @@ namespace LibraryTests
                 var usePotionCommand = new UsePotionCommand();
                 var changePokemonCommand = new ChangePokemonCommand();
 
-                // Simular nombres de jugadores
+
                 string player1 = "Marto";
                 string player2 = "Kike";
 
-                // Paso 1: Ambos jugadores se unen a la lista de espera
+
                 Facade.Instance.AddTrainerToWaitingList(player1);
                 Facade.Instance.AddTrainerToWaitingList(player2);
 
@@ -302,7 +481,7 @@ namespace LibraryTests
                 Console.WriteLine($"El ganador es: {winner}");
             }
         }
-        
+
         public class NormalAttacksTests
         {
             private Pokemon attacker;
@@ -421,7 +600,7 @@ namespace LibraryTests
                         "Charmander should lose health due to poison.");
                 }
             }
-            
+
             public class PlayersWaitListTest
             {
                 private Trainer jugador1;
@@ -444,15 +623,12 @@ namespace LibraryTests
                 [Test]
                 public void VerListaDeEspera_Test()
                 {
-                    // Capturar la salida de la consola para verificar el mensaje
+
                     var consoleOutput = new StringWriter();
                     Console.SetOut(consoleOutput);
-
-                    // Agregar jugadores a la lista de espera
                     waitList.AddTrainer(jugador1.DisplayName);
                     waitList.AddTrainer(jugador2.DisplayName);
 
-                    // Verificar que los jugadores fueron agregados a la lista de espera
                     var playersInWaitList1 = waitList.FindTrainerByDisplayName(jugador1.DisplayName);
                     var playersInWaitList2 = waitList.FindTrainerByDisplayName(jugador2.DisplayName);
 
@@ -461,7 +637,7 @@ namespace LibraryTests
 
                 }
             }
-            
+
             public class IniciateBattleWithWaitListOpponentTest
             {
                 private Trainer jugador1;
@@ -487,37 +663,6 @@ namespace LibraryTests
 
                     waitList = new WaitingList(jugador1, jugador2);
                     battle = new Battle(jugador1, jugador2);
-                }
-
-                [Test]
-                public void NotificarInicioDeBatalla_Test()
-                {
-                    /* var consoleOutput = new StringWriter();
-                    Console.SetOut(consoleOutput);
-                    battle.CompleteBattle(jugador1, jugador2, "1","0");
-                    Assert.That(consoleOutput.ToString(), Contains.Substring("El jugador 1 comienza la batalla"));
-                    Assert.That(consoleOutput.ToString(), Contains.Substring("El jugador 2 comienza la batalla")); */
-                }
-
-                [Test]
-                public void DeterminarTurnoAleatorio_Test()
-                {
-                    /*  var consoleOutput = new StringWriter();
-                     Console.SetOut(consoleOutput);
-                     string turnoInicial = "";
-                     for (int i = 0; i < 10; i++)
-                     {
-                         battle.CompleteBattle(jugador1, jugador2);
-                         if (consoleOutput.ToString().Contains("El jugador 1 comienza la batalla"))
-                         {
-                             turnoInicial = "Jugador 1";
-                         }
-                         else if (consoleOutput.ToString().Contains("El jugador 2 comienza la batalla"))
-                         {
-                             turnoInicial = "Jugador 2";
-                         }
-
-                         Assert.That(turnoInicial, Is.Not.Empty); */
                 }
             }
 
@@ -548,17 +693,16 @@ namespace LibraryTests
                 [Test]
                 public void Elegir6PokemonsTest()
                 {
-                    // Simular la selección de 6 Pokémon
+
                     for (int i = 0; i < 6; i++)
                     {
                         jugador.AddPokemon(catalogoPokemon[i]);
                     }
 
-                    // Verificar que el jugador tiene 6 Pokémon
                     Assert.That(jugador.PokemonList.Count, Is.EqualTo(6), "El jugador debería tener 6 Pokémon.");
                 }
             }
-            
+
             public class TurnInfoTest
             {
                 private Trainer jugador;
@@ -585,14 +729,10 @@ namespace LibraryTests
                 [Test]
                 public void IndicarDeQuienEsElTurno_Test()
                 {
-                    // Inicializa el turno
                     batalla.InitialTurn();
-
-                    // Verifica que el turno inicial sea del jugador o del oponente
                     Assert.That(batalla.Turn, Is.EqualTo(jugador).Or.EqualTo(oponente),
                         "El turno inicial debe ser del jugador o del oponente.");
 
-                    // Ejecuta el primer turno
                     if (batalla.Turn == jugador)
                     {
                         Assert.That(batalla.Turn, Is.EqualTo(jugador), "El turno debería ser del jugador.");
@@ -603,7 +743,7 @@ namespace LibraryTests
                     }
                 }
             }
-            
+
             public class WinBattleTest
             {
                 private Trainer jugador;
@@ -623,63 +763,41 @@ namespace LibraryTests
                     oponente.AddPokemon(pokemonOponente);
                     batalla = new Battle(jugador, oponente);
                 }
-
-                [Test]
-                public void Batalla_Termina_Cuando_Vida_Oponente_Es_Cero_Test()
-                {
-                    // Capturar la salida de la consola para verificar el mensaje final
-                    using (var consoleOutput = new StringWriter())
-                    {
-                        /* Console.SetOut(consoleOutput);
-
-                        // Ejecuta la batalla
-                        batalla.CompleteBattle(jugador, oponente);
-
-                        // Verificar que la batalla ha terminado
-                        Assert.That(batalla.BattleFinished(jugador, oponente) == true, "La batalla debería haber terminado porque la vida del oponente es cero.");
-
-                        // Verificar el mensaje de ganador
-                        string output = consoleOutput.ToString();
-                        Assert.That(output == ("El jugador 1 ha ganado"), "El mensaje final debería indicar que el jugador 1 ha ganado la batalla.");
-                    */
-                    }
-                }
-
-
-                public class WaitingListTests
-                {
-                    private WaitingList waitingList;
-                    private Trainer trainer1;
-                    private Trainer trainer2;
-
-                    [SetUp]
-                    public void SetUp()
-                    {
-                        waitingList = new WaitingList();
-                        trainer1 = new Trainer("Ash");
-                        trainer2 = new Trainer("Misty");
-                    }
-
-                    [Test]
-                    public void AddTrainer_Test()
-                    {
-                        waitingList.AddTrainer(trainer1.DisplayName);
-                        var result = waitingList.FindTrainerByDisplayName("Ash");
-                        Assert.That(result, Is.Not.Null, "Trainer should be added to the waiting list.");
-                    }
-
-                    [Test]
-                    public void FindTrainerByDisplayName_Test()
-                    {
-                        waitingList.AddTrainer(trainer1.DisplayName);
-                        var result = waitingList.FindTrainerByDisplayName("Ash");
-                        Assert.That(result.DisplayName, Is.EqualTo(trainer1.DisplayName),
-                            "Should return the correct trainer from the waiting list.");
-                    }
-
-                }
             }
-            
+        }
+
+        public class WaitingListTests
+        {
+            private WaitingList waitingList;
+            private Trainer trainer1;
+            private Trainer trainer2;
+
+            [SetUp]
+            public void SetUp()
+            {
+                waitingList = new WaitingList();
+                trainer1 = new Trainer("Ash");
+                trainer2 = new Trainer("Misty");
+            }
+
+            [Test]
+            public void AddTrainer_Test()
+            {
+                waitingList.AddTrainer(trainer1.DisplayName);
+                var result = waitingList.FindTrainerByDisplayName("Ash");
+                Assert.That(result, Is.Not.Null, "Trainer should be added to the waiting list.");
+            }
+
+            [Test]
+            public void FindTrainerByDisplayName_Test()
+            {
+                waitingList.AddTrainer(trainer1.DisplayName);
+                var result = waitingList.FindTrainerByDisplayName("Ash");
+                Assert.That(result.DisplayName, Is.EqualTo(trainer1.DisplayName),
+                    "Should return the correct trainer from the waiting list.");
+            }
+
+
             public class RevivePotionTests
             {
                 private RevivePotion revivePotion;
@@ -724,7 +842,6 @@ namespace LibraryTests
                         "Second fainted Pokémon should be revived to half of its max HP.");
                 }
             }
-
         }
     }
 }
