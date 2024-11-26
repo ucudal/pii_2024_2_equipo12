@@ -20,7 +20,6 @@ public class UsePotionCommand : ModuleBase<SocketCommandContext>
     public async Task ExecuteAsync(string potionName)
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        string result = Facade.Instance.UsePotion(displayName, potionName);
-        await ReplyAsync($"{displayName}:\n{result}");
+        await ReplyAsync($"{displayName}:\n{Facade.Instance.UsePotion(displayName, potionName).message}");
     }
 }

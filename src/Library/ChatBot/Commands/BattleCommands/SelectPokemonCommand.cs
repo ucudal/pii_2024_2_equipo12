@@ -23,7 +23,7 @@ namespace Ucu.Poo.DiscordBot.Commands
         {
             string displayName = CommandHelper.GetDisplayName(Context);
             var result = Facade.Instance.PokemonSelection(displayName, indices);
-            await ReplyAsync($"{displayName}:\n{result.ListaPokemon}");
+            await ReplyAsync($"{displayName}:\n{result.message}");
             if (result.ReadyForBattleMessage != null)
             {
                 await ReplyAsync($"{result.ReadyForBattleMessage}\n\nUsa el comando !use para elegir tu pokemon inicial!");

@@ -428,57 +428,21 @@ namespace LibraryTests
             private Trainer jugador1;
             private Trainer jugador2;
             private Battle battle;
-            private WaitingList waitList;
 
             [SetUp]
             public void SetUp()
             {
-                Attack ataque = new Attack("relámpago", 30, Poke.Clases.Type.PokemonType.Electric, false);
-                List<Attack> attackList = new List<Attack> { ataque };
-
-                jugador1 = new Trainer("Jugador 1");
-                jugador1.AddPokemon(new Pokemon("Pikachu", 1, 10, "1", Poke.Clases.Type.PokemonType.Electric,
-                    attackList));
-                jugador1.SetActualPokemon(jugador1.PokemonList[0]);
-
-                jugador2 = new Trainer("Jugador 2");
-                jugador2.AddPokemon(new Pokemon("Charizard", 1, 10, "2", Poke.Clases.Type.PokemonType.Fire,
-                    attackList));
-                jugador2.SetActualPokemon(jugador2.PokemonList[0]);
-
-                waitList = new WaitingList(jugador1, jugador2);
                 battle = new Battle(jugador1, jugador2);
             }
-
-            [Test]
-            public void NotificarInicioDeBatalla_Test()
-            {
-                /* var consoleOutput = new StringWriter();
-                Console.SetOut(consoleOutput);
-                battle.CompleteBattle(jugador1, jugador2, "1","0");
-                Assert.That(consoleOutput.ToString(), Contains.Substring("El jugador 1 comienza la batalla"));
-                Assert.That(consoleOutput.ToString(), Contains.Substring("El jugador 2 comienza la batalla")); */
-            }
-
             [Test]
             public void DeterminarTurnoAleatorio_Test()
             {
-                /*  var consoleOutput = new StringWriter();
+                 var consoleOutput = new StringWriter();
                  Console.SetOut(consoleOutput);
-                 string turnoInicial = "";
-                 for (int i = 0; i < 10; i++)
-                 {
-                     battle.CompleteBattle(jugador1, jugador2);
-                     if (consoleOutput.ToString().Contains("El jugador 1 comienza la batalla"))
-                     {
-                         turnoInicial = "Jugador 1";
-                     }
-                     else if (consoleOutput.ToString().Contains("El jugador 2 comienza la batalla"))
-                     {
-                         turnoInicial = "Jugador 2";
-                     }
 
-                     Assert.That(turnoInicial, Is.Not.Empty); */
+                 battle.InitialTurn();
+                 Assert.That(battle.Turn, Is.EqualTo(jugador1).Or.EqualTo(jugador2),
+                     "El turno inicial debería ser del jugador 1 o del jugador 2.");
             }
         }
 

@@ -17,7 +17,7 @@ using Poke.Clases;
         /// El estado del entrenador. 1: Esperando en la lista de espera,
         /// 2: En una batalla, con los pokemones seleccionados
         /// </summary>
-        public int Stage { get; set; }
+        public int Stage { get; set; } = 0;
         
         /// <summary>
         /// Lista de pokemones del entrenador.
@@ -155,17 +155,8 @@ using Poke.Clases;
         /// <param name="objective">El pokemon en el cual usar el item.</param>
         public void UseItem(Item item, Pokemon objective)
         {
-            if (HasItem(item))
-            {
-                item.Use(objective);
-                RemoveItem(item); // Remueve el item después de usarlo si es consumible
-                battle.ActualTurn += 1;
-                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
-            }
-            else
-            {
-                Console.WriteLine("El entrenador no tiene este item.");
-            }
+            item.Use(objective);
+            RemoveItem(item); // Remueve el item después de usarlo si es consumible
         }
 
         public Pokemon? GetPokemon(string pokemonName)

@@ -4,6 +4,18 @@
         <name>Library</name>
     </assembly>
     <members>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand">
+            <summary>
+            Esta clase implementa el comando 'availableItems' del bot. Este comando le permite al usuario
+            ver los items disponibles para usar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'availableItems'. Este comando le permite al usuario
+            ver los items disponibles para usar.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.BattleCommand">
             <summary>
             Esta clase implementa el comando 'battle' del bot. Este comando une al
@@ -48,6 +60,18 @@
             cambiar su Pokémon actual por otro de los seleccionados.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.UseInitialPokemonCommand">
+            <summary>
+            Comando para seleccionar el primer Pokémon para batallar.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.UseInitialPokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Ejecuta el comando para seleccionar un Pokémon.
+            </summary>
+            <param name="pokemonName">El nombre del Pokémon a seleccionar para la batalla.</param>
+            <returns>Una tarea asincrónica que se completa cuando el comando se ha ejecutado.</returns>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.UsePotionCommand">
             <summary>
             Esta clase implementa el comando 'usePotion' del bot. Este comando le permite al usuario
@@ -70,30 +94,6 @@
             <summary>
             Implementa el comando 'selectpokemon'. Este comando permite al jugador
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.StartBattleCommand">
-            <summary>
-            Esta clase implementa el comando 'Start' del bot. Este comando permite
-            al jugador empezar la batalla.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.StartBattleCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'start'. Este comando permite
-            al jugador empezar la batalla
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand">
-            <summary>
-            Esta clase implementa el comando 'availableItems' del bot. Este comando le permite al usuario
-            ver los items disponibles para usar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'availableItems'. Este comando le permite al usuario
-            ver los items disponibles para usar.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
@@ -255,10 +255,8 @@
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Facade">
             <summary>
-            Esta clase recibe las acciones y devuelve los resultados que permiten
-            implementar las historias de usuario. Otras clases que implementan el bot
-            usan esta <see cref="T:Ucu.Poo.DiscordBot.Domain.Facade"/> pero no conocen el resto de las clases del
-            dominio. Esta clase es un singleton.
+            Esta clase actúa como fachada para manejar las acciones relacionadas con las batallas Pokémon y la lista de espera. 
+            Es un singleton y se utiliza para desacoplar la lógica del dominio del resto de las clases.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Facade.Instance">
@@ -266,59 +264,74 @@
             Obtiene la única instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Facade"/>.
             </summary>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetBattlesList">
+            <summary>
+            Obtiene la lista de batallas activas.
+            </summary>
+            <returns>Una instancia de <see cref="P:Ucu.Poo.DiscordBot.Domain.Facade.BattlesList"/> con las batallas actuales.</returns>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.Reset">
             <summary>
-            Inicializa este singleton. Es necesario solo en los tests.
+            Resetea la instancia del singleton. Solo debe usarse en los tests.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AddTrainerToWaitingList(System.String)">
             <summary>
-            Agrega un jugador a la lista de espera.
+            Agrega un entrenador a la lista de espera.
             </summary>
-            <param name="displayName">El nombre del jugador.</param>
-            <returns>Un mensaje con el resultado.</returns>
+            <param name="displayName">El nombre del entrenador.</param>
+            <returns>Un mensaje indicando el resultado de la operación.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.RemoveTrainerFromWaitingList(System.String)">
             <summary>
-            Remueve un jugador de la lista de espera.
+            Remueve un entrenador de la lista de espera.
             </summary>
-            <param name="displayName">El jugador a remover.</param>
-            <returns>Un mensaje con el resultado.</returns>
+            <param name="displayName">El nombre del entrenador a remover.</param>
+            <returns>Un mensaje indicando el resultado de la operación.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetAllTrainersWaiting">
             <summary>
-            Obtiene la lista de jugadores esperando.
+            Obtiene una lista de todos los entrenadores en espera.
             </summary>
-            <returns>Un mensaje con el resultado.</returns>
+            <returns>Un mensaje con la lista de entrenadores en espera o un mensaje indicando que la lista está vacía.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.TrainerIsWaiting(System.String)">
             <summary>
-            Determina si un jugador está esperando para jugar.
+            Verifica si un entrenador está en la lista de espera.
             </summary>
-            <param name="displayName">El jugador.</param>
-            <returns>Un mensaje con el resultado.</returns>
+            <param name="displayName">El nombre del entrenador.</param>
+            <returns>Un mensaje indicando si el entrenador está esperando.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CreateBattle(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
+            <summary>
+            Crea una batalla entre dos entrenadores.
+            </summary>
+            <param name="player">El primer entrenador.</param>
+            <param name="opponent">El oponente.</param>
+            <returns>Un mensaje indicando el inicio de la batalla.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CreateNewBattle(System.String,System.String)">
             <summary>
-            Crea una batalla entre dos jugadores.
+            Crea una nueva batalla entre dos entrenadores, seleccionando un oponente automáticamente si no se proporciona.
             </summary>
-            <param name="playerDisplayName">El primer jugador.</param>
-            <param name="opponentDisplayName">El oponente.</param>
-            <returns>Un mensaje con el resultado.</returns>
+            <param name="playerDisplayName">El nombre del entrenador que inicia la batalla.</param>
+            <param name="opponentDisplayName">El nombre del oponente, o null si se selecciona automáticamente.</param>
+            <returns>Un mensaje indicando el resultado de la operación.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetAvailableItems(System.String)">
             <summary>
             Se imprime la lista de pociones disponibles para el jugador.
             </summary>
+            <param name="playerDisplayName">El nombre para mostrar del jugador.</param>
             <returns>Un mensaje con los items disponibles.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.ChangePokemon(System.String,System.String)">
             <summary>
             Cambia el pokemon actual del jugador por otro de su lista de pokemones.
             </summary>
-            <param name="displayName"></param>
-            <param name="pokemonName"></param>
-            <returns>Un mensaje de comfirmacion del cambio del Pokemon.</returns>
+            <param name="displayName">El nombre para mostrar del jugador.</param>
+            <param name="pokemonName">El nombre del pokemon a cambiar.</param>
+            <returns>Un mensaje de confirmación del cambio del Pokemon.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.UsePotion(System.String,System.String)">
             <summary>
@@ -326,40 +339,48 @@
             su lista de pociones impresas en la consola.
             </summary>
             <param name="playerDisplayName">El primer jugador.</param>
-            <param name="potionName">El nombre de la poción.</param>
-            <returns>Un mensaje con el resultado.</returns>
+            <param name="potionName">El nombre de la poción seleccionada.</param>
+            <returns>Un mensaje con el resultado de la acción.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AttackPokemon(System.String,System.String)">
             <summary>
-            Usuario gasta su turno atacando al oponente con un ataque de su pokemon
+            Usuario gasta su turno atacando al oponente con un ataque de su pokemon.
             </summary>
             <param name="playerDisplayName">El primer jugador.</param>
             <param name="attackName">El nombre del ataque.</param>
-            <param name="opponentDisplayName">El oponente.</param>
-            <returns> Un mensaje de confirmación del ataque </returns>
+            <param name="opponentDisplayName">El nombre del oponente.</param>
+            <returns>Un mensaje de confirmación del ataque.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.SpecialAttackPokemon(System.String,System.String)">
             <summary>
-            Usuario gasta su turno atacando al oponente con un ataque especial de su pokemon
+            Usuario gasta su turno atacando al oponente con un ataque especial de su pokemon.
             </summary>
-            <param name="playerDisplayName"></param>
-            <param name="specialAttackName"></param>
-            <param name="opponentDisplayName"></param>
-            <returns> Un mensaje de confirmación del ataque especial </returns>
+            <param name="playerDisplayName">El nombre para mostrar del jugador.</param>
+            <param name="specialAttackName">El nombre del ataque especial.</param>
+            <param name="opponentDisplayName">El nombre del oponente.</param>
+            <returns>Un mensaje de confirmación del ataque especial.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.DetermineAttack(System.String,System.String)">
+            <summary>
+            Determina el tipo de ataque y ejecuta el correspondiente: normal o especial.
+            </summary>
+            <param name="displayName">El nombre del jugador que ataca.</param>
+            <param name="attackName">El nombre del ataque.</param>
+            <returns>Un mensaje con el resultado del ataque.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.IsPlayerInGame(System.String)">
             <summary>
             Verifica si un jugador está en una batalla.
             </summary>
             <param name="playerDisplayName">El nombre del jugador.</param>
-            <returns>Un booleano indicando si el jugador pertenece a una batalla.</returns>
+            <returns>Un valor booleano que indica si el jugador está en una batalla.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PlayerWithPokemon(System.String)">
             <summary>
-            Verifica si un jugador cuenta con los pokemon necesarios para combatir.
+            Verifica si un jugador tiene los Pokémon necesarios para combatir.
             </summary>
             <param name="playerDisplayName">El nombre del jugador.</param>
-            <returns>Un mensaje indicando si el jugador tiene los 6 pokemon o null en el caso que el jugador no este en una batalla.</returns>
+            <returns>Un mensaje indicando si el jugador tiene los 6 Pokémon o null si el jugador no está en una batalla.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PokemonSelection(System.String,System.String)">
             <summary>
@@ -372,23 +393,57 @@
             correspondientes a los Pokémon seleccionados por el jugador.
             </param>
             <returns>
-            Una cadena que contiene mensajes de confirmación o error relacionados
-            con el proceso de selección.
-            </returns> 
+            Una tupla que contiene un mensaje de confirmación o error y
+            un mensaje opcional que indica si la batalla está lista para comenzar.
+            </returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckToStartBattle(System.String)">
             <summary>
-            Verifica si la batalla esta lista para iniciar.
+            Verifica si la batalla está lista para iniciar.
             </summary>
             <param name="displayName">El nombre del jugador.</param>
-            <returns>Un booleano indicando si la batalla está lista.</returns>
+            <returns>Un valor booleano que indica si la batalla está lista.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetOpponent(System.String)">
             <summary>
-            Obtiene el opponente del jugador pasado como parametro.
+            Obtiene el oponente del jugador pasado como parámetro.
             </summary>
             <param name="playerDisplayName">El nombre del jugador.</param>
-            <returns>Un entrenador oponente.</returns>
+            <returns>Un objeto de tipo <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> que representa al oponente del jugador.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AssignActualPokemon(System.String,System.String)">
+            <summary>
+            Asigna el Pokémon actual de un jugador para la batalla.
+            </summary>
+            <param name="displayName">El nombre del jugador.</param>
+            <param name="pokemonName">El nombre del Pokémon que se va a asignar.</param>
+            <returns>Una tupla con un mensaje de éxito o error y el nombre del oponente si es necesario.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetPokemonAttacks(System.String,System.String)">
+            <summary>
+            Obtiene los ataques disponibles de un Pokémon.
+            </summary>
+            <param name="displayName">El nombre del jugador.</param>
+            <param name="pokemonName">El nombre del Pokémon cuyos ataques se desean obtener.</param>
+            <returns>Una cadena de texto con los ataques disponibles del Pokémon.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetBattleResult(System.String,System.String)">
+            <summary>
+            Obtiene el resultado de la batalla entre dos jugadores.
+            </summary>
+            <param name="player1DisplayName">El nombre del primer jugador.</param>
+            <param name="player2DisplayName">El nombre del segundo jugador.</param>
+            <returns>Un mensaje indicando el ganador de la batalla o null si la batalla aún está en progreso.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.InitialVerifications(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Battle,System.Nullable{System.Boolean})">
+            <summary>
+            Realiza las verificaciones iniciales para asegurar que la acción es válida.
+            </summary>
+            <param name="player">El jugador que realiza la acción.</param>
+            <param name="opponent">El oponente del jugador.</param>
+            <param name="battle">La batalla en curso.</param>
+            <param name="forChange">Indica si la acción es para cambiar Pokémon.</param>
+            <returns>Una tupla con un mensaje de error si alguna verificación falla, o null si todas las verificaciones son correctas.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog">
             <summary>
