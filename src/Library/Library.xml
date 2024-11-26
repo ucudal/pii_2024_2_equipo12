@@ -10,7 +10,7 @@
             ver los items disponibles para usar.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand.ExecuteAsync(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Commands.AvailableItemsCommand.ExecuteAsync">
             <summary>
             Implementa el comando 'availableItems'. Este comando le permite al usuario
             ver los items disponibles para usar.

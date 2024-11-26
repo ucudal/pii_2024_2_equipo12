@@ -17,8 +17,11 @@ public class AvailableItemsCommand : ModuleBase<SocketCommandContext>
     [Command("items")]
     [Summary("Muestra los items disponibles para usar")]
     // ReSharper disable once UnusedMember.Global
-    public async Task ExecuteAsync(string displayName)
+    public async Task ExecuteAsync()
     {
+        // Obtiene el nombre del jugador desde el contexto del comando
+        string displayName = CommandHelper.GetDisplayName(Context);
+        
         // Responde con el mensaje de lista de Items
         await ReplyAsync($"{displayName}:\n{Facade.Instance.GetAvailableItems(displayName).message}");
     }
