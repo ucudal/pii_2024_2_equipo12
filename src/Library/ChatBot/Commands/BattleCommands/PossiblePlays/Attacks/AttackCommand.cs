@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Ucu.Poo.DiscordBot.Domain;
 namespace Ucu.Poo.DiscordBot.Commands;
 
@@ -13,6 +14,8 @@ public class AttackCommand : ModuleBase<SocketCommandContext>
     /// <summary>
     /// Implementa el comando 'attackPokemon'. Este comando le permite al usuario
     /// atacar a un pokemon enemigo.
+    /// En el caso de que el enemigo no le queden pokemon, entonces el jugador
+    /// ganó y se hace display del mensaje correspondiente junto con una imagen ubicada en Assets.
     /// </summary>
     [Command("attack")]
     [Summary("Ataca a un pokemon enemigo")]
@@ -26,5 +29,21 @@ public class AttackCommand : ModuleBase<SocketCommandContext>
                 await ReplyAsync($"{result.OpponentDisplayName}:\n {result.message}");
             } 
             else await ReplyAsync($"{displayName}:\n {result.message}");
+
+            if (result.message == "✅ {Player2.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!")
+            {
+                string repoPath = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
+                string victoriaImage = Path.Combine(repoPath, "Assets", "VictoriaImage.png");
+                
+                // Verifica si el archivo existe antes de enviarlo
+                if (File.Exists(victoriaImage))
+                {
+                    using (var stream = new FileStream(victoriaImage, FileMode.Open))
+                    {
+                        var message = new FileAttachment(stream, "VictoriaImage.png");
+                        await Context.Channel.SendFileAsync(message);
+                    }
+                }
+            }
     }
 }

@@ -46,6 +46,8 @@
             <summary>
             Implementa el comando 'attackPokemon'. Este comando le permite al usuario
             atacar a un pokemon enemigo.
+            En el caso de que el enemigo no le queden pokemon, entonces el jugador
+            ganó y se hace display del mensaje correspondiente junto con una imagen ubicada en Assets.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.ChangePokemonCommand">
