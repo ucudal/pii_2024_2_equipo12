@@ -13,6 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class Facade
 {
     private static Facade? _instance;
+    private BattlesList _battlesList;
 
     // Este constructor privado impide que otras clases puedan crear instancias
     // de esta.
@@ -20,6 +21,7 @@ public class Facade
     {
         this.WaitingList = new WaitingList();
         this.BattlesList = new BattlesList();
+        _battlesList = new BattlesList();
     }
 
     /// <summary>
@@ -37,7 +39,12 @@ public class Facade
             return _instance;
         }
     }
-
+    
+    public BattlesList GetBattlesList()
+    {
+        return _battlesList;
+    }
+    
     /// <summary>
     /// Inicializa este singleton. Es necesario solo en los tests.
     /// </summary>
