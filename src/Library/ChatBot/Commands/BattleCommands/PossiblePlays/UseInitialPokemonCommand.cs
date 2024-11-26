@@ -20,9 +20,7 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Obtiene el nombre del jugador desde el contexto del comando
             string displayName = CommandHelper.GetDisplayName(Context);
 
-            // Responde con el mensaje de asignación del Pokémon y la lista de ataques
-            await ReplyAsync($"{displayName}:\n{Facade.Instance.AssignActualPokemon(displayName, pokemonName).message}"  +
-                             $"\n{Facade.Instance.GetPokemonAttacks(displayName, pokemonName)}");
+        await ReplyAsync($"{displayName}:\n{Facade.Instance.AssignActualPokemon(displayName, pokemonName).message}");
         }
     }
 }

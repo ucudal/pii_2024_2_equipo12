@@ -13,7 +13,8 @@ public class Facade
     private static Facade? _instance;
     private BattlesList _battlesList;
 
-    // Constructor privado para evitar la creación de instancias desde otras clases.
+    // Este constructor privado impide que otras clases puedan crear instancias
+    // de esta.
     private Facade()
     {
         this.WaitingList = new WaitingList();
@@ -57,6 +58,8 @@ public class Facade
     private WaitingList WaitingList { get; }
 
     private BattlesList BattlesList { get; }
+    
+    private int UseCounter { get; set; }
 
     /// <summary>
     /// Agrega un entrenador a la lista de espera.
@@ -204,7 +207,7 @@ public class Facade
         Trainer? player = BattlesList.GetPlayerInBattle(displayName);
         Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
         Battle? battle = BattlesList.GetBattleByPlayer(displayName);
-        var result = InitialVerifications(player, opponent, battle, false);
+        var result = InitialVerifications(player, opponent, battle, null);
         if (result != null)
         {
             return result.Value;
@@ -232,7 +235,7 @@ public class Facade
         Trainer? player = BattlesList.GetPlayerInBattle(displayName);
         Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
         Battle? battle = BattlesList.GetBattleByPlayer(displayName);
-        var result = InitialVerifications(player, opponent, battle, false);
+        var result = InitialVerifications(player, opponent, battle, null);
         if (result != null)
         {
             return result.Value.message;
@@ -251,8 +254,7 @@ public class Facade
         {
             return battleFinished;
         }
-
-        return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁";
+        return $"✨🔁 Cambiaste tu Pokemon actual a {pokemonName} ✨🔁\n{GetPokemonAttacks(displayName, pokemonName)}";
     }
 
     /// <summary>
@@ -343,6 +345,10 @@ public class Facade
 
         // Verificación del Pokémon del jugador
         Pokemon playerPokemon = player.ActualPokemon;
+        if (!playerPokemon.IsAlive)
+        {
+            return ($"❌ {playerPokemon.Name} ha muerto. Usa el comando !change para cambiar a tu próximo Pokémon.", null);
+        }
 
         // Verificación del ataque
         Attack? attack = playerPokemon.AttackList.Find(a => a.Name == attackName && !a.IsSpecial);
@@ -614,21 +620,21 @@ public class Facade
         Trainer? player = BattlesList.GetPlayerInBattle(displayName);
         Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
         Battle? battle = BattlesList.GetBattleByPlayer(displayName);
-        var result = InitialVerifications(player, opponent, battle, true);
+        var result = InitialVerifications(player, opponent, battle, false);
         if (result != null)
         {
             return result.Value;
         }
 
         Pokemon foundPokemon = player.GetPokemon(pokemonName);
-
+        
         if (foundPokemon == null)
         {
-            return ($"❌ {displayName} no tiene a {pokemonName} en su lista de Pokémon.", null);
+            return ($"❌ {displayName} no tiene a {pokemonName} en su lista de pokemon.", null);
         }
-
         player.ActualPokemon = foundPokemon;
-        return ($"✅ {pokemonName} está listo para la batalla.", null);
+        UseCounter++;
+        return ($"✅ {pokemonName} esta listo para la batalla.\n{GetPokemonAttacks(displayName, pokemonName)} ", null);
     }
 
     /// <summary>
@@ -639,16 +645,16 @@ public class Facade
     /// <returns>Una cadena de texto con los ataques disponibles del Pokémon.</returns>
     public string GetPokemonAttacks(string displayName, string pokemonName)
     {
-        Trainer player = BattlesList.GetPlayerInBattle(displayName);
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
         Pokemon actualPokemon = player.GetPokemon(pokemonName);
-        var result = new StringBuilder();
+        var attackString = new StringBuilder();
 
         foreach (var attack in actualPokemon.AttackList)
         {
-            result.AppendLine(attack.AttackInfo());
+            attackString.AppendLine(attack.AttackInfo());
         }
 
-        return $"Puntos de vida: {actualPokemon.Hp} \n" + "\nLista de ataques:\n" + result.ToString();
+        return $"Puntos de vida: {actualPokemon.Hp} \n" + "\nLista de ataques:\n" + attackString.ToString();
     }
 
     /// <summary>
@@ -689,8 +695,8 @@ public class Facade
     /// <param name="battle">La batalla en curso.</param>
     /// <param name="forChange">Indica si la acción es para cambiar Pokémon.</param>
     /// <returns>Una tupla con un mensaje de error si alguna verificación falla, o null si todas las verificaciones son correctas.</returns>
-    public (string message, string? OpponentDisplayName)? InitialVerifications(Trainer player, Trainer opponent,
-        Battle battle, bool? forChange)
+    public (string message, string? OpponentDisplayName)? InitialVerifications(Trainer player, Trainer? opponent,
+        Battle? battle, bool? forChange)
     {
         if (opponent == null || battle == null)
         {
@@ -699,20 +705,35 @@ public class Facade
 
         if (!battle.BattleStarted)
         {
-            return ("❌ La batalla aún no empezó, selecciona tus Pokémon!", null);
+            return ("❌ La batalla aún no empezó, seleccionen sus Pokémon!", null);
         }
-
-        if (forChange != null && (player.ActualPokemon == null && !forChange.Value ||
-                                  opponent.ActualPokemon == null && !forChange.Value))
+        
+        if (forChange != null)
         {
-            return ($"❌ Los dos jugadores deben tener seleccionado un Pokémon. Usa el comando !use.", null);
+            if (UseCounter >= 2)
+            {
+                return ($"❌ Ya elegiste tu pokémon inicial. Si necesitas cambiarlo usa !change, recuerda que esto te gastará un turno!", null);
+            }
+            if (forChange.Value && (player.ActualPokemon == null || opponent.ActualPokemon == null))
+            {
+                return ($"❌ Los dos jugadores deben tener seleccionado un Pokémon. Usa el comando !use.", null);
+            }
         }
-
-        if (forChange != null && (battle.Turn != player && !forChange.Value))
+        else
         {
-            return ($"❌ No puedes realizar esta acción, es el turno de {opponent.DisplayName}", null);
+            if (player.ActualPokemon == null || opponent.ActualPokemon == null )
+            {
+                return ($"❌ Los dos jugadores deben tener seleccionado un Pokémon. Usa el comando !use.", null);
+            }
+            
+            if (battle.Turn != player)
+            {
+                return ($"❌ No puedes realizar esta acción, es el turno de {opponent.DisplayName}", null);
+            }
         }
-
+        
         return null;
     }
+
 }
+
