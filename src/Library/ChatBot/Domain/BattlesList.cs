@@ -70,4 +70,9 @@ public class BattlesList
         }
         return null;
     }
+
+    public bool RemoveBattle(Battle battle)
+    {
+        return battles.Remove(battle);
+    }
 }

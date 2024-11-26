@@ -65,10 +65,12 @@ public class Battle
         return Turn;
     }
     
-    public string? BattleFinished()
+    public string? BattleFinished(BattlesList? battleList, string? displayName)
     {
         if (Player1.GetTotalPokemonLife() == 0)
         {
+            Battle playersBattle = battleList.GetBattleByPlayer(displayName);
+            battleList.RemoveBattle(playersBattle);
             return $"✅ {Player2.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!";
         }
         if (Player2.GetTotalPokemonLife() == 0)
@@ -109,7 +111,7 @@ public class Battle
         return Player1.PokemonList.Count == 6 && Player2.PokemonList.Count == 6;
     }
 
-    public string? ChangeTurn(Trainer player)
+    public string? ChangeTurn(Trainer player, BattlesList? battleList, string? displayName)
     { 
         Turn = Turn == Player1 ? Player2 : Player1; // Cambia el turno
         ActualTurn += 1;
@@ -117,6 +119,6 @@ public class Battle
         {
             player.CoolDown -= 1;
         }
-        return BattleFinished();
+        return BattleFinished(battleList, displayName);
     }
 }

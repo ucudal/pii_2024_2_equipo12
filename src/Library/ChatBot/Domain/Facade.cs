@@ -249,7 +249,7 @@ public class Facade
         }
 
         player.ActualPokemon = playerPokemon;
-        string? battleFinished = battle.ChangeTurn(player);
+        string? battleFinished = battle.ChangeTurn(player, null, null);
         if (battleFinished != null)
         {
             return battleFinished;
@@ -291,7 +291,7 @@ public class Facade
             {
                 if (!player.ActualPokemon.IsAlive)
                 {
-                    return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto.", null);
+                    return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto. Usa el comando !change para seleccionar un nuevo pokemón", null);
                 }
 
                 player.UseItem(potion, player.ActualPokemon);
@@ -313,7 +313,7 @@ public class Facade
             }
 
             // Cambiar turno o finalizar la batalla
-            string? battleFinished = battle.ChangeTurn(player);
+            string? battleFinished = battle.ChangeTurn(player, null, null);
             if (battleFinished != null)
             {
                 return (battleFinished, null);
@@ -361,7 +361,7 @@ public class Facade
         string? isOpponentPokemonDead = playerPokemon.Attack(player, opponent.ActualPokemon, playerPokemon, attack);
 
         // Cambiar turno o finalizar la batalla
-        string? battleFinished = battle.ChangeTurn(player);
+        string? battleFinished = battle.ChangeTurn(player, BattlesList, playerDisplayName);
         if (battleFinished != null)
         {
             return (battleFinished, null);
@@ -413,7 +413,7 @@ public class Facade
                 // Aumenta el cooldown a 2 turnos
                 player.CoolDown += 2;
 
-                string? battleFinished = battle.ChangeTurn(player);
+                string? battleFinished = battle.ChangeTurn(player, BattlesList, playerDisplayName);
                 if (battleFinished != null)
                 {
                     return (battleFinished, null);
