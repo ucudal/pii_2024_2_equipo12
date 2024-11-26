@@ -590,9 +590,21 @@ public class Facade
         return (result.ToString(), null, null);
     }
 
-    public string message GetPokemons(string displayName)
+    public string GetPokemon(string displayName)
     {
         Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+        if (opponent == null || battle == null)
+        {
+            return "❌ Debes tener un oponente y una batalla empezada para poder realizar esta acción";
+        }
+
+        if (!battle.BattleStarted)
+        {
+            return "❌ La batalla aún no empezó, seleccionen sus Pokémon!";
+        }
+        
         var sb = new StringBuilder();
 
         foreach (var pokemon in player.PokemonList)
@@ -600,7 +612,7 @@ public class Facade
             sb.AppendLine($"{pokemon.Name}  Hp: {pokemon.Hp}  Estado: {pokemon.State}");
         }
 
-        return sb;
+        return sb.ToString();
     }
 
     /// <summary>
