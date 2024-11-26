@@ -6,24 +6,23 @@ using Poke.Clases;
     /// </summary>
     public class Trainer
     {
+        private Battle? battle;
+        
         /// <summary>
         /// El nombre de usuario de Discord en el servidor del bot del jugador.
         /// </summary>
         public string DisplayName { get; }
 
         /// <summary>
-        /// El estado del entrenador.
+        /// El estado del entrenador. 1: Esperando en la lista de espera,
+        /// 2: En una batalla, con los pokemones seleccionados
         /// </summary>
         public int Stage { get; set; }
-        // 1: Esperando en la lista de espera
-        // 2: En una batalla, sin seleccionar los pokemones todavia
-        // 3: En una batalla
-        // 4: En una batalla, en su turno
         
         /// <summary>
         /// Lista de pokemones del entrenador.
         /// </summary>
-        public List<Pokemon> Pokemons { get; }
+        public List<Pokemon> PokemonList { get; set; }
 
         /// <summary>
         /// El pokemon actualmente activo del entrenador.
@@ -34,6 +33,9 @@ using Poke.Clases;
         /// Lista de items que el entrenador tiene disponibles.
         /// </summary>
         public List<Item> Items { get; }
+        
+        
+        public int CoolDown { get; set; }
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="Trainer"/> con
@@ -45,7 +47,7 @@ using Poke.Clases;
         public Trainer(string displayName)
         {
             DisplayName = displayName;
-            Pokemons = new List<Pokemon> { };
+            PokemonList = new List<Pokemon> { };
             Items = new List<Item>
             {
                 new SuperPotion(),
@@ -59,19 +61,22 @@ using Poke.Clases;
         }
 
         /// <summary>
-        /// Agrega un pokemon a la lista de pokemones del entrenador.
+        /// Agrega un Pokémon a la selección del usuario.
         /// </summary>
-        /// <param name="pokemon">El pokemon a agregar.</param>
-        public void AddPokemon(Pokemon pokemon)
+        public string? AddPokemon(Pokemon pokemon)
         {
-            if (Pokemons.Count < 6)
+            if (PokemonList.Count >= 6)
             {
-                Pokemons.Add(pokemon);
+                return "❌ Ya cuentas con 6 pokemon, comienza a pelear!";
             }
-            else
+
+            if (!PokemonList.Contains(pokemon))
             {
-                Console.WriteLine("El entrenador ya tiene el número máximo de pokemones.");
+                PokemonList.Add(pokemon);
+                return $"✅ **{pokemon.Name}** ha sido seleccionado.";
             }
+            
+            return $"❌ Ya cuentas con {pokemon.Name} en tu lista.";
         }
 
         /// <summary>
@@ -81,7 +86,7 @@ using Poke.Clases;
         public double GetTotalPokemonLife()
         {
             double totalHp = 0;
-            foreach (var pokemon in Pokemons)
+            foreach (var pokemon in PokemonList)
             {
                 totalHp += pokemon.Hp;
             }
@@ -103,7 +108,7 @@ using Poke.Clases;
         /// </summary>
         public void ShowPokemonsInfo()
         {
-            foreach (var pokemon in Pokemons)
+            foreach (var pokemon in PokemonList)
             {
                 Console.WriteLine($"Nombre: {pokemon.Name}, Vida: {pokemon.Hp}, Nivel: {pokemon.State}");
             }
@@ -115,7 +120,7 @@ using Poke.Clases;
         /// <param name="pokemon">El pokemon que será el activo.</param>
         public void SetActualPokemon(Pokemon pokemon)
         {
-            if (Pokemons.Contains(pokemon))
+            if (PokemonList.Contains(pokemon))
             {
                 ActualPokemon = pokemon;
             }
@@ -154,10 +159,26 @@ using Poke.Clases;
             {
                 item.Use(objective);
                 RemoveItem(item); // Remueve el item después de usarlo si es consumible
+                battle.ActualTurn += 1;
+                battle.Turn = battle.Turn == battle.Player1 ? battle.Player2 : battle.Player1; // Cambia el turno
             }
             else
             {
                 Console.WriteLine("El entrenador no tiene este item.");
             }
         }
+
+        public Pokemon? GetPokemon(string pokemonName)
+        {
+            foreach (var pokemon in PokemonList)
+            {
+                if (pokemon.Name == pokemonName)
+                {
+                    return pokemon;
+                }
+            }
+            return null;
+        }
+        
+        
     }

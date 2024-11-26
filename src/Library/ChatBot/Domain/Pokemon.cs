@@ -1,4 +1,5 @@
 using Poke.Clases;
+using Ucu.Poo.DiscordBot.Domain;
 
 namespace Poke.Clases;
 
@@ -18,6 +19,8 @@ public class Pokemon
 
     /// <summary>Puntos de vida del Pokémon.</summary>
     public double Hp { get; set; }
+    
+    public bool IsAlive { get; set; }
 
     /// <summary>Tipo de Pokémon según la clase Type.</summary>
     public Type.PokemonType Type { get; set; }
@@ -47,31 +50,22 @@ public class Pokemon
     /// <param name="type">Tipo del Pokémon.</param>
     public Pokemon(string name, double health, double AttackCapacity, string state, Type.PokemonType type, List<Attack>? attackList = null)
     {
+        this.AttackList = attackList;
         this.Name = name;
         this.Hp = health;
         this.State = state;
         this.AttackCapacity = 1;
         this.Type = type;
-        if (attackList == null)
-        {
-            this.AttackList = new List<Attack>();
-        }
+        this.IsAlive = true;
     }
 
     /// <summary>
     /// Verifica si el Pokémon está vivo.
     /// </summary>
     /// <returns>Mensaje indicando si el Pokémon está vivo o muerto.</returns>
-    public string IsAlive()
+    public bool IsPokemonAlive()
     {
-        if (Hp > 0)
-        {
-            return "El Pokemon está vivo";
-        }
-        else
-        {
-            return "El Pokemon está muerto";
-        }
+        return Hp >= 0;
     }
 
     /// <summary>
@@ -80,17 +74,15 @@ public class Pokemon
     /// <param name="opponentPokemon">El Pokémon oponente a atacar.</param>
     /// <param name="playerPokemon">El Pokémon atacante.</param>
     /// <param name="attack">El ataque específico a usar.</param>
-    public void Attack(Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
+    public string? Attack(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
     {
-        if (AttackCapacity == 1)
+        if (AttackCapacity == 1 && opponentPokemon.IsAlive)
         {
             double attackDamage = attack.Damage;
-            opponentPokemon.RecibeDamage(attackDamage);
+            return opponentPokemon.RecibeDamage(player, attackDamage);
         }
-        else
-        {
-            Console.WriteLine($"{Name} no puede atacar en este turno ya que está {this.State}");
-        }
+
+        return "";
     }
 
     /// <summary>
@@ -113,14 +105,17 @@ public class Pokemon
     /// Aplica daño al Pokémon, reduciendo sus puntos de vida.
     /// </summary>
     /// <param name="damage">Cantidad de daño recibido.</param>
-    public void RecibeDamage(double damage)
+    public string? RecibeDamage(Trainer? player, double damage)
     {
         Hp -= damage;
-        if (Hp < 0)
+        if (Hp <= 0)
         {
             Hp = 0;
+            IsAlive = false;
+            return $"{Name} ha muerto, utiliza !change para seleccionar tu proximo Pokemon.";
         }
-        Console.WriteLine($"{this.Name} recibio {damage} puntos de daño. El HP restante:{Hp}");
+
+        return null;
     }
 
     /// <summary>
@@ -213,11 +208,11 @@ public class Pokemon
 
         if (Poisoned)
         {
-            RecibeDamage(Hp * 0.05);  // Pierde 5% del HP total si está envenenado
+            RecibeDamage(null,Hp * 0.05);  // Pierde 5% del HP total si está envenenado
         }
         if (Burned)
         {
-            RecibeDamage(Hp * 0.10);  // Pierde 10% del HP total si está quemado
+            RecibeDamage(null,Hp * 0.10);  // Pierde 10% del HP total si está quemado
         }
 
         if (Paralized)
@@ -225,5 +220,17 @@ public class Pokemon
             Random random = new Random();
             double AttackCapacity = random.Next(0, 2); // 0 o 1 definen si puede atacar
         }
+    }
+
+    public Attack? GetAttackByName(string attackName)
+    {
+        foreach (var attack in AttackList)
+        {
+            if (attack.Name == attackName)
+            {
+                return attack;
+            }
+        }
+        return null;
     }
 }

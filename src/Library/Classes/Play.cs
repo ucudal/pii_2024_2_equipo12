@@ -30,7 +30,7 @@ public class Play
                     Attack selectedAttack = player1.ActualPokemon.AttackList[0];
 
                     // Realizar el ataque con el ataque seleccionado
-                    player1.ActualPokemon.Attack(player2.ActualPokemon, player1.ActualPokemon, selectedAttack);
+                    player1.ActualPokemon.Attack(null, player2.ActualPokemon, player1.ActualPokemon, selectedAttack);
              
                 }
                 else if (i == '2')
@@ -78,7 +78,7 @@ public class Play
                     Attack selectedAttack = player1.ActualPokemon.AttackList[selectedAttackIndex - 1];
 
                     // Realizar el ataque con el ataque seleccionado
-                    player1.ActualPokemon.Attack(player2.ActualPokemon, player1.ActualPokemon, selectedAttack);
+                    player1.ActualPokemon.Attack(null, player2.ActualPokemon, player1.ActualPokemon, selectedAttack);
                 }
             }
             else if (playElection == "2")

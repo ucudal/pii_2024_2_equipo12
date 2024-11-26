@@ -1,3 +1,5 @@
+using Ucu.Poo.DiscordBot.Domain;
+
 namespace Poke.Clases
 {
     /// <summary>
@@ -68,5 +70,12 @@ namespace Poke.Clases
             // Calcular el daño final aplicando la efectividad
             return Damage * effectiveness;
         }
+
+        public string AttackInfo()
+        {
+            return $"{Name} (Daño: {Damage}  Tipo: {AttackType}  Especial: {IsSpecial})";
+        }
+        
+        
     }
 }
