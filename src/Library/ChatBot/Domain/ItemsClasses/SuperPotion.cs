@@ -4,7 +4,7 @@ public class SuperPotion : Item
 {
     public SuperPotion()
     {
-        Name = "Súper Pocion";
+        Name = "SuperPotion";
     }
 
     public override void Use(Pokemon objective)

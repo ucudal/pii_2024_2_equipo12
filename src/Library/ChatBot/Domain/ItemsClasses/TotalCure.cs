@@ -4,11 +4,16 @@ public class TotalCure : Item
 {
     public TotalCure()
     {
-        Name = "Cura Total";
+        Name = "TotalCure";
     }
 
     public override void Use(Pokemon objective)
     {
-        // Lógica para eliminar efectos de state (dormido, paralizado, etc.)
+        // Elimina todos los estados negativos del Pokémon objetivo
+        objective.State = null;
+        objective.SleepState = null;
+        objective.Paralized = false;
+        objective.Poisoned = false;
+        objective.Burned = false;
     }
 }

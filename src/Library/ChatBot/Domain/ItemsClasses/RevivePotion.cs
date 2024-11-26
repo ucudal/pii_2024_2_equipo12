@@ -4,7 +4,7 @@ public class RevivePotion : Item
 {
     public RevivePotion()
     {
-        Name = "Revivir";
+        Name = "RevivePotion";
     }
 
     public override void Use(Pokemon objective)

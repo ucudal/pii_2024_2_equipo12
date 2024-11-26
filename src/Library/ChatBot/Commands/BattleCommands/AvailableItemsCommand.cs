@@ -14,12 +14,15 @@ public class AvailableItemsCommand : ModuleBase<SocketCommandContext>
     /// Implementa el comando 'availableItems'. Este comando le permite al usuario
     /// ver los items disponibles para usar.
     /// </summary>
-    [Command("availableItems")]
+    [Command("items")]
     [Summary("Muestra los items disponibles para usar")]
     // ReSharper disable once UnusedMember.Global
-    public async Task ExecuteAsync(string displayName)
+    public async Task ExecuteAsync()
     {
-        string result = Facade.Instance.GetAvailableItems(displayName);
-        await ReplyAsync(result);
+        // Obtiene el nombre del jugador desde el contexto del comando
+        string displayName = CommandHelper.GetDisplayName(Context);
+        
+        // Responde con el mensaje de lista de Items
+        await ReplyAsync($"{displayName}:\n{Facade.Instance.GetAvailableItems(displayName).message}");
     }
 }

@@ -19,9 +19,9 @@ public class UserInfoCommand : ModuleBase<SocketCommandContext>
     [Command("who")]
     [Summary(
         """
-        Devuelve información sobre el usuario que se indica como parámetro o
-        sobre el usuario que envía el mensaje si no se indica otro usuario.
-        """)]
+             Devuelve información sobre el usuario que se indica como parámetro o
+             sobre el usuario que envía el mensaje si no se indica otro usuario.
+             """)]
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync(
         [Remainder][Summary("El usuario del que tener información, opcional")]
