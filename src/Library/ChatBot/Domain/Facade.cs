@@ -202,26 +202,42 @@ public class Facade
     /// </summary>
     /// <param name="playerDisplayName">El nombre para mostrar del jugador.</param>
     /// <returns>Un mensaje con los items disponibles.</returns>
+    /// <summary>
+    /// Se imprime la lista de pociones disponibles para el jugador.
+    /// </summary>
+    /// <param name="playerDisplayName">El nombre para mostrar del jugador.</param>
+    /// <returns>Un mensaje con los items disponibles.</returns>
     public (string message, string? OpponentDisplayName) GetAvailableItems(string displayName)
     {
         Trainer? player = BattlesList.GetPlayerInBattle(displayName);
         Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
         Battle? battle = BattlesList.GetBattleByPlayer(displayName);
-        var result = InitialVerifications(player, opponent, battle, null);
-        if (result != null)
+        
+        if (opponent == null || battle == null)
         {
-            return result.Value;
+            return ("❌ Debes tener un oponente y una batalla empezada para poder realizar esta acción", null);
+        }
+
+        if (!battle.BattleStarted)
+        {
+            return ("❌ La batalla aún no empezó, selecciona tus Pokémon!", null);
+        }
+      
+        if (player.ActualPokemon == null || opponent.ActualPokemon == null)
+        {
+            return ($"❌ Los dos jugadores deben tener seleccionado un Pokémon. Usa el comando !use.", null);
         }
         if (BattlesList.GetPlayerInBattle (displayName).Items != null)
         {
+            var sb = new StringBuilder();
+            
             foreach (Item item in BattlesList.GetPlayerInBattle(displayName).Items)
             {
-                var sb = new StringBuilder();
                 sb.AppendLine(item.Name);
-                return ($"Lista de pociones disponibles: \n {result}", null);
             }
+            return ($"Lista de pociones disponibles: \n{sb}", null);
         }
-        return ("No hay pociones disponibles", null);
+        return ("❌ No hay pociones disponibles", null);
     }
 
     /// <summary>
@@ -572,6 +588,31 @@ public class Facade
         }
 
         return (result.ToString(), null, null);
+    }
+
+    public string GetPokemon(string displayName)
+    {
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+        if (opponent == null || battle == null)
+        {
+            return "❌ Debes tener un oponente y una batalla empezada para poder realizar esta acción";
+        }
+
+        if (!battle.BattleStarted)
+        {
+            return "❌ La batalla aún no empezó, seleccionen sus Pokémon!";
+        }
+        
+        var sb = new StringBuilder();
+
+        foreach (var pokemon in player.PokemonList)
+        {
+            sb.AppendLine($"{pokemon.Name}  Hp: {pokemon.Hp}  Estado: {pokemon.State}");
+        }
+
+        return sb.ToString();
     }
 
     /// <summary>

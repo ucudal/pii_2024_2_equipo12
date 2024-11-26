@@ -14,7 +14,7 @@ public class Pokemon
     /// <summary>Capacidad de ataque del Pokémon, inicialmente en 1 si puede atacar.</summary>
     public double AttackCapacity { get; set; }
 
-    /// <summary>Estado actual del Pokémon (dormido, paralizado, etc.), nulo si no tiene estado.</summary>
+    /// <summary>Estado actual del Pokémon (dormido, paralizado, etc.), normal si no tiene estado.</summary>
     public string? State { get; set; }
 
     /// <summary>Puntos de vida del Pokémon.</summary>
