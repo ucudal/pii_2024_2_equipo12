@@ -4,8 +4,52 @@ using Ucu.Poo.DiscordBot.Commands;
 using Ucu.Poo.DiscordBot.Domain;
 using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 
-namespace LibraryTests
+namespace LibraryTests;
+
+public class RestriccionesTest
 {
+    private Trainer trainer1;
+    private Trainer trainer2;
+    private Battle battle;
+    private Pokemon pikachu;
+    private Pokemon charmander;
+    private Attack tackle;
+    private BattlesList battlesList;
+
+    [SetUp]
+    public void SetUp()
+    {
+        trainer1 = new Trainer("Ash");
+        trainer2 = new Trainer("Gary");
+        tackle = new Attack("Tackle", 40, Poke.Clases.Type.PokemonType.Normal, false, null);
+        pikachu = new Pokemon("Pikachu", 100, 10, "1", Poke.Clases.Type.PokemonType.Electric, new List<Attack> { tackle });
+        charmander = new Pokemon("Charmander", 100, 10, "2", Poke.Clases.Type.PokemonType.Fire, new List<Attack> { tackle });
+        trainer1.AddPokemon(pikachu);
+        trainer2.AddPokemon(charmander);
+        battle = new Battle(trainer1, trainer2);
+        battlesList = new BattlesList();
+        battlesList.AddBattle(trainer1, trainer2);
+    }
+
+    [Test]
+    public void RestrinccionesPokemoe()
+    {
+        var result = 
+        Assert.That($"{pikachu} esta muerto.", result);
+    }
+
+    [Test]
+    public void RestrinccionesPokemon_MaxPokemonsSelectede()
+    {
+    
+        var playerDisplayName = "Player1";
+        var pokemonName = "Pikachu";
+        var result = 
+   
+        Assert.That("Y se selecciono el maximo", result);
+    }
+// no me dio el tiempo :(
+    
     public class PoisonTests
     {
         private Poisoned poisonAttack;

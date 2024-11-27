@@ -1,6 +1,9 @@
+using System.ComponentModel;
 using System.Text;
 using Poke.Clases;
+using Ucu.Poo.DiscordBot.Commands;
 using Ucu.Poo.DiscordBot.Services;
+using Type = Poke.Clases.Type;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
@@ -37,6 +40,7 @@ public class Facade
             return _instance;
         }
     }
+    
 
     /// <summary>
     /// Obtiene la lista de batallas activas.
@@ -82,6 +86,7 @@ public class Facade
 
         return $"{displayName} ya está en una batalla";
     }
+
 
     /// <summary>
     /// Remueve un entrenador de la lista de espera.
@@ -172,7 +177,8 @@ public class Facade
         if (!OpponentProvided())
         {
             opponent = this.WaitingList.GetAnyoneWaiting();
-            return this.CreateBattle(player, opponent!);
+            return $"Reglas de la batalla son las siguientes:\n{this.RestrinccionesPociones(playerDisplayName,  /*a falta de tiempo lo dejo asi)} {this.CreateBattle(player, opponent!*/)}";
+            
         }
 
         opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName!);
@@ -201,7 +207,8 @@ public class Facade
             return opponent != null;
         }
     }
-
+ 
+    
     /// <summary>
     /// Se imprime la lista de pociones disponibles para el jugador.
     /// </summary>
@@ -212,6 +219,7 @@ public class Facade
     /// </summary>
     /// <param name="playerDisplayName">El nombre para mostrar del jugador.</param>
     /// <returns>Un mensaje con los items disponibles.</returns>
+    /// 
     public (string message, string? OpponentDisplayName) GetAvailableItems(string displayName)
     {
         Trainer? player = BattlesList.GetPlayerInBattle(displayName);
@@ -297,54 +305,57 @@ public class Facade
             return result.Value;
         }
 
-        Item? potion = player.Items.Find(item => item.Name == potionName);
-        if (potion != null)
+        if (RestrinccionesPociones(playerDisplayName, potionName) == null)
         {
-            if (potion is RevivePotion)
+            Item? potion = player.Items.Find(item => item.Name == potionName);
+            if (potion != null)
             {
-                if (player.ActualPokemon.IsAlive)
+                if (potion is RevivePotion)
                 {
-                    return ("❌ No puedes usar Revive en un Pokémon que ya está vivo.", null);
+                    if (player.ActualPokemon.IsAlive)
+                    {
+                        return ("❌ No puedes usar Revive en un Pokémon que ya está vivo.", null);
+                    }
+
+                    player.UseItem(potion, player.ActualPokemon);
+                }
+                else if (potion is SuperPotion)
+                {
+                    if (!player.ActualPokemon.IsAlive)
+                    {
+                        return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto. Usa el comando !change para seleccionar un nuevo pokemón", null);
+                    }
+
+                    player.UseItem(potion, player.ActualPokemon);
+                }
+                else if (potion is TotalCure)
+                {
+                    if (!player.ActualPokemon.IsAlive)
+                    {
+                        return ("❌ No puedes usar la poción de Cura Total en un Pokémon que está muerto.", null);
+                    }
+
+                    if (player.ActualPokemon.State == null)
+                    {
+                        return ("❌ No puedes usar la poción de Cura Total en un Pokémon que no tiene estados inducidos.",
+                            null);
+                    }
+
+                    player.UseItem(potion, player.ActualPokemon);
                 }
 
-                player.UseItem(potion, player.ActualPokemon);
-            }
-            else if (potion is SuperPotion)
-            {
-                if (!player.ActualPokemon.IsAlive)
+                // Cambiar turno o finalizar la batalla
+                string? battleFinished = battle.ChangeTurn(player, null, null,playerPokemon);
+                if (battleFinished != null)
                 {
-                    return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto. Usa el comando !change para seleccionar un nuevo pokemón", null);
+                    return (battleFinished, null);
                 }
 
-                player.UseItem(potion, player.ActualPokemon);
+                return ($"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙", null);
             }
-            else if (potion is TotalCure)
-            {
-                if (!player.ActualPokemon.IsAlive)
-                {
-                    return ("❌ No puedes usar la poción de Cura Total en un Pokémon que está muerto.", null);
-                }
-
-                if (player.ActualPokemon.State == null)
-                {
-                    return ("❌ No puedes usar la poción de Cura Total en un Pokémon que no tiene estados inducidos.",
-                        null);
-                }
-
-                player.UseItem(potion, player.ActualPokemon);
-            }
-
-            // Cambiar turno o finalizar la batalla
-            string? battleFinished = battle.ChangeTurn(player, null, null,playerPokemon);
-            if (battleFinished != null)
-            {
-                return (battleFinished, null);
-            }
-
-            return ($"✨🧙 Usaste {potionName} en tu pokemon {player.ActualPokemon.Name} ✨🧙", null);
         }
-
-        return ("❌ No tienes esa poción", null);
+        
+        return ("❌ No tienes esa poción o no tienes permiso de usar esa pocion", null);
     }
 
     /// <summary>
@@ -467,7 +478,8 @@ public class Facade
 
         return ($"❌ No puedes lanzar un ataque especial, tienes un cooldown de {player.CoolDown} turnos", null,null);
     }
-
+    
+    
     /// <summary>
     /// Determina el tipo de ataque y ejecuta el correspondiente: normal o especial.
     /// </summary>
@@ -492,7 +504,8 @@ public class Facade
         {
             return ($"❌ {playerPokemon.Name} está muerto. Usa el comando !change para cambiar tu pokemon.", null,null);
         }
-
+        
+        
         // Determina si el ataque es normal o especial
         if (playerPokemon.AttackList.Any(a => a.Name == attackName && !a.IsSpecial))
         {
@@ -543,7 +556,9 @@ public class Facade
 
         return null;
     }
-
+    
+    
+    
     /// <summary>
     /// Gestiona la selección de Pokémon por parte de un jugador, validando
     /// los índices y asegurándose de que los Pokémon seleccionados sean válidos.
@@ -564,51 +579,55 @@ public class Facade
         Trainer? opponent = BattlesList.GetOpponnentInBattle(displayName);
         Battle? battle = BattlesList.GetBattleByPlayer(displayName);
 
-        if (opponent == null || battle == null)
-        {
-            return ("❌ Debes tener un oponente y una batalla empezada para poder realizar esta acción", null, null);
-        }
-
-        if (player.Stage != 2)
-        {
-            return ("❌ No puedes seleccionar Pokémon en este momento.", null, null);
-        }
-
-        // Divide los índices proporcionados y verifica si tienen exactamente 6.
-        var selectedIndices = indices.Split(' ')
-            .Select(i => int.TryParse(i, out int index) ? index - 1 : -1)
-            .ToList();
-
-        if (selectedIndices.Any(index => index < 0))
-        {
-            return (
-                "❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos que estén dentro del catálogo.",
-                null, null);
-        }
-
-        var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
-        var result = new StringBuilder();
-
-        foreach (var index in selectedIndices)
-        {
-            if (index < 0 || index >= catalog.Count)
+       if (opponent == null || battle == null)
             {
-                result.AppendLine($"❌ Índice {index} no es válido, haz la selección de nuevo.");
-                continue;
+                return ("❌ Debes tener un oponente y una batalla empezada para poder realizar esta acción", null, null);
             }
 
-            var catalogEntry = catalog[index];
-            var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
-            result.AppendLine(player.AddPokemon(pokemon));
-        }
+            if (player.Stage != 2)
+            {
+                return ("❌ No puedes seleccionar Pokémon en este momento.", null, null);
+            }
 
-        if (battle.ReadyForBattle())
-        {
-            battle.BattleStarted = true;
-            player.Stage = 3;
-            return (result.ToString(), $"{displayName} y {opponent.DisplayName} tienen 6 Pokémon, comienza la batalla!",
-                battle.InitialTurn());
-        }
+            // Divide los índices proporcionados y verifica si tienen exactamente 6.
+            var selectedIndices = indices.Split(' ')
+                .Select(i => int.TryParse(i, out int index) ? index - 1 : -1)
+                .ToList();
+
+            if (selectedIndices.Any(index => index < 0))
+            {
+                return (
+                    "❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos que estén dentro del catálogo.",
+                    null, null);
+            }
+
+            var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
+            var result = new StringBuilder();
+
+            foreach (var index in selectedIndices)
+            {
+                if (index < 0 || index >= catalog.Count)
+                {
+                    result.AppendLine($"❌ Índice {index} no es válido, haz la selección de nuevo.");
+                    continue;
+                }
+                
+                var catalogEntry = catalog[index];
+                var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
+                result.AppendLine(player.AddPokemon(pokemon));
+                
+            }
+
+            if (battle.ReadyForBattle() )
+            {
+                battle.BattleStarted = true;
+                player.Stage = 3;
+                return (result.ToString(),
+                    $"{displayName} y {opponent.DisplayName} tienen 6 Pokémon, comienza la batalla!",
+                    battle.InitialTurn());
+            }
+        
+
 
         return (result.ToString(), null, null);
     }
@@ -798,6 +817,75 @@ public class Facade
         
         return null;
     }
+    
+    public string RestrinccionesPokemon(string displayName, string pokemon)
+    {
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        if (player == null)
+        {
+            return "Debes estar en una batalla para seleccionar.";
+        }
+        
+        Pokemon selectedPokemon = player.GetPokemon(pokemon);
+        if (selectedPokemon == null)
+        {
+            return $"No tienes a {pokemon} en tu lista";
+        }
 
+        if (!selectedPokemon.IsAlive)
+        {
+            return $"{pokemon} esta muerto.";
+        }
+        
+        if (player.PokemonList.Count >= 6)
+        {
+            return "Ya seleccionaste el maximo numero de Pokemons.";
+        }
+
+        return pokemon;
+    }
+
+    public string RestrinccionesPociones(string displayName, string pociones)
+    {
+        // Verifiacmos si esta en battle
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+
+        if (player == null || battle == null)
+        {
+            return "Debes estar en una batalla para poder usar las pociones.";
+        }
+
+        // Verificamos si hay pociones disponibles para el pokemon
+        if (string.IsNullOrEmpty(pociones))
+        {
+            return "No tienes la poción especificada o no la tienes disponible.";
+        }
+
+        // Restringir el uso de pociones si no esta vivo
+        if (!player.ActualPokemon.IsAlive)
+        {
+            return $"{player.ActualPokemon.Name} esta muerto, o puedes usar pociones en este momento.";
+        }
+
+        return pociones;
+    }
+    public string RestrinccionesType(string displayName, string type)
+    {
+        Trainer? player = BattlesList.GetPlayerInBattle(displayName);
+        if (player == null || player.ActualPokemon == null)
+        {
+            return "No tienes un Pokemon seleccionado para usar un ataque.";
+        }
+        // Chequeos necesarios
+        if (player.ActualPokemon.IsPokemonAlive())
+        {
+            return $"No puedes usar ataques de tipo {type}, tu pokemon no esta vivo.";
+        } 
+        
+        return type;
+    }
 }
 
+
+    

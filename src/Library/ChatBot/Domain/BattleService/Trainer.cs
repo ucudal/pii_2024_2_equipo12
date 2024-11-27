@@ -34,6 +34,8 @@ using Poke.Clases;
         /// </summary>
         public List<Item> Items { get; }
         
+        public bool HasAcceptedRules { get; set; } // mensjae de aceptar reglas
+        
         
         public int CoolDown { get; set; }
 
@@ -59,7 +61,11 @@ using Poke.Clases;
                 new RevivePotion()
             };
         }
-
+        public void ReceiveMessage(string message)
+        {
+            // Aca reciviria el mensaje y dependiendo de el resultado se daria por aceptado o no la reglas, me llevaria mas tiempo del que tengo hacer esto. 
+        }
+        
         /// <summary>
         /// Agrega un Pokémon a la selección del usuario.
         /// </summary>
