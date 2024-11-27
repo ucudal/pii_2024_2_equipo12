@@ -40,29 +40,29 @@ public static class PokemonCatalog
         switch (catalogEntry)
         {
             case Catalog.Bulbasaur:
-                return new Pokemon("Bulbasaur", 40, 1, "Normal", Poke.Clases.Type.PokemonType.Plant, attacks);
+                return new Pokemon("Bulbasaur", 200, 1, "Normal", Poke.Clases.Type.PokemonType.Plant, attacks);
             case Catalog.Charmander:
-                return new Pokemon("Charmander", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Fire, attacks);
+                return new Pokemon("Charmander", 200, 1, "Normal", Poke.Clases.Type.PokemonType.Fire, attacks);
             case Catalog.Squirtle:
-                return new Pokemon("Squirtle", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Water, attacks);
+                return new Pokemon("Squirtle", 200, 1, "Normal", Poke.Clases.Type.PokemonType.Water, attacks);
             case Catalog.Pikachu:
-                return new Pokemon("Pikachu", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Electric, attacks);
+                return new Pokemon("Pikachu", 200, 1, "Normal", Poke.Clases.Type.PokemonType.Electric, attacks);
             case Catalog.Jigglypuff:
-                return new Pokemon("Jigglypuff", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Psychic, attacks);
+                return new Pokemon("Jigglypuff", 200, 1, "Normal", Poke.Clases.Type.PokemonType.Psychic, attacks);
             case Catalog.Eevee:
-                return new Pokemon("Eevee", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Normal, attacks);
+                return new Pokemon("Eevee", 190, 1, "Normal", Poke.Clases.Type.PokemonType.Normal, attacks);
             case Catalog.Psyduck:
-                return new Pokemon("Psyduck", 1, 1, "Normal", Poke.Clases.Type.PokemonType.Water, attacks);
+                return new Pokemon("Psyduck", 210, 1, "Normal", Poke.Clases.Type.PokemonType.Water, attacks);
             case Catalog.Geodude:
-                return new Pokemon("Geodude", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Rock, attacks);
+                return new Pokemon("Geodude", 220, 1, "Normal", Poke.Clases.Type.PokemonType.Rock, attacks);
             case Catalog.Machop:
-                return new Pokemon("Machop", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Fighter, attacks);
+                return new Pokemon("Machop", 230, 1, "Normal", Poke.Clases.Type.PokemonType.Fighter, attacks);
             case Catalog.Gastly:
-                return new Pokemon("Gastly", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Ghost, attacks);
+                return new Pokemon("Gastly", 190, 1, "Normal", Poke.Clases.Type.PokemonType.Ghost, attacks);
             case Catalog.Oddish:
-                return new Pokemon("Oddish", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Plant, attacks);
+                return new Pokemon("Oddish", 180, 1, "Normal", Poke.Clases.Type.PokemonType.Plant, attacks);
             case Catalog.Growlithe:
-                return new Pokemon("Growlithe", 0, 1, "Normal", Poke.Clases.Type.PokemonType.Fire, attacks);
+                return new Pokemon("Growlithe", 200, 1, "Normal", Poke.Clases.Type.PokemonType.Fire, attacks);
             default:
                 throw new ArgumentException("Pokémon no encontrado en el catálogo.");
         }
