@@ -1,6 +1,7 @@
 using System.Text;
 using Poke.Clases;
 using Ucu.Poo.DiscordBot.Services;
+using Type = Poke.Clases.Type;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
@@ -10,6 +11,8 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Facade
 {
+    private List < Pokemon > pokemonesTotalesAEliminar = new List<Pokemon>(); // lista vacia de pokemones
+    List < Item > itemsAEliminar = new List<Item>(); // lista vacia de items
     private static Facade? _instance;
     private BattlesList _battlesList;
 
@@ -795,9 +798,131 @@ public class Facade
                 return ($"❌ No puedes realizar esta acción, es el turno de {opponent.DisplayName}", null);
             }
         }
-        
         return null;
     }
 
+    public string TypeCondition(string playerDisplayName, string pokeType)
+    { // No me dio el tiempo ya que no supe resolver la static class de Type
+        /* Creo que hice un buen semestre y se vio reflejado en el resto del curso
+         tanto en pruebas como durante el proyecto, y esta instancia no creo 
+         que haya mostrado esto.
+        */
+        Trainer? jugador = WaitingList.FindTrainerByDisplayName(playerDisplayName);
+        Battle? battle = BattlesList.GetBattleByPlayer(playerDisplayName);
+    
+        if (jugador == null)
+        {
+            return $"❌ No puedes realizar prohibiciones si no estás en la lista de espera";
+        }
+        if (battle != null && battle.BattleStarted)
+        {
+            return $"❌ No puedes realizar prohibiciones si estás en una partida comenzada";
+        }
+
+        var typeList = pokeType.Split(' ').ToList(); // Separo los elementos en una lista
+        List<Type> tiposInvalidos = new List<Type>();
+        
+        if (tiposInvalidos.Count > 0)
+        {
+            return $"❌ Los siguientes tipos no son válidos: {string.Join(", ", tiposInvalidos)}";
+        }
+
+        return "";
+    }
+
+
+    public Pokemon? FindPokemonByName(string name, List<Pokemon> pokemonsList)
+    {
+        foreach (Pokemon pokemon in pokemonsList)
+        {
+            if (pokemon.Name == name)
+            {
+                return pokemon;
+            }
+        }
+        return null;
+    }
+    
+    public string PokeConditions(string displayName, string pokeEnString)
+    {
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+        Trainer? jugador = WaitingList.FindTrainerByDisplayName(displayName);
+        if (jugador == null)
+        {
+            return $"❌ No puedes realizar prohibiciones si no estás en la lista de espera";
+        }
+        if (battle != null && battle.BattleStarted)
+        {
+            return $"❌ No puedes realizar prohibiciones si estás en una partida comenzada";
+        }
+        
+        var pokeList = pokeEnString.Split(" ").ToList(); // lista de los pokemones seleccionados
+        foreach (var pokemon in pokeList) // para cada pokemon en la lista de seleccionados, que los busque
+        {
+            var pokemonesAEncontrar = FindPokemonByName(pokemon, pokemonesTotalesAEliminar);
+            if (pokemonesAEncontrar != null)
+            {
+                pokemonesTotalesAEliminar.Add(pokemonesAEncontrar); // si lo encuentra que lo agregue
+            }
+        }
+
+        var text = "";
+        foreach (var poke in pokemonesTotalesAEliminar)
+        {
+            text += poke.Name + ", ";
+        }
+        return $"El jugador {displayName} indica las siguientes condiciones sobre los tipos: \n  No estan permitidos los tipos: " + text;
+    }
+    
+    public string ItemConditions(string displayName, string potionNamesList)
+    {
+        Battle? battle = BattlesList.GetBattleByPlayer(displayName);
+        Trainer? jugador = WaitingList.FindTrainerByDisplayName(displayName);
+        if (jugador == null)
+        {
+            return $"❌ No puedes realizar prohibiciones si no estás en la lista de espera";
+        }
+        if (battle != null && battle.BattleStarted)
+        {
+            return $"❌ No puedes realizar prohibiciones si estás en una partida comenzada";
+        }
+        
+        var pociones = potionNamesList.Split(" ").ToList();
+        foreach (var pocion in pociones)
+        {
+            Item? potion = jugador.Items.Find(item => item.Name == pocion);
+            if (potion != null)
+            {
+                itemsAEliminar.Add(potion);
+            }
+        }
+        var text = "";
+        foreach (var item in itemsAEliminar)
+        {
+            text += item.Name + ", ";
+        }
+        return $"El jugador {displayName} indica las siguientes condiciones sobre los items: \n  No estan permitidos los items: " + text;
+    }
+
+    public string ConditionsCheckRechazar(string displayName, string opponentName)
+    {
+        Trainer? jugador = WaitingList.FindTrainerByDisplayName(displayName);
+        Trainer? oponente = WaitingList.FindTrainerByDisplayName(opponentName);
+        WaitingList.RemoveTrainer(displayName);
+        WaitingList.RemoveTrainer(opponentName);
+        jugador.Stage = 0;
+        oponente.Stage = 0;
+        return
+            "❌ Ambos jugadores fueron eliminados de la lista de espera por no aceptar las condiciones. Para volver a jugar, re-ingresen a la lista de espera";
+    }
+
+    public string ConditionsCheckAceptar(string displayName, string opponentName)
+    {
+        CreateNewBattle(displayName, opponentName);
+        Trainer? jugador = WaitingList.FindTrainerByDisplayName(displayName);
+        Trainer? oponente = WaitingList.FindTrainerByDisplayName(opponentName);
+        // No me dio el tiempo para establecer las condiciones 
+        return "🔥 Las condiciones fueron aceptadas, comienza la batalla! 🔥";
+    }
 }
 

@@ -34,7 +34,6 @@ using Poke.Clases;
         /// </summary>
         public List<Item> Items { get; }
         
-        
         public int CoolDown { get; set; }
 
         /// <summary>
@@ -144,5 +143,9 @@ using Poke.Clases;
             }
             return null;
         }
-        
+
+        public void PokemonType()
+        {
+            
+        }
     }

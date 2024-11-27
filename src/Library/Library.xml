@@ -211,6 +211,66 @@
             esta esperando para jugar, es decir, si esta dentro de la Waitlist.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.AcceptCommand">
+            <summary>
+            Esta clase implementa el comando 'accept', el cual
+            permite al usuario aceptar las condiciones de su oponente
+            </summary> 
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.AcceptCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'accept', el cual
+            permite al usuario aceptar las condiciones de su oponente
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.ItemsConditionCommand">
+            <summary>
+            Esta clase implementa el comando 'condicionItem', el cual
+            permite al usuario imponer reglas para los items prohibidos
+            </summary> 
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.ItemsConditionCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'condicionItem', el cual
+            permite al usuario imponer reglas para los items prohibidos
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.PokemonConditionCommand">
+            <summary>
+            Esta clase implementa el comando 'condicionPoke', el cual
+            permite al usuario imponer reglas para pokemones especificos
+            </summary> 
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.PokemonConditionCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'condicionPoke', el cual
+            permite al usuario imponer reglas para pokemones especificos
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.RejectCommand">
+            <summary>
+            Esta clase implementa el comando 'reject', el cual
+            permite al usuario rechazar las condiciones de su oponente
+            </summary> 
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.RejectCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'reject', el cual
+            permite al usuario rechazar las condiciones de su oponente
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.TypeConditionCommand">
+            <summary>
+            Esta clase implementa el comando 'condicionTipo', el cual
+            permite al usuario imponer reglas para los tipos de pokemones
+            </summary> 
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands.TypeConditionCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'condicionTipo', el cual
+            permite al usuario imponer reglas para los tipos de pokemones
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
             Esta clase representa una batalla entre dos entrenadores Pokémon.

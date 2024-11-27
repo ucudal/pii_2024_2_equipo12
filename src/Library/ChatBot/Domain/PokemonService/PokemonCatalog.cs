@@ -7,7 +7,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// Clase que representa un catálogo de Pokémon y proporciona funcionalidad para
 /// crear instancias de Pokémon y asociarlos con sus ataques.
 /// </summary>
-public static class PokemonCatalog
+public class PokemonCatalog
 {
     /// <summary>
     /// Enum que define el catálogo de Pokémon disponibles.

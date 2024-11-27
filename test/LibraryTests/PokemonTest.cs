@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Poke.Clases;
+using Ucu.Poo.DiscordBot.ChatBot.Commands.ConditionsCommands;
 using Ucu.Poo.DiscordBot.Commands;
 using Ucu.Poo.DiscordBot.Domain;
 using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
@@ -765,4 +766,27 @@ namespace LibraryTests
                 }
             }
         }
+    public class ConditionsTest
+    {
+        private string player;
+        private string opponentPlayer;
+        private WaitingList waitingList;
+        private Battle battle;
+                
+        [SetUp]
+        public void SetUp()
+        {
+            waitingList.AddTrainer(player);
+            waitingList.AddTrainer(opponentPlayer);
+        }
+        [Test]
+        public void ConditionRejected()
+        {
+            Facade.Instance.ItemConditions(player, "SuperPotion");
+            Facade.Instance.ConditionsCheckRechazar(opponentPlayer, player);
+            var result = Facade.Instance.ConditionsCheckRechazar(opponentPlayer, player);
+            Assert.That(!battle.BattleStarted);
+            Assert.That("❌ No puedes realizar prohibiciones si no estás en la lista de espera", Is.EqualTo(result));
+        }
+    }
 }
