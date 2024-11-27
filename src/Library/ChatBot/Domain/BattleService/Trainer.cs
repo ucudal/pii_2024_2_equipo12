@@ -145,4 +145,16 @@ using Poke.Clases;
             return null;
         }
         
+        public Item? GetItem(string itemName)
+        {
+            foreach (var item in Items)
+            {
+                if (item.Name == itemName)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+        
     }
