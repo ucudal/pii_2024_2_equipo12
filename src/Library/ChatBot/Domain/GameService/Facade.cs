@@ -144,7 +144,7 @@ public class Facade
         opponent.Stage = 2;
 
         BattlesList.AddBattle(player, opponent);
-        return $"\ud83e\udd4a {player.DisplayName} vs {opponent.DisplayName}  batallaran! \ud83e\udd4a  \n Usa el comando !catalogue para ver el catálogo de Pokemon";
+        return $"\ud83e\udd4a Comienza {player.DisplayName} vs {opponent.DisplayName}! \ud83e\udd4a  \n Usa el comando !catalogue para ver el catálogo de Pokemon";
     }
 
     /// <summary>
@@ -258,9 +258,15 @@ public class Facade
 
         // Verificación del Pokémon del jugador
         Pokemon? playerPokemon = player.PokemonList.Find(pokemon => pokemon.Name == pokemonName);
+        
         if (!playerPokemon.IsAlive)
         {
-            return ($"❌ {playerPokemon.Name} ha muerto. Usa el comando !change para cambiar a tu próximo Pokémon.");
+            return ($"❌ {playerPokemon.Name} ha muerto \u2620\ufe0f. Usa el comando !change para cambiar a tu próximo Pokémon.");
+        }
+        
+        if (playerPokemon == player.ActualPokemon)
+        {
+            return ($"❌ Ya estas usando a {playerPokemon.Name} . Elige a otro!");
         }
 
         player.ActualPokemon = playerPokemon;
@@ -557,7 +563,7 @@ public class Facade
         {
             battle.BattleStarted = true;
             player.Stage = 3;
-            return (result.ToString(), $"{displayName} y {opponent.DisplayName} tienen 6 Pokémon, comienza la batalla! \u2694\ufe0f",
+            return (result.ToString(), $"{displayName} y {opponent.DisplayName} tienen 6 Pokémon, comienza la batalla! \u2694\ufe0f \n",
                 battle.InitialTurn());
         }
 
@@ -583,7 +589,7 @@ public class Facade
 
         foreach (var pokemon in player.PokemonList)
         {
-            sb.AppendLine($"{pokemon.Name}  Hp \ud83d\udc9a: {pokemon.Hp}  Estado \ud83d\ude35\u200d\ud83d\udcab: {pokemon.State}");
+            sb.AppendLine($"{pokemon.Name}  \ud83d\udc9aHp: {pokemon.Hp}  Estado \ud83d\ude35\u200d\ud83d\udcab: {pokemon.State}");
         }
 
         return sb.ToString();
@@ -615,7 +621,7 @@ public class Facade
         }
         player.ActualPokemon = foundPokemon;
         UseCounter++;
-        return ($"✅ {pokemonName} esta listo para la batalla. \ud83c\udf89\n{GetPokemonAttacks(displayName, pokemonName)} ", null);
+        return ($"✅ {pokemonName} esta listo para la batalla. ✅\n{GetPokemonAttacks(displayName, pokemonName)} ", null);
     }
 
     /// <summary>
@@ -635,7 +641,7 @@ public class Facade
             attackString.AppendLine(attack.AttackInfo());
         }
 
-        return $"Hp \ud83d\udc9a: {actualPokemon.Hp} \n" + "\nLista de ataques \ud83d\udde1\ufe0f:\n" + attackString.ToString();
+        return $"\ud83d\udc9a Hp: {actualPokemon.Hp} \n" + "\nLista de ataques \ud83d\udde1\ufe0f:\n" + attackString.ToString();
     }
 
     /// <summary>
