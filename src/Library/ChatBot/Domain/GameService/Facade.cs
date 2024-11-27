@@ -20,6 +20,9 @@ public class Facade
         this.WaitingList = new WaitingList();
         this.BattlesList = new BattlesList();
         _battlesList = new BattlesList();
+        this.RestrictedItems = new List<string>();
+        this.RestrictedPokemonIndexes = new List<int>();
+        this.RestrictedTypes = new List<PokemonCatalog.Catalog>();
     }
 
     /// <summary>
@@ -60,6 +63,16 @@ public class Facade
     private BattlesList BattlesList { get; }
     
     private int UseCounter { get; set; }
+    
+    /// <summary>
+    /// Listas con las distintas restricciones.
+    /// Asumo que, al crear restricciones, estas serán aplicadas en la próxima batalla.
+    /// </summary>
+    private List<string> RestrictedItems { get; set; }
+    private List<int> RestrictedPokemonIndexes { get; set; }
+    
+    private List<PokemonCatalog.Catalog> RestrictedTypes { get; set; }
+    //--------------------------------------------------------------------------------------------------------
 
     /// <summary>
     /// Agrega un entrenador a la lista de espera.
@@ -148,8 +161,9 @@ public class Facade
         this.WaitingList.RemoveTrainer(opponent.DisplayName);
         player.Stage = 2;
         opponent.Stage = 2;
-
-        BattlesList.AddBattle(player, opponent);
+        
+        //Paso como parametros las restricciones de Items, Pokemones y Tipos
+        BattlesList.AddBattle(player, opponent, RestrictedItems, RestrictedPokemonIndexes, RestrictedTypes);
         return $"Comienza {player.DisplayName} vs {opponent.DisplayName}";
     }
 
@@ -588,18 +602,30 @@ public class Facade
 
         var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
         var result = new StringBuilder();
-
+        
         foreach (var index in selectedIndices)
         {
-            if (index < 0 || index >= catalog.Count)
+            //Chequeo que al agregar crear el pokemon, su index, no este dentro de los restrictdIndexes de la battle.;
+            if (!battle.RestrictedIndexes.Contains(index))
             {
-                result.AppendLine($"❌ Índice {index} no es válido, haz la selección de nuevo.");
-                continue;
-            }
+                if (index < 0 || index >= catalog.Count)
+                {
+                    result.AppendLine($"❌ Índice {index} no es válido, haz la selección de nuevo.");
+                    continue;
+                }
 
-            var catalogEntry = catalog[index];
-            var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
-            result.AppendLine(player.AddPokemon(pokemon));
+                var catalogEntry = catalog[index];
+                
+                //Chequeo que al crear el pokemon, el tipo no este dentro de los RestrictedTypes de la battle.
+                if (!battle.RestrictedPokemonTypes.Contains(catalogEntry))
+                {
+                    var pokemon = PokemonCatalog.CreatePokemon(catalogEntry);
+                    result.AppendLine(player.AddPokemon(pokemon));
+                }
+                else result.AppendLine($"❌ No se pudo agregar este pokemon, el tipo {catalogEntry} esta restringido.");
+            }
+            else result.AppendLine("❌ No se pudo agregar este pokemon, esta restringido.");
+
         }
 
         if (battle.ReadyForBattle())
@@ -799,5 +825,72 @@ public class Facade
         return null;
     }
 
+    /// <summary>
+    /// Agrega las restricciones de tipos de pokemones, guarda en la facade una lista con los tipos de pokemones a restringir en la proxima partida.
+    /// </summary>
+    /// <param name="pokemonTypes">. String con los tipos de los pokemon a restringir</param>
+    /// <returns>Un mensaje indicando si se agrego la restriccion corretamente.</returns>
+    public string AddTypeRestriction(string pokemonTypes)
+    {
+        // Variable que almacena los tipos restringidos en una lista de string.
+        var selectedPokemons = pokemonTypes.Split(' ').ToList();
+        
+        
+        // Lista que contiene cada tipo de pokemon
+        var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
+        
+        int indices = 0;
+        List<PokemonCatalog.Catalog> catalogueRestrictions = new List<PokemonCatalog.Catalog>();
+        
+        foreach (var typeString in selectedPokemons)
+        {
+            foreach (var pokemonType in catalog)
+            {
+                if (typeString == pokemonType.ToString())
+                {
+                    catalogueRestrictions.Add(pokemonType);
+                }
+            }
+        }
+
+        RestrictedTypes = catalogueRestrictions;
+        
+        return "Se aplicaron las restricciones correctamente";
+    }
+    
+    /// <summary>
+    /// Agrega las restricciones de pokemones, guarda en la facade el una lista con los indices a restringir en la proxima batalla.
+    /// </summary>
+    /// <param name="restrictedPokemonIndex">. String con los indexe de los pokemon a restringir</param>
+    /// <returns>Un mensaje indicando si se agrego la restriccion corretamente.</returns>
+    public string AddPokemonRestriction(string restrictedPokemonIndex)
+    {
+        var selectedPokemons = restrictedPokemonIndex.Split(' ')
+            .Select(i => int.TryParse(i, out int index) ? index - 1 : -1)
+            .ToList();
+
+        RestrictedPokemonIndexes = selectedPokemons;
+
+        return "Los pokemon fueron restringidos correctamente.";
+    }
+
+    /// <summary>
+    /// Agrega las restricciones de items, guarda en la facade una lista con los nombres de los items a restringir en la proxima partida.
+    /// </summary>
+    /// <param name="restrictedPokemonIndex">. String con los nombres de los items a restringir</param>
+    /// <returns>Un mensaje indicando si se agrego la restriccion corretamente.</returns>
+    public string AddItemRestriction(string restrictedItemsString)
+    {
+        //Vaciar la lista con restricciones previas
+        RestrictedItems.Clear();
+        
+        //Separar el restrictedItemsString en una lista
+        var selectedItems = restrictedItemsString.Split(' ').ToList();
+        
+        //Guardamos la lista en la facade para cuando se cree la proxima batalla.
+        RestrictedItems = selectedItems;
+
+        return "Los items se restringieron correctamente";
+    }
 }
 

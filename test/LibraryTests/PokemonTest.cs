@@ -6,6 +6,7 @@ using Battle = Ucu.Poo.DiscordBot.Domain.Battle;
 
 namespace LibraryTests
 {
+    //Debido a los cambios en el contructor de Battle y otros, ahora muchos test tienen error.
     public class PoisonTests
     {
         private Poisoned poisonAttack;
@@ -765,4 +766,29 @@ namespace LibraryTests
                 }
             }
         }
+
+    public class RestrictionsTest
+    {
+        private List<string> RestrictedItems;
+        private List<int> RestrictedPokemonIndexes;
+        private List<PokemonCatalog.Catalog> RestrictedTypes;
+        private string itemString;
+        
+        [SetUp]
+        public void SetUp()
+        {
+            RestrictedItems = new List<string>();
+            RestrictedPokemonIndexes = new List<int>();
+            RestrictedTypes = new List<PokemonCatalog.Catalog>();
+            itemString = "SuperPotion RevivePotion TotalCure";
+        }
+
+        [Test]
+        public void AddItemRestrictionTest()
+        {
+            Facade.Instance.AddItemRestriction(itemString);
+            Facade.Instance.CreateNewBattle("player1", "player2");
+            Battle batallaCreada = Facade.Instance.
+        }
+    }
 }

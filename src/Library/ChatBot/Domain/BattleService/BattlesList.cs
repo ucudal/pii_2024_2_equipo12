@@ -14,9 +14,9 @@ public class BattlesList
     /// <param name="player1">El primer jugador que participa en la batalla.</param>
     /// <param name="player2">El oponente que participa en la batalla.</param>
     /// <returns>La instancia de la batalla creada.</returns>
-    public Battle AddBattle(Trainer player1, Trainer player2)
+    public Battle AddBattle(Trainer player1, Trainer player2, List<String>? restrictedItems, List<int>? restrictedPokemonIndexes, List<PokemonCatalog.Catalog> restrictedTypes)
     {
-        var battle = new Battle(player1, player2);
+        var battle = new Battle(player1, player2, restrictedItems, restrictedPokemonIndexes, restrictedTypes);
         this.battles.Add(battle);
         return battle;
     }

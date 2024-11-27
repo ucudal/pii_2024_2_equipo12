@@ -13,8 +13,9 @@ internal static class Program
     /// </summary>
     private static void Main()
     {
-        //DemoFacade();
-        DemoBot();
+        DemoFacade();
+        //DemoBot();
+        DemoRestrictions();
     }
 
     private static void DemoFacade()
@@ -29,5 +30,10 @@ internal static class Program
     private static void DemoBot()
     {
         BotLoader.LoadAsync().GetAwaiter().GetResult();
+    }
+
+    private static void DemoRestrictions()
+    {
+        Console.WriteLine(Facade.Instance.AddTypeRestriction("Marto","Water Bug Dragon"));
     }
 }

@@ -211,6 +211,30 @@
             esta esperando para jugar, es decir, si esta dentro de la Waitlist.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.Restrictions.RestrictionsCommand.SelectPokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'restrictions' del bot. Este comando permite
+            al usuario visualizar en pantalla las restricciones que se pueden hacer a la batalla.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.Restrictions.RestrictionsCommand.SelectPokemonCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'restrictions' del bot. Este comando permite
+            al usuario visualizar en pantalla las restricciones que se pueden hacer a la batalla.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.ChatBot.Commands.Restrictions._TypeRestriction.SelectPokemonCommand">
+            <summary>
+            Esta clase implementa el comando 'typeRestriction' del bot. Este comando permite
+            al jugador añadir restricciones de tipos de pokemon a la batalla.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.ChatBot.Commands.Restrictions._TypeRestriction.SelectPokemonCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'typeRestriction'. Este comando permite
+            al jugador añadir restricciones de tipos de pokemon a la batalla.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
             Esta clase representa una batalla entre dos entrenadores Pokémon.

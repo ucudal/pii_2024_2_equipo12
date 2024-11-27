@@ -145,4 +145,21 @@ using Poke.Clases;
             return null;
         }
         
+        /// <summary>
+        /// Elimina los items restringidos de la lista Items.
+        /// </summary>
+        /// <param name="restrictedItems">Lista con el nombre de cada item.</param>
+        public void RestrictItems(List<string> restrictedItems)
+        {
+            foreach (var restrictedItemName in restrictedItems)
+            {
+                foreach (var item in Items)
+                {
+                    if (item.Name == restrictedItemName)
+                    {
+                        Items.Remove(item);
+                    }
+                }
+            }
+        }
     }

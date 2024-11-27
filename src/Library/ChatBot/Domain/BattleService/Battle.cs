@@ -38,18 +38,45 @@ public class Battle
     /// Este valor se establece como <c>true</c> cuando ambos entrenadores tienen suficientes Pokémon.
     /// </summary>
     public bool BattleStarted { get; set; }
-
+    
+    /// <summary>
+    /// Lista de int con los index de los pokemon restringidos.
+    /// </summary>
+    public List<int> RestrictedIndexes { get; set; }
+    
+    /// <summary>
+    /// Lista con los pokemones del catalogo restringidos.
+    /// </summary>
+    public List<PokemonCatalog.Catalog> RestrictedPokemonTypes { get; set; }
+    
     /// <summary>
     /// Inicializa una nueva instancia de la clase <see cref="Battle"/>.
     /// </summary>
     /// <param name="player1">El primer jugador de la batalla.</param>
     /// <param name="player2">El oponente de la batalla.</param>
-    public Battle(Trainer player1, Trainer player2)
+    public Battle(Trainer player1, Trainer player2, List<string>? itemNameList, List<int>? restrictedPokemonIndex, List<PokemonCatalog.Catalog> restrictedTypes)
     {
         Player2 = player2;
         Player1 = player1;
         ActualTurn = 1;
         BattleStarted = false;
+        
+        //Añadir restricciones de items
+        if (itemNameList != null)
+        {
+            Player1.RestrictItems(itemNameList);
+            Player2.RestrictItems(itemNameList);
+        }
+
+        if (restrictedTypes != null)
+        {
+            RestrictedPokemonTypes = restrictedTypes;
+        }
+
+        if (restrictedPokemonIndex != null)
+        {
+            RestrictedIndexes = restrictedPokemonIndex;
+        }
     }
     
     /// <summary>
@@ -130,4 +157,5 @@ public class Battle
         }
         return BattleFinished(battleList, displayName);
     }
+    
 }
