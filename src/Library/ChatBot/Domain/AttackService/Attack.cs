@@ -71,10 +71,18 @@ namespace Poke.Clases
             return Damage * effectiveness;
         }
 
+        /// <summary>
+        /// Genera una cadena con la información detallada de un ataque.
+        /// </summary>
+        /// <returns>
+        /// Una cadena que contiene el nombre del ataque, el daño que inflige, 
+        /// su tipo y si es un ataque especial.
+        /// </returns>
         public string AttackInfo()
         {
             return $"{Name} (Daño: {Damage}  Tipo: {AttackType}  Especial: {IsSpecial})";
         }
+
         
         
     }

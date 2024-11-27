@@ -94,27 +94,6 @@ using Poke.Clases;
         }
 
         /// <summary>
-        /// Verifica si el entrenador tiene un item específico.
-        /// </summary>
-        /// <param name="item">El item a buscar.</param>
-        /// <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
-        public bool HasItem(Item item)
-        {
-            return Items.Contains(item);
-        }
-
-        /// <summary>
-        /// Muestra la información de todos los pokemones que posee el entrenador.
-        /// </summary>
-        public void ShowPokemonsInfo()
-        {
-            foreach (var pokemon in PokemonList)
-            {
-                Console.WriteLine($"Nombre: {pokemon.Name}, Vida: {pokemon.Hp}, Nivel: {pokemon.State}");
-            }
-        }
-
-        /// <summary>
         /// Establece el pokemon actualmente activo del entrenador.
         /// </summary>
         /// <param name="pokemon">El pokemon que será el activo.</param>
@@ -123,10 +102,6 @@ using Poke.Clases;
             if (PokemonList.Contains(pokemon))
             {
                 ActualPokemon = pokemon;
-            }
-            else
-            {
-                Console.WriteLine("Este pokemon no pertenece al entrenador.");
             }
         }
 
@@ -140,15 +115,6 @@ using Poke.Clases;
         }
 
         /// <summary>
-        /// Agrega un item a la lista de items del entrenador.
-        /// </summary>
-        /// <param name="item">El item a agregar.</param>
-        public void AddItem(Item item)
-        {
-            Items.Add(item);
-        }
-
-        /// <summary>
         /// Usa un item específico en un pokemon objetivo.
         /// </summary>
         /// <param name="item">El item a usar.</param>
@@ -159,6 +125,14 @@ using Poke.Clases;
             RemoveItem(item); // Remueve el item después de usarlo si es consumible
         }
 
+        /// <summary>
+        /// Busca un Pokémon en la lista de Pokémon del entrenador por su nombre.
+        /// </summary>
+        /// <param name="pokemonName">El nombre del Pokémon a buscar.</param>
+        /// <returns>
+        /// El Pokémon que coincide con el nombre proporcionado si se encuentra en la lista;
+        /// de lo contrario, <c>null</c>.
+        /// </returns>
         public Pokemon? GetPokemon(string pokemonName)
         {
             foreach (var pokemon in PokemonList)
@@ -170,6 +144,5 @@ using Poke.Clases;
             }
             return null;
         }
-        
         
     }

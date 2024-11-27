@@ -1,7 +1,5 @@
 using Discord.Commands;
 using Ucu.Poo.DiscordBot.Domain;
-using Ucu.Poo.DiscordBot.Services;
-using System.Text;
 
 namespace Ucu.Poo.DiscordBot.Commands
 {
