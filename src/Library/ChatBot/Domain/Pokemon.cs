@@ -20,6 +20,9 @@ public class Pokemon
     /// <summary>Puntos de vida del Pokémon.</summary>
     public double Hp { get; set; }
     
+    /// <summary>Vida inicial del Pokémon.</summary>
+    public double InitialHealth { get; set; }
+    
     public bool IsAlive { get; set; }
 
     /// <summary>Tipo de Pokémon según la clase Type.</summary>
@@ -53,6 +56,7 @@ public class Pokemon
         this.AttackList = attackList;
         this.Name = name;
         this.Hp = health;
+        this.InitialHealth = health;
         this.State = state;
         this.AttackCapacity = 1;
         this.Type = type;
@@ -74,15 +78,9 @@ public class Pokemon
     /// <param name="opponentPokemon">El Pokémon oponente a atacar.</param>
     /// <param name="playerPokemon">El Pokémon atacante.</param>
     /// <param name="attack">El ataque específico a usar.</param>
-    public string? Attack(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
+    public (string? message, string? specialAttackMessage) Attack(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
     {
-        if (AttackCapacity == 1 && opponentPokemon.IsAlive)
-        {
-            double attackDamage = attack.Damage;
-            return opponentPokemon.RecibeDamage(player, attackDamage);
-        }
-
-        return "";
+        return attack.AttackOpponent(player, opponentPokemon, playerPokemon, attack);
     }
 
     /// <summary>
@@ -94,10 +92,6 @@ public class Pokemon
         if (AttackList.Count < 4)
         {
             AttackList.Add(nuevoAttack);
-        }
-        else
-        {
-            Console.WriteLine("No se pueden agregar más ataques, el límite es 4");
         }
     }
 
@@ -153,43 +147,6 @@ public class Pokemon
     public double GetHp()
     {
         return Hp;
-    }
-
-    /// <summary>
-    /// Aplica un estado al Pokémon objetivo si no tiene ya un estado aplicado.
-    /// </summary>
-    /// <param name="objective">El Pokémon al que se le aplica el estado.</param>
-    /// <param name="state">El estado a aplicar.</param>
-    public void ApplyState(Pokemon objective, string state)
-    {
-        if (objective.State == null)
-        {
-            objective.State = state;
-        }
-        else
-        {
-            Console.WriteLine($"{objective.Name} ya tiene un estado");
-        }
-    }
-
-    /// <summary>
-    /// Cura totalmente al Pokémon quitándole su estado cuando se usa el ítem "CuraTotal".
-    /// </summary>
-    /// <param name="objective">El Pokémon objetivo.</param>
-    /// <param name="item">El ítem usado.</param>
-    /// <param name="player">El entrenador que posee el ítem.</param>
-    public void TotalCureWithItem(Pokemon objective, Item item, OriginalTrainer player)
-    {
-        if (item is TotalCure && (player.GetItem(item) == true))
-        {
-            objective.State = null;
-            player.useItem(item, objective);
-            player.RemoveItem(item);
-        }
-        else
-        {
-            Console.WriteLine("No se puede usar este item para quitarle el estado al Pokemon");
-        }
     }
 
     /// <summary>

@@ -1,3 +1,5 @@
+using Poke.Clases;
+
 namespace Ucu.Poo.DiscordBot.Domain;
 
 /// <summary>
@@ -111,10 +113,11 @@ public class Battle
         return Player1.PokemonList.Count == 6 && Player2.PokemonList.Count == 6;
     }
 
-    public string? ChangeTurn(Trainer player, BattlesList? battleList, string? displayName)
+    public string? ChangeTurn(Trainer player, BattlesList? battleList, string? displayName, Pokemon pokemon)
     { 
         Turn = Turn == Player1 ? Player2 : Player1; // Cambia el turno
         ActualTurn += 1;
+        pokemon.StateActualization();
         if (player.CoolDown != 0)
         {
             player.CoolDown -= 1;

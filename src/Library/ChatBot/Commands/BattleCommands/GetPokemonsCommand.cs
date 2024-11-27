@@ -7,7 +7,7 @@ namespace Ucu.Poo.DiscordBot.Commands;
 
 public class GetPokemonsCommand : ModuleBase<SocketCommandContext>
 {
-    [Command("pokemon")]
+    [Command("pokedex")]
     [Summary("Usa una pocion (ítem) en un pokemon")]
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync()

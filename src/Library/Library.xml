@@ -98,6 +98,18 @@
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
             </summary>
         </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.CommandsCommand">
+            <summary>
+            Esta clase implementa el comando 'comand' del bot. Este comando le muestra
+            al usuario un listado con los comandos.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.CommandsCommand.ExecuteAsync">
+            <summary>
+            Esta clase implementa el comando 'comand' del bot. Este comando le muestra
+            al usuario un listado con los comandos.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
             <summary>
             Esta clase implementa el comando 'name' del bot. Este comando retorna el
@@ -656,7 +668,7 @@
             Indica si el ataque es especial (en lugar de físico).
             </summary>
         </member>
-        <member name="M:Poke.Clases.Attack.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+        <member name="M:Poke.Clases.Attack.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Attack"/>.
             </summary>
@@ -671,11 +683,6 @@
             </summary>
             <param name="target">El Pokémon objetivo que recibe el ataque.</param>
             <returns>El daño final después de aplicar la ventaja o desventaja de tipo.</returns>
-        </member>
-        <member name="M:Poke.Clases.NormalAttack.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
-            <summary>
-             Constructor para inicializar un ataque
-             </summary>
         </member>
         <member name="T:Poke.Clases.Pokemon">
             <summary>
@@ -693,6 +700,9 @@
         </member>
         <member name="P:Poke.Clases.Pokemon.Hp">
             <summary>Puntos de vida del Pokémon.</summary>
+        </member>
+        <member name="P:Poke.Clases.Pokemon.InitialHealth">
+            <summary>Vida inicial del Pokémon.</summary>
         </member>
         <member name="P:Poke.Clases.Pokemon.Type">
             <summary>Tipo de Pokémon según la clase Type.</summary>
@@ -772,32 +782,38 @@
             </summary>
             <returns>Puntos de vida del Pokémon.</returns>
         </member>
-        <member name="M:Poke.Clases.Pokemon.ApplyState(Poke.Clases.Pokemon,System.String)">
-            <summary>
-            Aplica un estado al Pokémon objetivo si no tiene ya un estado aplicado.
-            </summary>
-            <param name="objective">El Pokémon al que se le aplica el estado.</param>
-            <param name="state">El estado a aplicar.</param>
-        </member>
-        <member name="M:Poke.Clases.Pokemon.TotalCureWithItem(Poke.Clases.Pokemon,Poke.Clases.Item,Poke.Clases.OriginalTrainer)">
-            <summary>
-            Cura totalmente al Pokémon quitándole su estado cuando se usa el ítem "CuraTotal".
-            </summary>
-            <param name="objective">El Pokémon objetivo.</param>
-            <param name="item">El ítem usado.</param>
-            <param name="player">El entrenador que posee el ítem.</param>
-        </member>
         <member name="M:Poke.Clases.Pokemon.StateActualization">
             <summary>
             Actualiza los efectos de los estados del Pokémon en cada turno.
             </summary>
+        </member>
+        <member name="T:Poke.Clases.Asleep">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Dormido" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Asleep.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Asleep"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Asleep.Sleep(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Dormido" al Pokémon objetivo. 
+            Este efecto impide que el Pokémon objetivo pueda atacar durante un número aleatorio de turnos (1 a 4).
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Dormido".</param>
         </member>
         <member name="T:Poke.Clases.Burned">
             <summary>
             Representa un ataque especial que puede causar el estado de "Quemado" en un Pokémon.
             </summary>
         </member>
-        <member name="M:Poke.Clases.Burned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+        <member name="M:Poke.Clases.Burned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Burned"/>.
             </summary>
@@ -813,33 +829,12 @@
             </summary>
             <param name="objective">El Pokémon objetivo que será afectado por el estado "Quemado".</param>
         </member>
-        <member name="T:Poke.Clases.IsAsleep">
-            <summary>
-            Representa un ataque especial que puede causar el estado de "Dormido" en un Pokémon.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.IsAsleep.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.IsAsleep"/>.
-            </summary>
-            <param name="name">Nombre del ataque.</param>
-            <param name="damage">Daño base del ataque.</param>
-            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
-            <param name="isSpecial">Indica si el ataque es especial.</param>
-        </member>
-        <member name="M:Poke.Clases.IsAsleep.Sleep(Poke.Clases.Pokemon)">
-            <summary>
-            Aplica el efecto de "Dormido" al Pokémon objetivo. 
-            Este efecto impide que el Pokémon objetivo pueda atacar durante un número aleatorio de turnos (1 a 4).
-            </summary>
-            <param name="objective">El Pokémon objetivo que será afectado por el estado "Dormido".</param>
-        </member>
         <member name="T:Poke.Clases.Paralized">
             <summary>
             Representa un ataque especial que puede causar el estado de "Paralizado" en un Pokémon.
             </summary>
         </member>
-        <member name="M:Poke.Clases.Paralized.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+        <member name="M:Poke.Clases.Paralized.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Paralized"/>.
             </summary>
@@ -860,7 +855,7 @@
             Representa un ataque especial que puede causar el estado de "Envenenado" en un Pokémon.
             </summary>
         </member>
-        <member name="M:Poke.Clases.Poisoned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+        <member name="M:Poke.Clases.Poisoned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Poisoned"/>.
             </summary>

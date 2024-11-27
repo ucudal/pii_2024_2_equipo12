@@ -26,11 +26,21 @@ public class AttackCommand : ModuleBase<SocketCommandContext>
             var result = Facade.Instance.DetermineAttack(displayName, attackName);
             if (result.OpponentDisplayName != null)
             {
-                await ReplyAsync($"{result.OpponentDisplayName}:\n {result.message}");
+                if (result.specialAttackMessage != null)
+                {
+                    await ReplyAsync($"{result.OpponentDisplayName}:\n {result.specialAttackMessage}");
+                    await ReplyAsync($"{result.OpponentDisplayName}:\n {result.message}");
+                }
+                else await ReplyAsync($"{result.OpponentDisplayName}:\n {result.message}");
+            } 
+            else if (result.specialAttackMessage != null)
+            {
+                await ReplyAsync($"{displayName}:\n {result.message}");
+                await ReplyAsync($"{result.specialAttackMessage}");
             } 
             else await ReplyAsync($"{displayName}:\n {result.message}");
-
-            if (result.message == "✅ {Player2.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!")
+            
+            if (result.message == $"✅ {displayName} ha ganado, no le quedan mas pokemones vivos al oponente!")
             {
                 string repoPath = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
                 string victoriaImage = Path.Combine(repoPath, "Assets", "VictoriaImage.png");

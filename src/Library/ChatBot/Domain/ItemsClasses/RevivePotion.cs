@@ -11,7 +11,7 @@ public class RevivePotion : Item
     {
         if (objective.GetHp() == 0)
         {
-            objective.AddHP(objective.Hp / 2);  // Revive con el 50% del HP total
+            objective.AddHP(objective.InitialHealth / 2);  // Revive con el 50% del HP total
         }
     }
 }

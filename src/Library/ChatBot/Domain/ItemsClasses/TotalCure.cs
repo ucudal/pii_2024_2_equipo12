@@ -10,7 +10,7 @@ public class TotalCure : Item
     public override void Use(Pokemon objective)
     {
         // Elimina todos los estados negativos del Pokémon objetivo
-        objective.State = null;
+        objective.State = "Normal";
         objective.SleepState = null;
         objective.Paralized = false;
         objective.Poisoned = false;
