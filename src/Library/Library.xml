@@ -30,30 +30,11 @@
             mensaje a la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.CatalogueCommand">
-            <summary>
-            Clase que implementa comandos relacionados con el catálogo de Pokémon.
-            </summary>
-        </member>
         <member name="M:Ucu.Poo.DiscordBot.Commands.CatalogueCommand.ExecuteAsync">
             <summary>
-            Comando 'catalogue' que muestra el catálogo de Pokémon como imágenes en Discord.
-            Permite a los usuarios visualizar un listado de Pokémon disponibles y seleccionar sus opciones.
+            Implementa el comando 'selectPokemon'. Este comando permite al usuario
+            visualizar el catalogo pokemon en pantalla.
             </summary>
-            <returns>Una tarea asincrónica que envía las imágenes del catálogo al canal de Discord.</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.GetPokemonsCommand">
-            <summary>
-            Clase que implementa el comando para obtener los Pokémon asociados a un jugador.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.GetPokemonsCommand.ExecuteAsync">
-            <summary>
-            Comando 'pokemon' que permite al usuario listar los Pokémon que tiene asociados.
-            </summary>
-            <returns>
-            Una tarea asincrónica que envía un mensaje al canal de Discord con los Pokémon del usuario.
-            </returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.AttackCommand">
             <summary>
@@ -115,6 +96,18 @@
             <summary>
             Implementa el comando 'selectpokemon'. Este comando permite al jugador
             seleccionar hasta 6 Pokémon del catálogo utilizando sus índices.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Commands.CommandsCommand">
+            <summary>
+            Esta clase implementa el comando 'comand' del bot. Este comando le muestra
+            al usuario un listado con los comandos.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.CommandsCommand.ExecuteAsync">
+            <summary>
+            Esta clase implementa el comando 'comand' del bot. Este comando le muestra
+            al usuario un listado con los comandos.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
@@ -201,218 +194,78 @@
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
-            Esta clase representa una batalla entre dos entrenadores Pokémon.
+            Esta clase representa una batalla entre dos jugadores.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player1">
             <summary>
-            Obtiene el primer jugador que participa en la batalla.
+            Obtiene un valor que representa el primer jugador.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player2">
             <summary>
-            Obtiene el oponente que participa en la batalla.
+            Obtiene un valor que representa al oponente.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.State">
             <summary>
-            Obtiene o establece el estado actual de la batalla.
+            Obtiene o establece el estado de la batalla.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Turn">
             <summary>
-            Obtiene o establece el entrenador al que le corresponde el turno actual.
-            El turno inicial se determina aleatoriamente al comienzo de la batalla.
+            Representa a quien le corresponde el turno actual, determinándose random al inicio de la batalla.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.ActualTurn">
             <summary>
-            Obtiene o establece el número del turno actual.
+            Contador del turno actual.
             </summary>
         </member>
         <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.BattleStarted">
             <summary>
-            Indica si la batalla ha comenzado.
-            Este valor se establece como <c>true</c> cuando ambos entrenadores tienen suficientes Pokémon.
+            Booleano que se vuelve true cuando los dos entrenadores tienen los pokemones suficientes para la batalla.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
             <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/>.
+            Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
+            valores recibidos como argumento.
             </summary>
-            <param name="player1">El primer jugador de la batalla.</param>
-            <param name="player2">El oponente de la batalla.</param>
+            <param name="player1">El primer jugador.</param>
+            <param name="player2">El oponente.</param>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.InitialTurn">
-            <summary>
-            Determina aleatoriamente a quién le corresponde el turno inicial.
-            </summary>
-            <returns>El entrenador al que le corresponde el primer turno.</returns>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.StartBattle">
+             <summary>
+             Inicia la batalla.
+             </summary>
+            
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.BattleFinished(Ucu.Poo.DiscordBot.Domain.BattlesList,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.EndBattle">
             <summary>
-            Verifica si la batalla ha terminado al comprobar si alguno de los jugadores ya no tiene Pokémon vivos.
+            Determina el ganador de la batalla.
             </summary>
-            <param name="battleList">La lista de batallas activas.</param>
-            <param name="displayName">El nombre del jugador actual.</param>
-            <returns>
-            Una cadena que indica el ganador si la batalla ha terminado; 
-            de lo contrario, <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.ReadyForBattle">
-            <summary>
-            Verifica si ambos entrenadores están listos para la batalla.
-            Se requiere que cada entrenador tenga exactamente 6 Pokémon.
-            </summary>
-            <returns><c>true</c> si ambos jugadores tienen 6 Pokémon; de lo contrario, <c>false</c>.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.ChangeTurn(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.BattlesList,System.String)">
-            <summary>
-            Cambia el turno al siguiente jugador y actualiza el contador de turnos.
-            También reduce el enfriamiento (cooldown) del entrenador actual si corresponde.
-            </summary>
-            <param name="player">El jugador cuyo turno acaba de terminar.</param>
-            <param name="battleList">La lista de batallas activas.</param>
-            <param name="displayName">El nombre del jugador actual.</param>
-            <returns>
-            Una cadena que indica el ganador si la batalla ha terminado;
-            de lo contrario, <c>null</c>.
-            </returns>
+            <returns>El nombre del jugador ganador.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.BattlesList">
             <summary>
-            Esta clase representa una lista de batallas en curso, permitiendo administrar las batallas
-            entre diferentes entrenadores Pokémon.
+            Esta clase representa la lista de batallas en curso.
             </summary>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Ucu.Poo.DiscordBot.Domain.Trainer,Ucu.Poo.DiscordBot.Domain.Trainer)">
             <summary>
-            Crea y añade una nueva batalla a la lista de batallas en curso.
+            Crea una nueva batalla entre dos jugadores.
             </summary>
-            <param name="player1">El primer jugador que participa en la batalla.</param>
-            <param name="player2">El oponente que participa en la batalla.</param>
-            <returns>La instancia de la batalla creada.</returns>
+            <param name="player1">El primer jugador.</param>
+            <param name="player2">El oponente.</param>
+            <returns>La batalla creada.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.GetPlayerInBattle(System.String)">
             <summary>
-            Busca al entrenador asociado con el nombre mostrado proporcionado en las batallas activas.
+            Funcion para conseguir el entrenador asociado al playerDisplayName
+            Lo busca en las batallas y de no encontrarlo devuelve null
             </summary>
-            <param name="playerDisplayName">El nombre mostrado del jugador que se busca.</param>
-            <returns>
-            El entrenador encontrado en las batallas activas que coincide con el nombre proporcionado;
-            de lo contrario, <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.GetBattleByPlayer(System.String)">
-            <summary>
-            Obtiene la batalla en la que participa un jugador según su nombre mostrado.
-            </summary>
-            <param name="playerDisplayName">El nombre mostrado del jugador.</param>
-            <returns>
-            La instancia de la batalla en la que participa el jugador;
-            de lo contrario, <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.GetOpponnentInBattle(System.String)">
-            <summary>
-            Obtiene el oponente de un jugador en una batalla activa, basado en su nombre mostrado.
-            </summary>
-            <param name="playerDisplayName">El nombre mostrado del jugador.</param>
-            <returns>
-            El entrenador que es oponente del jugador en la batalla;
-            de lo contrario, <c>null</c>.
-            </returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.RemoveBattle(Ucu.Poo.DiscordBot.Domain.Battle)">
-            <summary>
-            Elimina una batalla de la lista de batallas en curso.
-            </summary>
-            <param name="battle">La batalla que se desea eliminar.</param>
-            <returns>
-            <c>true</c> si la batalla fue eliminada con éxito;
-            de lo contrario, <c>false</c>.
-            </returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Trainer">
-            <summary>
-            Esta clase representa un jugador en el juego Pokémon.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.DisplayName">
-            <summary>
-            El nombre de usuario de Discord en el servidor del bot del jugador.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
-            <summary>
-            El estado del entrenador. 1: Esperando en la lista de espera,
-            2: En una batalla, con los pokemones seleccionados
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.PokemonList">
-            <summary>
-            Lista de pokemones del entrenador.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.ActualPokemon">
-            <summary>
-            El pokemon actualmente activo del entrenador.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Items">
-            <summary>
-            Lista de items que el entrenador tiene disponibles.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> con
-            el nombre de usuario de Discord y el pokemon inicial del entrenador.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord.</param>
-            <param name="name">Nombre del entrenador.</param>
-            <param name="actualPokemon">El pokemon inicial del entrenador.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.AddPokemon(Poke.Clases.Pokemon)">
-            <summary>
-            Agrega un Pokémon a la selección del usuario.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.GetTotalPokemonLife">
-            <summary>
-            Calcula la vida total de todos los pokemones del entrenador.
-            </summary>
-            <returns>La suma de los puntos de vida de todos los pokemones.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.SetActualPokemon(Poke.Clases.Pokemon)">
-            <summary>
-            Establece el pokemon actualmente activo del entrenador.
-            </summary>
-            <param name="pokemon">El pokemon que será el activo.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.RemoveItem(Poke.Clases.Item)">
-            <summary>
-            Elimina un item específico de la lista de items del entrenador.
-            </summary>
-            <param name="item">El item a eliminar.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.UseItem(Poke.Clases.Item,Poke.Clases.Pokemon)">
-            <summary>
-            Usa un item específico en un pokemon objetivo.
-            </summary>
-            <param name="item">El item a usar.</param>
-            <param name="objective">El pokemon en el cual usar el item.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.GetPokemon(System.String)">
-            <summary>
-            Busca un Pokémon en la lista de Pokémon del entrenador por su nombre.
-            </summary>
-            <param name="pokemonName">El nombre del Pokémon a buscar.</param>
-            <returns>
-            El Pokémon que coincide con el nombre proporcionado si se encuentra en la lista;
-            de lo contrario, <c>null</c>.
-            </returns>
+            <returns>Entrenador asociado al playerDisplayName.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Facade">
             <summary>
@@ -534,6 +387,13 @@
             <param name="attackName">El nombre del ataque.</param>
             <returns>Un mensaje con el resultado del ataque.</returns>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.IsPlayerInGame(System.String)">
+            <summary>
+            Verifica si un jugador está en una batalla.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador.</param>
+            <returns>Un valor booleano que indica si el jugador está en una batalla.</returns>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.PlayerWithPokemon(System.String)">
             <summary>
             Verifica si un jugador tiene los Pokémon necesarios para combatir.
@@ -556,6 +416,20 @@
             un mensaje opcional que indica si la batalla está lista para comenzar.
             </returns>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.CheckToStartBattle(System.String)">
+            <summary>
+            Verifica si la batalla está lista para iniciar.
+            </summary>
+            <param name="displayName">El nombre del jugador.</param>
+            <returns>Un valor booleano que indica si la batalla está lista.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetOpponent(System.String)">
+            <summary>
+            Obtiene el oponente del jugador pasado como parámetro.
+            </summary>
+            <param name="playerDisplayName">El nombre del jugador.</param>
+            <returns>Un objeto de tipo <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> que representa al oponente del jugador.</returns>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.AssignActualPokemon(System.String,System.String)">
             <summary>
             Asigna el Pokémon actual de un jugador para la batalla.
@@ -572,7 +446,7 @@
             <param name="pokemonName">El nombre del Pokémon cuyos ataques se desean obtener.</param>
             <returns>Una cadena de texto con los ataques disponibles del Pokémon.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetBattleResult(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Facade.GetBattleResult(System.String,System.String)">
             <summary>
             Obtiene el resultado de la batalla entre dos jugadores.
             </summary>
@@ -589,6 +463,118 @@
             <param name="battle">La batalla en curso.</param>
             <param name="forChange">Indica si la acción es para cambiar Pokémon.</param>
             <returns>Una tupla con un mensaje de error si alguna verificación falla, o null si todas las verificaciones son correctas.</returns>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog">
+            <summary>
+            Clase que representa un catálogo de Pokémon y proporciona funcionalidad para
+            crear instancias de Pokémon y asociarlos con sus ataques.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog">
+            <summary>
+            Enum que define el catálogo de Pokémon disponibles.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatePokemon(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
+            <summary>
+            Crea una instancia de un Pokémon según la entrada del catálogo.
+            </summary>
+            <param name="catalogEntry">La entrada del catálogo que representa el Pokémon deseado.</param>
+            <returns>Una instancia del Pokémon especificado.</returns>
+            <exception cref="T:System.ArgumentException">Se lanza si el Pokémon no está en el catálogo.</exception>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatAttackList(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
+            <summary>
+            Función que asocia cada entrada del catálogo con una lista de ataques específicos para ese Pokémon.
+            </summary>
+        </member>
+        <member name="T:Ucu.Poo.DiscordBot.Domain.Trainer">
+            <summary>
+            Esta clase representa un jugador en el juego Pokémon.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.DisplayName">
+            <summary>
+            El nombre de usuario de Discord en el servidor del bot del jugador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Stage">
+            <summary>
+            El estado del entrenador. 1: Esperando en la lista de espera,
+            2: En una batalla, con los pokemones seleccionados
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.PokemonList">
+            <summary>
+            Lista de pokemones del entrenador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.ActualPokemon">
+            <summary>
+            El pokemon actualmente activo del entrenador.
+            </summary>
+        </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Trainer.Items">
+            <summary>
+            Lista de items que el entrenador tiene disponibles.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.#ctor(System.String)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Trainer"/> con
+            el nombre de usuario de Discord y el pokemon inicial del entrenador.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord.</param>
+            <param name="name">Nombre del entrenador.</param>
+            <param name="actualPokemon">El pokemon inicial del entrenador.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.AddPokemon(Poke.Clases.Pokemon)">
+            <summary>
+            Agrega un Pokémon a la selección del usuario.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.GetTotalPokemonLife">
+            <summary>
+            Calcula la vida total de todos los pokemones del entrenador.
+            </summary>
+            <returns>La suma de los puntos de vida de todos los pokemones.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.HasItem(Poke.Clases.Item)">
+            <summary>
+            Verifica si el entrenador tiene un item específico.
+            </summary>
+            <param name="item">El item a buscar.</param>
+            <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.ShowPokemonsInfo">
+            <summary>
+            Muestra la información de todos los pokemones que posee el entrenador.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.SetActualPokemon(Poke.Clases.Pokemon)">
+            <summary>
+            Establece el pokemon actualmente activo del entrenador.
+            </summary>
+            <param name="pokemon">El pokemon que será el activo.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.RemoveItem(Poke.Clases.Item)">
+            <summary>
+            Elimina un item específico de la lista de items del entrenador.
+            </summary>
+            <param name="item">El item a eliminar.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.AddItem(Poke.Clases.Item)">
+            <summary>
+            Agrega un item a la lista de items del entrenador.
+            </summary>
+            <param name="item">El item a agregar.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Trainer.UseItem(Poke.Clases.Item,Poke.Clases.Pokemon)">
+            <summary>
+            Usa un item específico en un pokemon objetivo.
+            </summary>
+            <param name="item">El item a usar.</param>
+            <param name="objective">El pokemon en el cual usar el item.</param>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
@@ -641,30 +627,6 @@
             </summary>
             <returns>Una lista de jugadores esperando para jugar.</returns>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog">
-            <summary>
-            Clase que representa un catálogo de Pokémon y proporciona funcionalidad para
-            crear instancias de Pokémon y asociarlos con sus ataques.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog">
-            <summary>
-            Enum que define el catálogo de Pokémon disponibles.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatePokemon(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
-            <summary>
-            Crea una instancia de un Pokémon según la entrada del catálogo.
-            </summary>
-            <param name="catalogEntry">La entrada del catálogo que representa el Pokémon deseado.</param>
-            <returns>Una instancia del Pokémon especificado.</returns>
-            <exception cref="T:System.ArgumentException">Se lanza si el Pokémon no está en el catálogo.</exception>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.PokemonCatalog.CreatAttackList(Ucu.Poo.DiscordBot.Domain.PokemonCatalog.Catalog)">
-            <summary>
-            Función que asocia cada entrada del catálogo con una lista de ataques específicos para ese Pokémon.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Services.Bot">
             <summary>
             Esta clase implementa el bot de Discord.
@@ -706,7 +668,7 @@
             Indica si el ataque es especial (en lugar de físico).
             </summary>
         </member>
-        <member name="M:Poke.Clases.Attack.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
+        <member name="M:Poke.Clases.Attack.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
             <summary>
             Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Attack"/>.
             </summary>
@@ -721,99 +683,6 @@
             </summary>
             <param name="target">El Pokémon objetivo que recibe el ataque.</param>
             <returns>El daño final después de aplicar la ventaja o desventaja de tipo.</returns>
-        </member>
-        <member name="M:Poke.Clases.Attack.AttackInfo">
-            <summary>
-            Genera una cadena con la información detallada de un ataque.
-            </summary>
-            <returns>
-            Una cadena que contiene el nombre del ataque, el daño que inflige, 
-            su tipo y si es un ataque especial.
-            </returns>
-        </member>
-        <member name="T:Poke.Clases.Burned">
-            <summary>
-            Representa un ataque especial que puede causar el estado de "Quemado" en un Pokémon.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.Burned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Burned"/>.
-            </summary>
-            <param name="name">Nombre del ataque.</param>
-            <param name="damage">Daño base del ataque.</param>
-            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
-            <param name="isSpecial">Indica si el ataque es especial.</param>
-        </member>
-        <member name="M:Poke.Clases.Burned.Burn(Poke.Clases.Pokemon)">
-            <summary>
-            Aplica el efecto de "Quemado" al Pokémon objetivo. 
-            Este efecto reduce el HP del objetivo en un 10%.
-            </summary>
-            <param name="objective">El Pokémon objetivo que será afectado por el estado "Quemado".</param>
-        </member>
-        <member name="T:Poke.Clases.IsAsleep">
-            <summary>
-            Representa un ataque especial que puede causar el estado de "Dormido" en un Pokémon.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.IsAsleep.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.IsAsleep"/>.
-            </summary>
-            <param name="name">Nombre del ataque.</param>
-            <param name="damage">Daño base del ataque.</param>
-            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
-            <param name="isSpecial">Indica si el ataque es especial.</param>
-        </member>
-        <member name="M:Poke.Clases.IsAsleep.Sleep(Poke.Clases.Pokemon)">
-            <summary>
-            Aplica el efecto de "Dormido" al Pokémon objetivo. 
-            Este efecto impide que el Pokémon objetivo pueda atacar durante un número aleatorio de turnos (1 a 4).
-            </summary>
-            <param name="objective">El Pokémon objetivo que será afectado por el estado "Dormido".</param>
-        </member>
-        <member name="T:Poke.Clases.Paralized">
-            <summary>
-            Representa un ataque especial que puede causar el estado de "Paralizado" en un Pokémon.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.Paralized.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Paralized"/>.
-            </summary>
-            <param name="name">Nombre del ataque.</param>
-            <param name="damage">Daño base del ataque.</param>
-            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
-            <param name="isSpecial">Indica si el ataque es especial.</param>
-        </member>
-        <member name="M:Poke.Clases.Paralized.Paralize(Poke.Clases.Pokemon)">
-            <summary>
-            Aplica el efecto de "Paralizado" al Pokémon objetivo.
-            Este estado puede impedir que el Pokémon ataque, dependiendo de un cálculo aleatorio.
-            </summary>
-            <param name="objective">El Pokémon objetivo que será afectado por el estado "Paralizado".</param>
-        </member>
-        <member name="T:Poke.Clases.Poisoned">
-            <summary>
-            Representa un ataque especial que puede causar el estado de "Envenenado" en un Pokémon.
-            </summary>
-        </member>
-        <member name="M:Poke.Clases.Poisoned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean)">
-            <summary>
-            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Poisoned"/>.
-            </summary>
-            <param name="name">Nombre del ataque.</param>
-            <param name="damage">Daño base del ataque.</param>
-            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
-            <param name="isSpecial">Indica si el ataque es especial.</param>
-        </member>
-        <member name="M:Poke.Clases.Poisoned.Envenenar(Poke.Clases.Pokemon)">
-            <summary>
-            Aplica el efecto de "Envenenado" al Pokémon objetivo.
-            Este estado reduce un porcentaje de la salud del Pokémon objetivo en cada turno.
-            </summary>
-            <param name="objective">El Pokémon objetivo que será afectado por el estado "Envenenado".</param>
         </member>
         <member name="T:Poke.Clases.Pokemon">
             <summary>
@@ -831,6 +700,9 @@
         </member>
         <member name="P:Poke.Clases.Pokemon.Hp">
             <summary>Puntos de vida del Pokémon.</summary>
+        </member>
+        <member name="P:Poke.Clases.Pokemon.InitialHealth">
+            <summary>Vida inicial del Pokémon.</summary>
         </member>
         <member name="P:Poke.Clases.Pokemon.Type">
             <summary>Tipo de Pokémon según la clase Type.</summary>
@@ -892,6 +764,18 @@
             </summary>
             <param name="hp">Cantidad de vida a añadir.</param>
         </member>
+        <member name="M:Poke.Clases.Pokemon.GetAttacks">
+            <summary>
+            Obtiene la lista de ataques del Pokémon.
+            </summary>
+            <returns>Lista de ataques del Pokémon.</returns>
+        </member>
+        <member name="M:Poke.Clases.Pokemon.GetType">
+            <summary>
+            Obtiene el tipo del Pokémon.
+            </summary>
+            <returns>Tipo del Pokémon.</returns>
+        </member>
         <member name="M:Poke.Clases.Pokemon.GetHp">
             <summary>
             Obtiene los puntos de vida del Pokémon.
@@ -902,6 +786,90 @@
             <summary>
             Actualiza los efectos de los estados del Pokémon en cada turno.
             </summary>
+        </member>
+        <member name="T:Poke.Clases.Asleep">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Dormido" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Asleep.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Asleep"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Asleep.Sleep(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Dormido" al Pokémon objetivo. 
+            Este efecto impide que el Pokémon objetivo pueda atacar durante un número aleatorio de turnos (1 a 4).
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Dormido".</param>
+        </member>
+        <member name="T:Poke.Clases.Burned">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Quemado" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Burned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Burned"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Burned.Burn(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Quemado" al Pokémon objetivo. 
+            Este efecto reduce el HP del objetivo en un 10%.
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Quemado".</param>
+        </member>
+        <member name="T:Poke.Clases.Paralized">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Paralizado" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Paralized.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Paralized"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Paralized.Paralize(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Paralizado" al Pokémon objetivo.
+            Este estado puede impedir que el Pokémon ataque, dependiendo de un cálculo aleatorio.
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Paralizado".</param>
+        </member>
+        <member name="T:Poke.Clases.Poisoned">
+            <summary>
+            Representa un ataque especial que puede causar el estado de "Envenenado" en un Pokémon.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Poisoned.#ctor(System.String,System.Double,Poke.Clases.Type.PokemonType,System.Boolean,System.String)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Poisoned"/>.
+            </summary>
+            <param name="name">Nombre del ataque.</param>
+            <param name="damage">Daño base del ataque.</param>
+            <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
+            <param name="isSpecial">Indica si el ataque es especial.</param>
+        </member>
+        <member name="M:Poke.Clases.Poisoned.Envenenar(Poke.Clases.Pokemon)">
+            <summary>
+            Aplica el efecto de "Envenenado" al Pokémon objetivo.
+            Este estado reduce un porcentaje de la salud del Pokémon objetivo en cada turno.
+            </summary>
+            <param name="objective">El Pokémon objetivo que será afectado por el estado "Envenenado".</param>
         </member>
         <member name="T:Poke.Clases.Type">
             <summary>
@@ -945,6 +913,177 @@
             <param name="type1">Tipo del Pokémon atacante.</param>
             <param name="type2">Tipo del Pokémon defensor.</param>
             <returns>La ventaja de tipo entre los dos Pokémon (ventaja, neutral o desventaja).</returns>
+        </member>
+        <member name="T:Poke.Clases.Battle">
+            <summary>
+            Representa una batalla entre dos entrenadores Pokémon, gestionando turnos, jugadas, y verificando el final del juego.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.Battle.Play">
+            <summary>
+            Instancia para gestionar las jugadas posibles en cada turno.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.Battle.Turn">
+            <summary>
+            Representa el turno actual en la batalla, alternando entre los jugadores.
+            </summary>
+        </member>
+        <member name="P:Poke.Clases.Battle.PlayerPokemon">
+            <summary>
+            Pokemon del jugador principal.
+            </summary>
+        </member>
+        <member name="P:Poke.Clases.Battle.OpponentPokemon">
+            <summary>
+            Pokemon del oponente.
+            </summary>
+        </member>
+        <member name="P:Poke.Clases.Battle.ActualTurn">
+            <summary>
+            Contador del turno actual.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.Battle.waitList">
+            <summary>
+            Instancia de WaitList para gestionar los entrenadores en espera.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Battle.#ctor(Poke.Clases.Pokemon,Poke.Clases.Pokemon,Poke.Clases.WaitList)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.Battle"/>.
+            </summary>
+            <param name="playerPokemon">El pokemon del jugador.</param>
+            <param name="opponentPokemon">El pokemon oponente.</param>
+        </member>
+        <member name="M:Poke.Clases.Battle.InitialTurn">
+            <summary>
+            Determina de forma aleatoria cuál jugador comienza el primer turno.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Battle.PlayTurn(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer,System.String,System.String)">
+            <summary>
+            Ejecuta un turno de la batalla, permitiendo a un jugador realizar una jugada y luego alterna el turno al otro jugador.
+            </summary>
+            <param name="player1">El primer entrenador.</param>
+            <param name="player2">El segundo entrenador.</param>
+        </member>
+        <member name="M:Poke.Clases.Battle.BattleFinished(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer)">
+            <summary>
+            Verifica si la batalla ha terminado, es decir, si uno de los jugadores ha ganado.
+            </summary>
+            <param name="player1">El primer entrenador.</param>
+            <param name="player2">El segundo entrenador.</param>
+            <returns>True si uno de los jugadores ha ganado; de lo contrario, False.</returns>
+        </member>
+        <member name="M:Poke.Clases.Battle.InfoTurn(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer)">
+            <summary>
+            Muestra el estado actual de los Pokémon de ambos jugadores, incluyendo el turno actual.
+            </summary>
+            <param name="player1">El primer entrenador.</param>
+            <param name="player2">El segundo entrenador.</param>
+        </member>
+        <member name="M:Poke.Clases.Battle.CompleteBattle(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer,System.String,System.String)">
+            <summary>
+            Ejecuta la batalla completa entre dos pokemon, alternando turnos hasta que uno de los jugadores gane.
+            </summary>
+            <param name="player1">El primer entrenador.</param>
+            <param name="player2">El segundo entrenador.</param>
+        </member>
+        <member name="T:Poke.Clases.OriginalTrainer">
+            <summary>
+            Representa a un entrenador en el juego, quien tiene una lista de pokemones y una lista de items.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.OriginalTrainer.Pokemons">
+            <summary>
+            Lista de pokemones que posee el entrenador.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.OriginalTrainer.ActualPokemon">
+            <summary>
+            El pokemon actualmente activo del entrenador.
+            </summary>
+        </member>
+        <member name="F:Poke.Clases.OriginalTrainer.Items">
+            <summary>
+            Lista de items que el entrenador tiene disponibles.
+            </summary>
+        </member>
+        <member name="P:Poke.Clases.OriginalTrainer.name">
+            <summary>
+            Nombre del entrenador.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.#ctor(System.String,Poke.Clases.Pokemon)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Poke.Clases.OriginalTrainer"/>.
+            </summary>
+            <param name="name">Nombre del entrenador.</param>
+            <param name="ActualPokemon">El pokemon actual del entrenador.</param>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.AddPokemon">
+            <summary>
+            Agrega los pokemones a la lista de pokemones del entrenador.
+            </summary>
+            <param name="pokemon">El pokemon a agregar.</param>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.PokemonLife">
+            <summary>
+            Calcula la vida total de todos los pokemones del entrenador.
+            </summary>
+            <returns>La suma de los puntos de vida de todos los pokemones.</returns>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.GetItem(Poke.Clases.Item)">
+            <summary>
+            Verifica si el entrenador tiene un item específico.
+            </summary>
+            <param name="item">El item a buscar.</param>
+            <returns>Verdadero si el entrenador tiene el item; de lo contrario, falso.</returns>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.GetPokemonsInfo">
+            <summary>
+            Muestra la información de todos los pokemones que posee el entrenador.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.getActualPokemon">
+            <summary>
+            Obtiene el pokemon actualmente activo del entrenador.
+            </summary>
+            <returns>El pokemon actual.</returns>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.RemoveItem(Poke.Clases.Item)">
+            <summary>
+            Elimina un item específico de la lista de items del entrenador.
+            </summary>
+            <param name="item">El item a eliminar.</param>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.AddItem(Poke.Clases.Item)">
+            <summary>
+            Agrega un item a la lista de items del entrenador.
+            </summary>
+            <para name="item">El item a agregar.</para>
+        </member>
+        <member name="M:Poke.Clases.OriginalTrainer.useItem(Poke.Clases.Item,Poke.Clases.Pokemon)">
+            <summary>
+            Usa un item específico en un pokemon objetivo.
+            </summary>
+            <param name="item">El item a usar.</param>
+            <param name="objective">El pokemon en el cual usar el item.</param>
+        </member>
+        <member name="T:Poke.Clases.Play">
+            <summary>
+            Clase que gestiona las posibles jugadas de un entrenador durante un turno.
+            </summary>
+        </member>
+        <member name="M:Poke.Clases.Play.PossiblePlays(Poke.Clases.OriginalTrainer,Poke.Clases.OriginalTrainer,Poke.Clases.Item,Poke.Clases.Pokemon,System.String,System.String)">
+            <summary>
+            Permite al entrenador elegir entre atacar, cambiar de Pokémon o usar un ítem.
+            </summary>
+            <param name="player1">El entrenador que realiza la jugada.</param>
+            <param name="player2">El entrenador oponente.</param>
+            <param name="item">El ítem que el jugador puede usar.</param>
+            <param name="objective">El Pokémon objetivo del ítem.</param>
         </member>
     </members>
 </doc>

@@ -1,3 +1,5 @@
+using Ucu.Poo.DiscordBot.Domain;
+
 namespace Poke.Clases;
 
 /// <summary>
@@ -12,8 +14,8 @@ public class Burned : Attack
     /// <param name="damage">Daño base del ataque.</param>
     /// <param name="attackType">Tipo del ataque según el tipo de Pokémon.</param>
     /// <param name="isSpecial">Indica si el ataque es especial.</param>
-    public Burned(string name, double damage, Type.PokemonType attackType, bool isSpecial) 
-        : base(name, damage, attackType, isSpecial)
+    public Burned(string name, double damage, Type.PokemonType attackType, bool isSpecial, string? specialType) 
+        : base(name, damage, attackType, isSpecial, specialType)
     {
     }  
 
@@ -22,12 +24,27 @@ public class Burned : Attack
     /// Este efecto reduce el HP del objetivo en un 10%.
     /// </summary>
     /// <param name="objective">El Pokémon objetivo que será afectado por el estado "Quemado".</param>
-    public void Burn(Pokemon objective)
+    public string Burn(Pokemon objective)
     {
         objective.State = "Burned";
+        objective.Burned = true;
         if (objective.State == "Burned")
         {
             objective.Hp *= 0.9;
         }
+
+        return $"{objective.Name} esta quemandose, durante los proximos turnos ira perdiendo de a 10% del total de su HP.";
+    }
+    
+    public override (string? message, string? specialAttackMessage) AttackOpponent(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
+    {
+        if (playerPokemon.AttackCapacity == 1 && opponentPokemon.IsAlive)
+        {
+            double attackDamage = attack.Damage;
+            string message = Burn(opponentPokemon);
+            return (opponentPokemon.RecibeDamage(player, CalculateDamage(opponentPokemon)),message);
+        }
+
+        return ("No se pudo atacar al oponente",null);
     }
 }

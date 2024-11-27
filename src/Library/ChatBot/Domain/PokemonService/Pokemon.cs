@@ -20,6 +20,9 @@ public class Pokemon
     /// <summary>Puntos de vida del Pokémon.</summary>
     public double Hp { get; set; }
     
+    /// <summary>Vida inicial del Pokémon.</summary>
+    public double InitialHealth { get; set; }
+    
     public bool IsAlive { get; set; }
 
     /// <summary>Tipo de Pokémon según la clase Type.</summary>
@@ -50,13 +53,14 @@ public class Pokemon
     /// <param name="type">Tipo del Pokémon.</param>
     public Pokemon(string name, double health, double AttackCapacity, string state, Type.PokemonType type, List<Attack>? attackList = null)
     {
-        AttackList = attackList;
-        Name = name;
-        Hp = health;
-        State = state;
+        this.AttackList = attackList;
+        this.Name = name;
+        this.Hp = health;
+        this.InitialHealth = health;
+        this.State = state;
         this.AttackCapacity = 1;
-        Type = type;
-        IsAlive = true;
+        this.Type = type;
+        this.IsAlive = true;
     }
 
     /// <summary>
@@ -74,15 +78,9 @@ public class Pokemon
     /// <param name="opponentPokemon">El Pokémon oponente a atacar.</param>
     /// <param name="playerPokemon">El Pokémon atacante.</param>
     /// <param name="attack">El ataque específico a usar.</param>
-    public string? Attack(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
+    public (string? message, string? specialAttackMessage) Attack(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
     {
-        if (AttackCapacity == 1 && opponentPokemon.IsAlive)
-        {
-            double attackDamage = attack.Damage;
-            return opponentPokemon.RecibeDamage(player, attackDamage);
-        }
-
-        return "";
+        return attack.AttackOpponent(player, opponentPokemon, playerPokemon, attack);
     }
 
     /// <summary>
@@ -94,10 +92,6 @@ public class Pokemon
         if (AttackList.Count < 4)
         {
             AttackList.Add(nuevoAttack);
-        }
-        else
-        {
-            Console.WriteLine("No se pueden agregar más ataques, el límite es 4");
         }
     }
 
@@ -127,7 +121,24 @@ public class Pokemon
         Hp += hp;
         Console.WriteLine($"{this.Name} recuperó {hp} puntos de vida.");
     }
-    
+
+    /// <summary>
+    /// Obtiene la lista de ataques del Pokémon.
+    /// </summary>
+    /// <returns>Lista de ataques del Pokémon.</returns>
+    public List<Attack> GetAttacks()
+    {
+        return AttackList;
+    }
+
+    /// <summary>
+    /// Obtiene el tipo del Pokémon.
+    /// </summary>
+    /// <returns>Tipo del Pokémon.</returns>
+    public Type.PokemonType GetType()
+    {
+        return Type;
+    }
 
     /// <summary>
     /// Obtiene los puntos de vida del Pokémon.
@@ -166,5 +177,18 @@ public class Pokemon
             Random random = new Random();
             double AttackCapacity = random.Next(0, 2); // 0 o 1 definen si puede atacar
         }
+    }
+    
+
+    public Attack? GetAttackByName(string attackName)
+    {
+        foreach (var attack in AttackList)
+        {
+            if (attack.Name == attackName)
+            {
+                return attack;
+            }
+        }
+        return null;
     }
 }

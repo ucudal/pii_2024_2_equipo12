@@ -26,6 +26,8 @@ namespace Poke.Clases
         /// Indica si el ataque es especial (en lugar de físico).
         /// </summary>
         public bool IsSpecial { get; set; }
+        
+        public string? SpecialType { get; set; }
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="Attack"/>.
@@ -34,12 +36,23 @@ namespace Poke.Clases
         /// <param name="damage">Daño base del ataque.</param>
         /// <param name="attackType">Tipo del ataque.</param>
         /// <param name="isSpecial">Indica si el ataque es especial.</param>
-        public Attack(string name, double damage, Type.PokemonType attackType, bool isSpecial)
+        public Attack(string name, double damage, Type.PokemonType attackType, bool isSpecial, string? specialType)
         {
             Name = name;
             Damage = damage;
             AttackType = attackType;
             IsSpecial = isSpecial;
+            SpecialType = specialType;
+        }
+        
+        public virtual (string? message, string? specialAttackMessage) AttackOpponent(Trainer? player, Pokemon opponentPokemon, Pokemon playerPokemon, Attack attack)
+        {
+            if (playerPokemon.AttackCapacity == 1 && opponentPokemon.IsAlive)
+            {
+                return (opponentPokemon.RecibeDamage(player, CalculateDamage(opponentPokemon)),null);
+            }
+
+            return ("No se pudo atacar al oponente", null);
         }
 
         /// <summary>
@@ -71,19 +84,9 @@ namespace Poke.Clases
             return Damage * effectiveness;
         }
 
-        /// <summary>
-        /// Genera una cadena con la información detallada de un ataque.
-        /// </summary>
-        /// <returns>
-        /// Una cadena que contiene el nombre del ataque, el daño que inflige, 
-        /// su tipo y si es un ataque especial.
-        /// </returns>
         public string AttackInfo()
         {
             return $"{Name} (Daño: {Damage}  Tipo: {AttackType}  Especial: {IsSpecial})";
         }
-
-        
-        
     }
 }
