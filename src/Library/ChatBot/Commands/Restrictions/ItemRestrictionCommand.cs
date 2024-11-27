@@ -3,14 +3,14 @@ using Ucu.Poo.DiscordBot.Domain;
 
 namespace Ucu.Poo.DiscordBot.ChatBot.Commands.Restrictions;
 
-public class PokemonRestrictionCommand: ModuleBase<SocketCommandContext>
+
+/// <summary>
+/// Esta clase implementa el comando 'typeRestriction' del bot. Este comando permite
+/// al jugador añadir restricciones de tipos de pokemon a la batalla.
+/// </summary>
+public class ItemRestrictionCommand : ModuleBase<SocketCommandContext>
 {
-    
-    /// <summary>
-    /// Implementa el comando 'pokemonRestriction'. Este comando permite
-    /// al jugador añadir restricciones de tipos de pokemon a la proxima batalla que comience.
-    /// </summary>
-    [Command("pokemonRestriction")]
+    [Command("typeRestriction")]
     [Summary("Permite al usuario añadir restricciones de tipos de pokemon previo a comenzar la batalla. Uso: !typeRestriction (nombres de los tipos separados por espacio)")]
     public async Task ExecuteAsync(
         [Remainder]
@@ -18,5 +18,4 @@ public class PokemonRestrictionCommand: ModuleBase<SocketCommandContext>
     {
         await ReplyAsync(Facade.Instance.AddTypeRestriction(typeString));
     }
-    
 }
