@@ -1,0 +1,16 @@
+Buenas Gabriel y Jose, lamentablemente se me crasheo el Rider dos veces sin guardar todos los cambios que habia hecho, 
+entre los dos crasheos perdi mucho tiempo lo que habia hecho y me faltaron cosas, el ultimo me sucedio 40 minutos antes de terminar 
+minutos que use practicamente para reescribir todo lo que habia hecho hasta el momento.
+
+Lo primero que me faltaron fueron las restricciones a los tipos de pokemon, 
+no lo pude hacer rapidamente porque como en nuestro codigo trabajamos con enums,
+no los podia remover facilmente y hacerlo de otra forma como harshcodear la lista u alguna otra forma, 
+esto lo habia arrancado y a los 10 minutos ocurrió el segundo crasheo.
+
+Lo otro que me faltaron fueron los tests, al usar mi ultimo tiempo para reescribir, no los pude hacer.
+
+Tambien me falto que al momento de iniciar la batalla, se envie un mensaje de las reglas, esto lo iba a hacer 
+dentro del comando !select que es donde se envia el mensaje de que comienza la batalla,
+iba a crear un string restrictedRules que sea un string builder de las reglas restringidas 
+y lo iba a "insertar luego del mensaje de "tienen 6 Pokémon, comienza la batalla!"
+

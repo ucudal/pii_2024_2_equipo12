@@ -842,22 +842,27 @@ public class Facade
             return ("❌ La batalla aún no empezó, seleccionen sus Pokémon!", null);
         }
 
+        var sb = new StringBuilder();
+        sb.AppendLine("ReglasActuales:");
+            
         if (restrictionName != null)
         {
             if (item != null)
             {
                 player.Items.Remove(item);
                 opponent.Items.Remove(item);
+                sb.AppendLine($"Se restringe el uso de: {item}\n");
                 return ($"{item} ha sido restringido!", null);
             }
 
             if (pokemon != null)
             {
                 restrictedIndexes.Add(RestrictIndex(pokemonName));
-                return ($"{pokemonName} ha sido restringido!", null);
+                sb.AppendLine($"Se restringe el uso de: {pokemonName}");
+                return ($"{pokemonName} ha sido restringido! \n{sb}", null);
             }
         }
-        return ("❌ No se puede aplicar la restriccion porque no existe o porque ya ha sido restringido!", null);
+        return ($"❌ No se puede aplicar la restriccion porque no existe o porque ya ha sido restringido! \n{sb}", null);
     }
 
     public List<int> restrictedIndexes = new List<int>();
