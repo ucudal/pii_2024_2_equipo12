@@ -1,6 +1,5 @@
 using System.Text;
 using Poke.Clases;
-using Ucu.Poo.DiscordBot.Services;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
@@ -72,10 +71,10 @@ public class Facade
         {
             Trainer? player = WaitingList.FindTrainerByDisplayName(displayName);
             player.Stage = 1;
-            return $"{displayName} agregado a la lista de espera";
+            return $"{displayName} agregado a la lista de espera \ud83d\ude09 \u231b";
         }
 
-        return $"{displayName} ya está en la lista de espera";
+        return $"{displayName} ya está en la lista de espera \u231b";
     }
 
     /// <summary>
@@ -87,11 +86,11 @@ public class Facade
     {
         if (this.WaitingList.RemoveTrainer(displayName))
         {
-            return $"{displayName} removido de la lista de espera";
+            return $"{displayName} removido de la lista de espera \ud83d\udeab";
         }
         else
         {
-            return $"{displayName} no está en la lista de espera";
+            return $"{displayName} no está en la lista de espera \ud83d\ude13";
         }
     }
 
@@ -103,7 +102,7 @@ public class Facade
     {
         if (this.WaitingList.Count == 0)
         {
-            return "No hay nadie esperando";
+            return "No hay nadie esperando \ud83d\ude13";
         }
 
         string result = "Esperan: ";
@@ -125,10 +124,10 @@ public class Facade
         Trainer? trainer = this.WaitingList.FindTrainerByDisplayName(displayName);
         if (trainer == null)
         {
-            return "No estás esperando!";
+            return "No estás esperando! \ud83d\ude13" ;
         }
 
-        return "Estás esperando!";
+        return "Estás esperando! \ud83d\ude09" ;
     }
 
     /// <summary>
@@ -145,7 +144,7 @@ public class Facade
         opponent.Stage = 2;
 
         BattlesList.AddBattle(player, opponent);
-        return $"Comienza {player.DisplayName} vs {opponent.DisplayName}";
+        return $"\ud83e\udd4a {player.DisplayName} vs {opponent.DisplayName}  batallaran! \ud83e\udd4a  \n Usa el comando !catalogue para ver el catálogo de Pokemon";
     }
 
     /// <summary>
@@ -161,7 +160,7 @@ public class Facade
 
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
-            return "No hay nadie esperando";
+            return "\u274c No hay nadie esperando \ud83d\ude13 ";
         }
 
         if (!OpponentProvided())
@@ -174,7 +173,7 @@ public class Facade
 
         if (!OpponentFound())
         {
-            return $"{opponentDisplayName} no está esperando";
+            return $"\u274c {opponentDisplayName} no está esperando \ud83d\ude13";
         }
 
         return this.CreateBattle(player, opponent);
@@ -235,7 +234,7 @@ public class Facade
             {
                 sb.AppendLine(item.Name);
             }
-            return ($"Lista de pociones disponibles: \n{sb}", null);
+            return ($"\ud83e\uddea Lista de pociones disponibles: \n{sb}", null);
         }
         return ("❌ No hay pociones disponibles", null);
     }
@@ -298,7 +297,7 @@ public class Facade
             {
                 if (player.ActualPokemon.IsAlive)
                 {
-                    return ("❌ No puedes usar Revive en un Pokémon que ya está vivo.", null);
+                    return ("❌ No puedes usar Revive en un Pokémon que ya está vivo. \ud83d\ude07", null);
                 }
 
                 player.UseItem(potion, player.ActualPokemon);
@@ -307,7 +306,7 @@ public class Facade
             {
                 if (!player.ActualPokemon.IsAlive)
                 {
-                    return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto. Usa el comando !change para seleccionar un nuevo pokemón", null);
+                    return ("❌ No puedes usar SuperPotion en un Pokémon que está muerto. \u2620\ufe0f \nUsa el comando !change para seleccionar un nuevo pokemón", null);
                 }
 
                 player.UseItem(potion, player.ActualPokemon);
@@ -316,12 +315,12 @@ public class Facade
             {
                 if (!player.ActualPokemon.IsAlive)
                 {
-                    return ("❌ No puedes usar la poción de Cura Total en un Pokémon que está muerto.", null);
+                    return ("❌ No puedes usar la poción de Cura Total en un Pokémon que está muerto. \u2620\ufe0f", null);
                 }
 
                 if (player.ActualPokemon.State == null)
                 {
-                    return ("❌ No puedes usar la poción de Cura Total en un Pokémon que no tiene estados inducidos.",
+                    return ("❌ No puedes usar la poción de Cura Total en un Pokémon que no tiene estados inducidos. \ud83d\ude07",
                         null);
                 }
 
@@ -361,10 +360,6 @@ public class Facade
 
         // Verificación del Pokémon del jugador
         Pokemon playerPokemon = player.ActualPokemon;
-        if (!playerPokemon.IsAlive)
-        {
-            return ($"❌ {playerPokemon.Name} ha muerto. Usa el comando !change para cambiar a tu próximo Pokémon.", null);
-        }
 
         // Verificación del ataque
         Attack? attack = playerPokemon.AttackList.Find(a => a.Name == attackName && !a.IsSpecial);
@@ -472,7 +467,7 @@ public class Facade
         Pokemon playerPokemon = player.ActualPokemon;
         if (!playerPokemon.IsAlive)
         {
-            return ($"❌ {playerPokemon.Name} está muerto. Usa el comando !change para cambiar tu pokemon.", null);
+            return ($"❌ {playerPokemon.Name} está muerto. \u2620\ufe0f \nUsa el comando !change para cambiar tu pokemon.", null);
         }
 
         // Determina si el ataque es normal o especial
@@ -482,21 +477,6 @@ public class Facade
         }
 
         return SpecialAttackPokemon(displayName, attackName);
-    }
-
-    /// <summary>
-    /// Verifica si un jugador está en una batalla.
-    /// </summary>
-    /// <param name="playerDisplayName">El nombre del jugador.</param>
-    /// <returns>Un valor booleano que indica si el jugador está en una batalla.</returns>
-    public bool IsPlayerInGame(string playerDisplayName)
-    {
-        if (BattlesList.GetPlayerInBattle(playerDisplayName) == null)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     /// <summary>
@@ -510,12 +490,12 @@ public class Facade
 
         if (player == null)
         {
-            return "Comienza una batalla para elegir tus Pokémon!";
+            return "Comienza una batalla para elegir tus Pokémon! \u2694\ufe0f";
         }
 
         if (player.PokemonList.Count == 6)
         {
-            return "Ya tienes seleccionados tus Pokémon, comienza a pelear!";
+            return "Ya tienes seleccionados tus Pokémon, comienza a pelear! \u2694\ufe0f";
         }
 
         return null;
@@ -555,13 +535,7 @@ public class Facade
         var selectedIndices = indices.Split(' ')
             .Select(i => int.TryParse(i, out int index) ? index - 1 : -1)
             .ToList();
-
-        if (selectedIndices.Any(index => index < 0))
-        {
-            return (
-                "❌ Uno o más índices proporcionados no son válidos. Por favor, usa números enteros positivos que estén dentro del catálogo.",
-                null, null);
-        }
+        
 
         var catalog = Enum.GetValues(typeof(PokemonCatalog.Catalog)).Cast<PokemonCatalog.Catalog>().ToList();
         var result = new StringBuilder();
@@ -570,7 +544,7 @@ public class Facade
         {
             if (index < 0 || index >= catalog.Count)
             {
-                result.AppendLine($"❌ Índice {index} no es válido, haz la selección de nuevo.");
+                result.AppendLine($"❌ Índice {index} no es válido, haz la selección de nuevo.\u23ea");
                 continue;
             }
 
@@ -583,7 +557,7 @@ public class Facade
         {
             battle.BattleStarted = true;
             player.Stage = 3;
-            return (result.ToString(), $"{displayName} y {opponent.DisplayName} tienen 6 Pokémon, comienza la batalla!",
+            return (result.ToString(), $"{displayName} y {opponent.DisplayName} tienen 6 Pokémon, comienza la batalla! \u2694\ufe0f",
                 battle.InitialTurn());
         }
 
@@ -609,46 +583,12 @@ public class Facade
 
         foreach (var pokemon in player.PokemonList)
         {
-            sb.AppendLine($"{pokemon.Name}  Hp: {pokemon.Hp}  Estado: {pokemon.State}");
+            sb.AppendLine($"{pokemon.Name}  Hp \ud83d\udc9a: {pokemon.Hp}  Estado \ud83d\ude35\u200d\ud83d\udcab: {pokemon.State}");
         }
 
         return sb.ToString();
     }
-
-    /// <summary>
-    /// Verifica si la batalla está lista para iniciar.
-    /// </summary>
-    /// <param name="displayName">El nombre del jugador.</param>
-    /// <returns>Un valor booleano que indica si la batalla está lista.</returns>
-    public bool CheckToStartBattle(string displayName)
-    {
-        Battle battle = BattlesList.GetBattleByPlayer(displayName);
-
-        if (battle != null && battle.BattleStarted)
-        {
-            battle.BattleStarted = true;
-            return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>
-    /// Obtiene el oponente del jugador pasado como parámetro.
-    /// </summary>
-    /// <param name="playerDisplayName">El nombre del jugador.</param>
-    /// <returns>Un objeto de tipo <see cref="Trainer"/> que representa al oponente del jugador.</returns>
-    public Trainer? GetOpponent(string displayName)
-    {
-        Battle battle = BattlesList.GetBattleByPlayer(displayName);
-
-        if (battle.Player1.DisplayName == displayName)
-        {
-            return battle.Player2;
-        }
-
-        return battle.Player1;
-    }
+    
 
     /// <summary>
     /// Asigna el Pokémon actual de un jugador para la batalla.
@@ -675,7 +615,7 @@ public class Facade
         }
         player.ActualPokemon = foundPokemon;
         UseCounter++;
-        return ($"✅ {pokemonName} esta listo para la batalla.\n{GetPokemonAttacks(displayName, pokemonName)} ", null);
+        return ($"✅ {pokemonName} esta listo para la batalla. \ud83c\udf89\n{GetPokemonAttacks(displayName, pokemonName)} ", null);
     }
 
     /// <summary>
@@ -695,7 +635,7 @@ public class Facade
             attackString.AppendLine(attack.AttackInfo());
         }
 
-        return $"Puntos de vida: {actualPokemon.Hp} \n" + "\nLista de ataques:\n" + attackString.ToString();
+        return $"Hp \ud83d\udc9a: {actualPokemon.Hp} \n" + "\nLista de ataques \ud83d\udde1\ufe0f:\n" + attackString.ToString();
     }
 
     /// <summary>
@@ -704,7 +644,7 @@ public class Facade
     /// <param name="player1DisplayName">El nombre del primer jugador.</param>
     /// <param name="player2DisplayName">El nombre del segundo jugador.</param>
     /// <returns>Un mensaje indicando el ganador de la batalla o null si la batalla aún está en progreso.</returns>
-    public string? GetBattleResult(string player1DisplayName, string player2DisplayName)
+    public string? GetBattleResult(string player1DisplayName)
     {
         // Obtener la batalla actual entre los dos jugadores
         var battle = BattlesList.GetBattleByPlayer(player1DisplayName);

@@ -1,4 +1,3 @@
-using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Ucu.Poo.DiscordBot.Domain;

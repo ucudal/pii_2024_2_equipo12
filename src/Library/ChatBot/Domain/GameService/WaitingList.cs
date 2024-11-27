@@ -1,5 +1,3 @@
-using System.Collections.ObjectModel;
-
 namespace Ucu.Poo.DiscordBot.Domain;
 
 /// <summary>
@@ -83,29 +81,6 @@ public class WaitingList
         return null;
     }
     
-    
-    // hacer summary
-    public List<Trainer> CheckIn()
-    {
-        var playersToPlay = new List<Trainer>();
-        
-        if (trainersList.Count >= 2)
-        {
-            playersToPlay.Add(trainersList[0]);
-            playersToPlay.Add(trainersList[1]);
-
-            Console.WriteLine($"{playersToPlay[0].DisplayName} y {playersToPlay[1].DisplayName} están listos para jugar.");
-
-            trainersList.RemoveRange(0, 2); // Elimina los dos primeros elementos de la lista de espera
-        }
-        else
-        {
-            Console.WriteLine("No hay suficientes personas en la lista de espera para comenzar el juego.");
-        }
-
-        return playersToPlay;
-    }
-
     /// <summary>
     /// Retorna un jugador cualquiera esperando para jugar. En esta
     /// implementación provista no es cualquiera, sino el primero. En la
@@ -115,17 +90,14 @@ public class WaitingList
     /// <returns></returns>
     public Trainer? GetAnyoneWaiting()
     {
-        if (this.trainersList.Count == 0)
+        if (trainersList.Count == 0)
         {
             return null;
         }
 
-        return this.trainersList[0];
+        return trainersList[0];
     }
-    public bool HasEnoughPlayers()
-    {
-        return trainersList.Count >= 2;
-    }
+   
     
     /// <summary>
     /// Retorna una lista de todos los jugadores en la lista de espera.

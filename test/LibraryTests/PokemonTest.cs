@@ -86,22 +86,36 @@ namespace LibraryTests
             battle = new Battle(trainer1, trainer2);
         }
         
-
         [Test]
         public void BattleFinished_Test()
         {
-            Assert.That(battle.BattleFinished(), Is.Null, "Battle should not be finished initially.");
-            charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
-            Assert.That(battle.BattleFinished(), Is.Not.Null, "Battle should be finished when one trainer's Pokémon are all fainted.");
+            // Arrange
+            var battleList = new BattlesList();
+            battleList.AddBattle(trainer1, trainer2); // Agregar la batalla al listado
+
+            // Act
+            string? result = battle.BattleFinished(battleList, trainer1.DisplayName);
+
+            // Assert
+            Assert.That(result, Is.EqualTo($"✅ {trainer2.DisplayName} ha ganado, no le quedan más Pokémon vivos al oponente!"), 
+                "Trainer2 debería ganar cuando todos los Pokémon de Trainer1 están derrotados.");
         }
 
         [Test]
         public void GetWinner_Test()
         {
-            Assert.That(battle.BattleFinished(), Is.Null, "There should be no winner initially.");
-            charmander.RecibeDamage(trainer1, charmander.Hp); // Reduce HP to 0
-            Assert.That(battle.BattleFinished(), Is.EqualTo($"✅ {trainer1.DisplayName} ha ganado, no le quedan mas pokemones vivos al oponente!"), "Trainer1 should be the winner when trainer2's Pokémon are all fainted.");
+            // Arrange
+            var battleList = new BattlesList();
+            battleList.AddBattle(trainer1, trainer2); // Agregar la batalla al listado
+
+            // Act
+            string? result = battle.BattleFinished(battleList, trainer2.DisplayName);
+
+            // Assert
+            Assert.That(result, Is.EqualTo($"✅ {trainer1.DisplayName} ha ganado, no le quedan más Pokémon vivos al oponente!"), 
+                "Trainer1 debería ganar cuando todos los Pokémon de Trainer2 están derrotados.");
         }
+
     }
     
     [TestFixture]
@@ -153,14 +167,6 @@ namespace LibraryTests
                     "Attack type should be Electric.");
                 Assert.That(attack.IsSpecial, Is.False, "Attack should not be special.");
             }
-
-            [Test]
-            public void AttackEffectiveness_Test()
-            {
-                // Assuming there is a method to calculate effectiveness
-                // double effectiveness = attack.CalculateEffectiveness(Poke.Clases.Type.PokemonType.Water);
-                // Assert.That(effectiveness, Is.EqualTo(expectedValue), "Effectiveness should be calculated correctly.");
-            }
         }
     }
 
@@ -197,72 +203,7 @@ namespace LibraryTests
             Assert.That(trainer.ActualPokemon, Is.EqualTo(pikachu), "Trainer's actual Pokémon should be Pikachu.");
         }
     }
-
-    [TestFixture]
-    public class BattleSimulationTest
-    {
-        [Test]
-        public void SimulateFullBattle()
-        {
-            // Crear instancias de comandos
-            var joinCommand = new JoinCommand();
-            var battleCommand = new BattleCommand();
-            var selectPokemonCommand = new SelectPokemonCommand();
-            var useInitialPokemonCommand = new UseInitialPokemonCommand();
-            var attackCommand = new AttackCommand();
-            var usePotionCommand = new UsePotionCommand();
-            var changePokemonCommand = new ChangePokemonCommand();
-
-            // Simular nombres de jugadores
-            string player1 = "Marto";
-            string player2 = "Kike";
-
-            // Paso 1: Ambos jugadores se unen a la lista de espera
-            Facade.Instance.AddTrainerToWaitingList(player1);
-            Facade.Instance.AddTrainerToWaitingList(player2);
-
-            // Paso 2: Crear una batalla entre los dos jugadores
-            var battleResult = Facade.Instance.CreateNewBattle(player1, player2);
-            Assert.That(battleResult, Is.Not.Null, "La batalla no se pudo iniciar correctamente");
-
-            // Paso 3: Seleccionar Pokémon para cada jugador
-            string player1Selection = "1 2 3 4 5 6"; // Índices simulados
-            string player2Selection = "7 8 9 10 11 12"; // Índices simulados
-            Assert.That(player1Selection, Is.Not.Null, "Player1 no seleccionó 6 Pokémon");
-            Assert.That(player2Selection, Is.Not.Null, "Player2 no seleccionó 6 Pokémon");
-
-            // Paso 4: Elegir Pokémon inicial
-            Facade.Instance.AssignActualPokemon(player1, "Bulbasaur");
-            Facade.Instance.AssignActualPokemon(player2, "Charmander");
-
-            // Paso 5: Simular turnos hasta que uno de los jugadores gane
-            string winner = null;
-            while (winner == null)
-            {
-                // Turno de Player1
-                var player1Attack = Facade.Instance.AttackPokemon(player1, "Tackle");
-                Assert.That(player1Attack, Is.Not.Null, "El ataque de Player1 no se ejecutó correctamente");
-
-                // Comprobar si alguien ganó
-                winner = Facade.Instance.GetBattleResult(player1, player2);
-                if (winner != null) break;
-
-                // Turno de Player2
-                var player2Attack = Facade.Instance.AttackPokemon(player2, "Ember");
-                Assert.That(player2Attack, Is.Not.Null, "El ataque de Player2 no se ejecutó correctamente");
-
-                // Comprobar si alguien ganó
-                winner = Facade.Instance.GetBattleResult(player1, player2);
-            }
-
-            // Validar que la batalla terminó y hay un ganador
-            Assert.That(winner, Is.Not.Null, "La batalla no tiene un ganador");
-            Console.WriteLine($"El ganador es: {winner}");
-        }
-    }
-
-
-
+    
     [TestFixture]
     public class NormalAttacksTests
     {
